@@ -1,0 +1,14 @@
+{
+	"sesion"            : "sesion"					//sesion
+	"usuario_n"         : "prueba",					//nombre
+	"usuario_m"         : "prueba@prueba.com",		//correo
+	"usuario_p"         : "123456",					//contrasena actual
+	"usuario_np"        : "123456",					//contrasena nueva
+	"activo"            : 1,						//estado (0 inactivo o 1 activo)
+	"usuario"           : 0,                		//id usuario
+	"perfil"            : 0,						//id perfil
+	"superdistribuidor" : 0,						//id super distribuidor
+	"distribuidor"      : 0,						//id distribuidor
+	"empresa"           : 0,						//id empresa
+	"sucursal"          : 0,						//id sucursal
+}
