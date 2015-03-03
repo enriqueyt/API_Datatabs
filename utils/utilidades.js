@@ -1,15 +1,15 @@
-var connection = require('../config/db');
+var connection = require('../config/db'),
+    Q          = require('q');
 
-exports.buscarIdPerfilUsuario = function(sesion, callback, campo) {
+exports.buscarIdPerfilUsuario = function(sesion) {
+    var deferred = Q.defer();
     var sql = '';
 	var resultado = {
 		usuario  : -1,
 		perfil   : -1,
 		usuariod : -1
 	};
-	
-	campo = typeof campo === undefined ? null : campo;
-	
+		
     if (connection) {
 		sql =
 			'SELECT ' +
@@ -31,30 +31,83 @@ exports.buscarIdPerfilUsuario = function(sesion, callback, campo) {
             sql,
             [sesion],
             function(err, result) {
-                if (err) throw err;
+                if (err) deferred.reject(err);
 				if (result.length > 0) resultado = result[0];
-				
-				if (campo == null)
-					callback(resultado);
-				else if (campo == 'usuario')
-					callback(resultado.usuario);
-				else if (campo == 'perfil')
-					callback(resultado.perfil);
-				else if (campo == 'usuariod')
-					callback(resultado.usuariod);
+                deferred.resolve(resultado);
             }
         );
+        
+        return deferred.promise;
     }
 };
+    
+exports.buscarIdUsuario = function(sesion) {
+    var deferred = Q.defer();
 
-exports.buscarIdUsuario = function(sesion, callback) {
-	this.buscarIdPerfilUsuario(sesion, callback, 'usuario');
+    this.buscarIdPerfilUsuarioX(sesion).then(
+        function(data) {
+            deferred.resolve(data.usuario);
+        },
+        function(err) {
+            deferred.reject(err);
+        }
+    );
+    
+    return deferred.promise;
 };
 
 exports.buscarIdPerfil = function(sesion, callback) {
-	this.buscarIdPerfilUsuario(sesion, callback, 'perfil');
+	var deferred = Q.defer();
+
+    this.buscarIdPerfilUsuarioX(sesion).then(
+        function(data) {
+            deferred.resolve(data.perfil);
+        },
+        function(err) {
+            deferred.reject(err);
+        }
+    );
+    
+    return deferred.promise;
 };
 
 exports.buscarIdUsuarioD = function(sesion, callback) {
-	this.buscarIdPerfilUsuario(sesion, callback, 'usuariod');
+	var deferred = Q.defer();
+
+    this.buscarIdPerfilUsuarioX(sesion).then(
+        function(data) {
+            deferred.resolve(data.usuariod);
+        },
+        function(err) {
+            deferred.reject(err);
+        }
+    );
+    
+    return deferred.promise;
+};
+
+exports.buscarIdDispositivo = function(identificador) {
+    var deferred = Q.defer();
+    var sql = '';
+		
+    if (connection) {
+		sql =
+			'SELECT ' +
+				'IFNULL(D.id_dispositivo, -1) AS dispostivo ' +
+			'FROM ' +
+				'promociones.tb_dispositivo AS D ' +
+			'WHERE ' +
+				'D.identificacion = ?;';
+		
+        connection.db.query(
+            sql,
+            [identificador],
+            function(err, result) {
+                if (err) deferred.reject(err);
+				deferred.resolve(result[0].dispostivo);
+            }
+        );
+    }
+    
+    return deferred.promise;
 };

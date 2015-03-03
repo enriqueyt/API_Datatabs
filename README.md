@@ -9,5 +9,7 @@ This API is using the following libraries:
 - ejs
 - http
 - path
+- Q
+- forever
 
 The version number for all can be viewed in the file package.json.

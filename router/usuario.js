@@ -1,20 +1,21 @@
 var connection = require('../config/db'),
+    Q          = require('q'),
     utilidades = require('../utils/utilidades'),
 	seguridad  = require('../utils/seguridad');
 
 /**
  *	HttpGet
  *
- *  Creates an admin user.
+ *  Creates an administrator user.
  *	
  *	@return
- *		A json string:
+ *		A JSON string:
  *		{
  *			"msg" : "OK - Base64EncodeString(user id)"
  *		}
  *
  *	@error
- *		A json string:
+ *		A JSON string:
  *		{
  *			"msg" : "Error description"
  *		}
@@ -60,10 +61,10 @@ exports.crearAdmin = function(req, res) {
  *  Checks if an user name exists.
  *
  *	@param
- *		A request url param (an username).
+ *		A request url parameter (an user name).
  *	
  *	@return
- *		A json string:
+ *		A JSON string:
  *		{
  *			"msg" : true (or false)
  *		}
@@ -72,8 +73,8 @@ exports.crearAdmin = function(req, res) {
  *		An exception.
  */
 exports.existeUsuario = function(req, res) {
-	//var param = seguridad.SHA512(req.params.val);
-	var param = req.params.val;
+	//var username = seguridad.SHA512(req.params.val);
+	var username = req.params.val;
 	var sql = '';
 		
 	if (connection) {
@@ -86,7 +87,7 @@ exports.existeUsuario = function(req, res) {
 		
 		connection.db.query(
 			sql,
-			[param, param],
+			[username, username],
 			function(err, result) {
 				if (err) throw err;					
 				res.contentType('application/json');
@@ -103,10 +104,10 @@ exports.existeUsuario = function(req, res) {
  *  Checks if an email exists.
  *
  *	@param
- *		A request url param (an email).
+ *		A request url parameter (an user email).
  *	
  *	@return
- *		A json string:
+ *		A JSON string:
  *		{
  *			"msg" : true (or false)
  *		}
@@ -115,8 +116,8 @@ exports.existeUsuario = function(req, res) {
  *		An exception.
  */
 exports.existeCorreo = function(req, res) {
-	//var param = seguridad.SHA512(req.params.val);
-	var param = req.params.val;
+	//var mail = seguridad.SHA512(req.params.val);
+	var mail = req.params.val;
 	var sql = '';
 		
 	if (connection) {
@@ -129,7 +130,7 @@ exports.existeCorreo = function(req, res) {
 		
 		connection.db.query(
 			sql,
-			[param],
+			[mail],
 			function(err, result) {
 				if (err) throw err;					
 				res.contentType('application/json');
@@ -146,32 +147,31 @@ exports.existeCorreo = function(req, res) {
  *  Creates an user.
  *
  *	@param
- *		A json request body:
+ *		A JSON request body:
  *		{
- *			"usuario"   : 1,                										An integer identifier that represents an user's id related to the user who creates the request. This field can be optional.
- *			"sesion"    : "Base64EncodeString(xxxxy0z1-0000-zzz0-xyxy-10yy0xxy)"	A string that represents an user's session in Base64 related to the user who creates the request. This field can be used instead "usuario" and it can be optional too.
- *			"usuario_n" : "test",													A string that represents the username.
+ *			"param"     : "Base64EncodeString(xxxxy0z1-0000-zzz0-xyxy-10yy0xxy|1)"	A string in Base64 that represents an user session or id related to the user who creates the request.
+ *			"usuario_n" : "test",													A string that represents the user name.
  *			"usuario_m" : "test@test.com",											A string that represents the email. This field can be optional.
  *			"usuario_p" : "qwerty42",												A string that represents The password.
- *			"activo"    : 1,														A integer that represents the status (1 for active and 0 for inactive). This field can be optional.
- *			"perfil"    : 1															A integer that represents the profile to be associated.
+ *			"activo"    : 1,														An integer that represents the status (1 for active and 0 for inactive). This field can be optional.
+ *			"perfil"    : 1															An integer identifier that represents the profile to be associated.
  *		}
  *	
  *	@return
- *		A json string:
+ *		A JSON string:
  *		{
  *			"msg" : "OK - Base64EncodeString(user id)"
  *		}
  *
  *	@error
- *		A json string:
+ *		A JSON string:
  *		{
  *			"msg" : "Error description"
  *		}
  *		Or an exception.
  */
 exports.crearUsuario = function(req, res) {
-	var param = null;
+	var user = null;
 	
 	var callback = function(id) {
 		var sql = '', mensaje = '', resultado = '';
@@ -217,10 +217,18 @@ exports.crearUsuario = function(req, res) {
 		}
 	};
 	
-	if ((typeof req.body.usuario !== undefined || req.body.usuario != null) && (/^\d+$/g).test(req.body.usuario))
-		callback(req.body.usuario);
-	else if ((typeof req.body.sesion !== undefined || req.body.sesion != null) && (/^\w{8}\-w{4}\-w{4}\-w{8}$/g).test(param = seguridad.decodeBase64(req.body.sesion)))
-		utilidades.buscarIdUsuario(param, callback);
+	if (typeof req.body.param !== undefined || req.body.param != null) {
+        user = seguridad.decodeBase64(req.body.param);
+        if ((/^\d+$/g).test(user))
+            callback(user);
+        else
+            utilidades.buscarIdUsuario(user).then(
+                callback,
+                function(err) {
+                    throw err;
+                }
+            );
+    }
 	else
 		callback(null);
 };
@@ -228,33 +236,33 @@ exports.crearUsuario = function(req, res) {
 /**
  *	HttpPut
  *
- *  Updates an username related to an user.
+ *  Updates an user name related to an user.
  *
  *	@param
- *		A request url param (an user session in Base64 or id related to user that we want to update).
+ *		A request url parameter (an user session or id in Base64 related to the user that we want to update).
  *	@param
- *		A request body:
+ *		A JSON request body:
  *		{
- *			"usuario_n" : "test",			A string that represents the new username.
+ *			"usuario_n" : "test",			A string that represents the new user name.
  *			"usuario_m" : "test@test.com",	A string that represents the new email. This field can be optional.
  *			"usuario_p" : "qwerty42"		A string that represents the user's password.
  *		}
  *	
  *	@return
- *		A json string:
+ *		A JSON string:
  *		{
  *			"msg" : "OK - Base64EncodeString(user id)"
  *		}
  *
  *	@error
- *		A json string:
+ *		A JSON string:
  *		{
  *			"msg" : "Error description"
  *		}
  *		Or an exception.
  */
 exports.modificarUsuario = function(req, res) {
-	var param = seguridad.decodeBase64(req.params.val);
+	var user = seguridad.decodeBase64(req.params.val);
 	
 	var callback = function(id) {
 		var sql = '', mensaje = '', resultado = '';
@@ -296,10 +304,15 @@ exports.modificarUsuario = function(req, res) {
 		}
     };
 	
-	if (!(/^\d+$/g).test(param))
-		utilidades.buscarIdUsuario(param, callback);
+	if ((/^\d+$/g).test(user))
+        callback(user);
 	else
-		callback(param);
+		utilidades.buscarIdUsuario(user).then(
+            callback,
+            function(err) {
+                throw err;
+            }
+        );
 };
 
 /**
@@ -308,39 +321,38 @@ exports.modificarUsuario = function(req, res) {
  *  Updates a password related to an user.
  *
  *	@param
- *		A request url param (an user session or id related to user that we want to update).
+ *		A request url parameter (an user session or id in Base64 related to the user that we want to update).
  *	@param
- *		A request body:
+ *		A JSON request body:
  *		{
- *			"usuario_p"  : "qwerty42",	A string that represents the user's password.
- *			"usuario_np" : "42qwerty"	A string that represents the user's new password.
+ *			"usuario_p"  : "qwerty42",	A string that represents the user password.//NOT FORGET TO ENCODE
+ *			"usuario_np" : "42qwerty"	A string that represents the user new password.//NOT FORGET TO ENCODE
  *		}
  *	
  *	@return
- *		A json string:
+ *		A JSON string:
  *		{
  *			"msg" : "OK - Base64EncodeString(user id)"
  *		}
  *
  *	@error
- *		A json string:
+ *		A JSON string:
  *		{
  *			"msg" : "Error description"
  *		}
  *		Or an exception.
  */
 exports.modificarContrasena = function(req, res) {
-	var param = seguridad.decodeBase64(req.params.val);
+	var user = seguridad.decodeBase64(req.params.val);
 	
-	var callback_1 = function(id, callback) {
-		var sql = '';
-		
-		callback = typeof callback === undefined ? callback_2 : callback;
-		
+	var callback_1 = function(id) {
+		var deferred = Q.defer();
+        var sql = '';
+			
 		if (connection) {
 			sql =
 				'SELECT ' +
-					'U.usuario AS usuario, U.usuarioCorreo AS usuarioCorreo ' +
+					'? AS id, U.usuario AS usuario, U.usuarioCorreo AS usuarioCorreo ' +
 				'FROM ' +
 					'promociones.tb_usuario AS U ' +
 				'WHERE ' +
@@ -350,21 +362,24 @@ exports.modificarContrasena = function(req, res) {
 				sql,
 				[id],
 				function(err, result) {
-					if (err) throw err;
+					if (err) deferred.reject(err);
 					
 					if (result.length <= 0) {
 						res.contentType('application/json');
 						res.write(JSON.stringify({ msg : 'ERROR - ! - Error buscando datos' }));
 						res.end();
 					}					
-					else
-						callback(id, result[0].usuario, result[0].usuarioCorreo);
+					else                   
+                        deferred.resolve(result[0]);
+						//callback(result[0].id, result[0].usuario, result[0].usuarioCorreo);
 				}
 			);
 		}
+        
+        return deferred.promise;
 	};
 	
-	var callback_2 = function(id, usuario, usuarioCorreo) {
+	var callback_2 = function(data) {
 		var sql = '', mensaje = '', resultado = '';
 		
 		if (connection) {
@@ -376,17 +391,17 @@ exports.modificarContrasena = function(req, res) {
 			connection.db.query(
 				sql,
 				//[
-				//	id,
-				//	id,
-				//	seguridad.encodeAES(seguridad.decodeAES(usuario, req.body.usuario_p), req.body.usuario_np),
-				//	usuarioCorreo != null ? seguridad.encodeAES(seguridad.decodeAES(usuarioCorreo, req.body.usuario_p), req.body.usuario_np) : null,
+				//	data.id,
+				//	data.id,
+				//	seguridad.encodeAES(seguridad.decodeAES(data.usuario, req.body.usuario_p), req.body.usuario_np),
+				//	data.usuarioCorreo != null ? seguridad.encodeAES(seguridad.decodeAES(data.usuarioCorreo, req.body.usuario_p), req.body.usuario_np) : null,
 				//	seguridad.encodeAES(seguridad.SHA512(req.body.usuario_np), req.body.usuario_np)
 				//],
 				[
-					id,
-					id,
-					usuario,
-					usuarioCorreo != null ? usuarioCorreo : null,
+					data.id,
+					data.id,
+					data.usuario,
+					data.usuarioCorreo != null ? data.usuarioCorreo : null,
 					req.body.usuario_np
 				],
 				function(err, result) {
@@ -402,10 +417,26 @@ exports.modificarContrasena = function(req, res) {
 		}
     };
 	
-	if (!(/^\d+$/g).test(param))
-		utilidades.buscarIdUsuario(param, callback_1);
+	if ((/^\d+$/g).test(user))
+		callback_1(user).then(
+            callback_2,
+            function(err) {
+                throw err;
+            }
+        );
 	else 
-		callback_1(param, callback_2);
+        utilidades.buscarIdUsuario(user).then(
+            callback_1
+        ).then(
+            callback_2,
+            function(err) {
+                throw err;
+            }
+        );
+};
+
+exports.cambiarEstadoUsuario = function(req, res) {
+    
 };
 
 //exports.eliminarUsuario = function(req, res) {
