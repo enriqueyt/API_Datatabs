@@ -170,6 +170,82 @@ exports.modificarEvento = function(req, res) {
 		callback([event, null]);
 };
 
+/**
+ *	HttpPut
+ *
+ *  Creates a relation between an event and a branch office.
+ *
+ *	@param
+ *		A request url parameter (an id in Base64 related to the event that we want to associate to the branch office).
+ *	@param
+ *		A JSON request body (fields to update should be set with a value):
+ *		{
+ *		    "param"    : "Base64EncodeString(xxxxy0z1-0000-zzz0-xyxy-10yy0xxy|1)",  A string in Base64 that represents an user session or id related to the user that creates the request.
+ *          "sucursal" : "XXXXX"                                                    An integer identifier that represents the branch office that we will associate to the event.
+ *		}
+ *	
+ *	@return
+ *		A JSON string:
+ *		{
+ *			"msg" : "OK - Base64EncodeString(relation id)"
+ *		}
+ *
+ *	@error
+ *		A JSON string:
+ *		{
+ *			"msg" : "Error description"
+ *		}
+ */
+exports.asociarEventoSucursal = function(req, res) {
+	var event = seguridad.decodeBase64(req.params.val);
+	
+	var callback = function(id) {
+		var sql = '', mensaje = '', resultado = '';
+		
+		if (connection) {
+			sql =
+				'SET @resultado = ""; ' +
+				'CALL promociones.sp_asociarEventoSucursal(?, ?, ?, @resultado); ' +
+				'SELECT @resultado;';
+			
+			connection.db.query(
+				sql,
+				[
+					id,
+                    event,
+                    req.body.sucursal
+				],
+				function(err, result) {
+					if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+                                            
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.end();
+                    }
+				}
+			);
+		}
+    };
+	
+	if (typeof req.body.param !== undefined || req.body.param != null) {
+		if ((/^\d+$/g).test(seguridad.decodeBase64(req.body.param)))
+			callback(seguridad.decodeBase64(req.body.param));
+        else
+			utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param)).then(
+                callback,
+                function(err) {
+                    utilidades.printError(err, res);
+                }
+            );
+	}
+	else
+		callback(null);
+};
+
 //exports.eliminarEvento = function(req, res) {
 
 //};

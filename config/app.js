@@ -92,6 +92,7 @@ app.post  ('/dispositivo'              , dispositivo.crearDispositivo          )
 /* [HttpPut] */
 app.put   ('/dispositivo/:val'         , dispositivo.modificarDispositivo      );
 app.put   ('/dispositivo/sucursal/:val', dispositivo.asociarDispositivoSucursal);
+app.put   ('/dispositivo/evento/:val'  , dispositivo.asociarEventoDispositivo  );
 app.put   ('/dispositivo/validar/:val' , dispositivo.validarDispositivo        );
 /* [HttpDelete] */
 //app.delete('/dispositivo/:id'          , dispositivo.eliminarDispositivo       );
@@ -101,11 +102,12 @@ app.put   ('/dispositivo/validar/:val' , dispositivo.validarDispositivo        )
 /******************************************** EVENTO *********************************************/
 /*************************************************************************************************/
 /* HttpGet */
-app.get   ('/evento/:val?', evento.buscarEvento   );
-/* [HttpPost] */
-app.post  ('/evento'      , evento.crearEvento    );
-/* [HttpPut] */
-app.put   ('/evento/:val' , evento.modificarEvento);
+app.get   ('/evento/:val?'         , evento.buscarEvento         );
+/* [HttpPost] */                                                 
+app.post  ('/evento'               , evento.crearEvento          );
+/* [HttpPut] */                                                  
+app.put   ('/evento/:val'          , evento.modificarEvento      );
+app.put   ('/evento/sucursal/:val' , evento.asociarEventoSucursal);
 /* [HttpDelete] */
 //app.delete('/evento/:id'  , evento.eliminarEvento );
 
