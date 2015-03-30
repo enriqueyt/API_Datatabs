@@ -19,7 +19,6 @@ var connection = require('../config/db'),
  *		{
  *			"msg" : "Error description"
  *		}
- *		Or an exception.
  */
 exports.crearAdmin = function(req, res) {
     var admin = {
@@ -43,13 +42,16 @@ exports.crearAdmin = function(req, res) {
 			//],
 			[admin.usuario_n, admin.usuario_n, admin.usuario_p],
             function(err, result) {
-                if (err) throw err;
-				mensaje   = result[3][0]['@resultado'];
-				resultado = result[1][0]['res'];
-		
-                res.contentType('application/json');
-                res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-                res.end();
+                if (err)
+                    utilidades.printError(err, res);
+                else {
+                    mensaje   = result[3][0]['@resultado'];
+                    resultado = result[1][0]['res'];
+            
+                    res.contentType('application/json');
+                    res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                    res.end();
+                }
             }
         );
     }
@@ -70,7 +72,10 @@ exports.crearAdmin = function(req, res) {
  *		}
  *
  *	@error
- *		An exception.
+ *		A JSON string:
+ *		{
+ *			"msg" : "Error description"
+ *		}
  */
 exports.existeUsuario = function(req, res) {
 	//var username = seguridad.SHA512(req.params.val);
@@ -89,10 +94,13 @@ exports.existeUsuario = function(req, res) {
 			sql,
 			[username, username],
 			function(err, result) {
-				if (err) throw err;					
-				res.contentType('application/json');
-				res.write(JSON.stringify({ msg : result.length > 0 ? true : false }));
-				res.end();
+				if (err)
+                    utilidades.printError(err, res);
+                else {
+                    res.contentType('application/json');
+                    res.write(JSON.stringify({ msg : result.length > 0 ? true : false }));
+                    res.end();
+                }
 			}
 		);
 	}
@@ -113,7 +121,10 @@ exports.existeUsuario = function(req, res) {
  *		}
  *
  *	@error
- *		An exception.
+ *		A JSON string:
+ *		{
+ *			"msg" : "Error description"
+ *		}
  */
 exports.existeCorreo = function(req, res) {
 	//var mail = seguridad.SHA512(req.params.val);
@@ -132,10 +143,13 @@ exports.existeCorreo = function(req, res) {
 			sql,
 			[mail],
 			function(err, result) {
-				if (err) throw err;					
-				res.contentType('application/json');
-				res.write(JSON.stringify( { msg : result.length > 0 ? true : false }));
-				res.end();
+				if (err)
+                    utilidades.printError(err, res);
+                else {
+                    res.contentType('application/json');
+                    res.write(JSON.stringify( { msg : result.length > 0 ? true : false }));
+                    res.end();
+                }
 			}
 		);
 	}
@@ -168,7 +182,6 @@ exports.existeCorreo = function(req, res) {
  *		{
  *			"msg" : "Error description"
  *		}
- *		Or an exception.
  */
 exports.crearUsuario = function(req, res) {
 	var user = null;
@@ -205,13 +218,16 @@ exports.crearUsuario = function(req, res) {
 					req.body.perfil
 				],
 				function(err, result) {
-					if (err) throw err;
-					mensaje   = result[3][0]['@resultado'];
-					resultado = result[1][0]['res'];
-			
-					res.contentType('application/json');
-					res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-					res.end();
+					if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+                
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.end();
+                    }
 				}
 			);
 		}
@@ -225,7 +241,7 @@ exports.crearUsuario = function(req, res) {
             utilidades.buscarIdUsuario(user).then(
                 callback,
                 function(err) {
-                    throw err;
+                    utilidades.printError(err, res);
                 }
             );
     }
@@ -259,7 +275,6 @@ exports.crearUsuario = function(req, res) {
  *		{
  *			"msg" : "Error description"
  *		}
- *		Or an exception.
  */
 exports.modificarUsuario = function(req, res) {
 	var user = seguridad.decodeBase64(req.params.val);
@@ -292,13 +307,16 @@ exports.modificarUsuario = function(req, res) {
 					typeof req.body.usuario_m !== undefined || req.body.usuario_m != null ? req.body.usuario_m : null,
 				],
 				function(err, result) {
-					if (err) throw err;
-					mensaje   = result[3][0]['@resultado'];
-					resultado = result[1][0]['res'];
-										
-					res.contentType('application/json');
-					res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-					res.end();
+					if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+                                            
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.end();
+                    }
 				}
 			);
 		}
@@ -310,7 +328,7 @@ exports.modificarUsuario = function(req, res) {
 		utilidades.buscarIdUsuario(user).then(
             callback,
             function(err) {
-                throw err;
+                utilidades.printError(err, res);
             }
         );
 };
@@ -340,7 +358,6 @@ exports.modificarUsuario = function(req, res) {
  *		{
  *			"msg" : "Error description"
  *		}
- *		Or an exception.
  */
 exports.modificarContrasena = function(req, res) {
 	var user = seguridad.decodeBase64(req.params.val);
@@ -362,16 +379,14 @@ exports.modificarContrasena = function(req, res) {
 				sql,
 				[id],
 				function(err, result) {
-					if (err) deferred.reject(err);
-					
-					if (result.length <= 0) {
-						res.contentType('application/json');
-						res.write(JSON.stringify({ msg : 'ERROR - ! - Error buscando datos' }));
-						res.end();
-					}					
-					else                   
-                        deferred.resolve(result[0]);
-						//callback(result[0].id, result[0].usuario, result[0].usuarioCorreo);
+					if (err)
+                        deferred.reject(err);
+					else {
+                        if (result.length <= 0)
+                            utilidades.printError('ERROR - ! - Error buscando datos', res);				
+                        else                   
+                            deferred.resolve(result[0]);
+                    }
 				}
 			);
 		}
@@ -405,13 +420,16 @@ exports.modificarContrasena = function(req, res) {
 					req.body.usuario_np
 				],
 				function(err, result) {
-					if (err) throw err;
-					mensaje   = result[3][0]['@resultado'];
-					resultado = result[1][0]['res'];
-										
-					res.contentType('application/json');
-					res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-					res.end();
+					if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+                                            
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.end();
+                    }
 				}
 			);
 		}
@@ -421,7 +439,7 @@ exports.modificarContrasena = function(req, res) {
 		callback_1(user).then(
             callback_2,
             function(err) {
-                throw err;
+                utilidades.printError(err, res);
             }
         );
 	else 
@@ -430,7 +448,7 @@ exports.modificarContrasena = function(req, res) {
         ).then(
             callback_2,
             function(err) {
-                throw err;
+                utilidades.printError(err, res);
             }
         );
 };

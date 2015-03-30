@@ -4,7 +4,109 @@ var connection = require('../config/db'),
 	seguridad  = require('../utils/seguridad');
 
 exports.buscarDispositivo = function(req, res) {
-	var device = typeof req.params.val !== undefined || req.params.val != null ? seguridad.decodeBase64(req.params.val) : null;
+	var user    = typeof req.params.val     !== undefined || req.params.val     != null ? seguridad.decodeBase64(req.params.val)     : null,
+        device  = typeof req.params.device  !== undefined || req.params.device  != null ? seguridad.decodeBase64(req.params.device)  : null,
+        company = typeof req.params.company !== undefined || req.params.company != null ? seguridad.decodeBase64(req.params.company) : null,
+        office  = typeof req.params.office  !== undefined || req.params.office  != null ? seguridad.decodeBase64(req.params.office)  : null;
+        
+    
+};
+
+/**
+ *	HttpGet
+ *
+ *  Gets active device's events.
+ *
+ *	@param
+ *		A request url parameter (an IMEI's device or id in Base64 related to the device that we want to get their events).
+ *	
+ *	@return
+ *		A JSON string:
+ *		[
+ *          {
+ *              "id_evento"   : "Base64EncodeString(XXXXX)",    A string in Base64 that represents the identifier related to an event.
+ *              "evento"      : "XXXXX",                        A string that represents the event's name.
+ *              "descripcion" : "XXXXX",                        A string that represents the event's description.
+ *              "fechaInicio" : "YYYY-MM-DD HH:mm:ss",          A string that represents the event's start date.
+ *              "fechaFin"    : "YYYY-MM-DD HH:mm:ss",          A string that represents the event's end date.
+ *              "flujo"       : [{ XXXXX }],                    A JSON string that represents the event's flow.
+ *              "imagen"      : "XXXXX",                        A string that represents the image file name related to an event.
+ *              "id_empresa"  : "Base64EncodeString(XXXXX)",    A string in Base64 that represents the identifier related to an company.
+ *              "empresa"     : "XXXXX"                         A string that represents the company's name.
+ *          },
+ *          ...
+ *      ]
+ *
+ *	@error
+ *		A JSON string:
+ *		{
+ *			"msg" : "Error description"
+ *		}
+ */
+exports.buscarEventos = function(req, res) {
+	var device = seguridad.decodeBase64(req.params.val);
+        
+    var callback = function(id) {
+		var sql = '';
+		
+		if (connection) {
+			sql =
+				'SELECT ' +
+                    'Evento.id_evento, ' +
+                    'Evento.evento, ' +
+                    'Evento.descripcion, ' +
+                    'Evento.fechaInicio, ' +
+                    'Evento.fechaFin, ' +
+                    'Evento.flujo, ' +
+                    'Imagen.imagen, ' +
+                    'Empresa.id_empresa, ' +
+                    'Empresa.nombre AS empresa ' +
+                'FROM ' +
+                    'promociones.tb_evento AS Evento ' +
+                    'INNER JOIN ' +
+                    'promociones.tb_evento_dispositivo AS EventoDisp ' +
+                    'ON Evento.id_evento = EventoDisp.id_evento ' +
+                    'INNER JOIN ' +
+                    'promociones.tb_empresa AS Empresa ' +
+                    'ON Evento.id_empresa = Empresa.id_empresa ' +
+                    'LEFT OUTER JOIN ' +
+                    'promociones.tb_imagen AS Imagen ' +
+                    'ON Evento.id_imagen = Imagen.id_imagen ' +
+                'WHERE ' +
+                    'EventoDisp.id_dispositivo = ? AND ' +
+                    'Evento.fechaFin >= NOW() AND ' +
+                    'Evento.activo = 1;';
+			
+			connection.db.query(
+				sql,
+				[id],
+				function(err, result) {
+					if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        for (i = 0; i < result.length; i++) {
+                            result[i].id_evento  = seguridad.encodeBase64(result[i].id_evento);
+                            result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
+                        }
+                        
+                        res.contentType('application/json');
+                        res.write(JSON.stringify(result));
+                        res.end();
+                    }
+				}
+			);
+		}
+    };
+
+	if ((/^\d+$/g).test(device))
+        callback(device);
+	else
+        utilidades.buscarIdDispositivo(device).then(
+			callback,
+			function(err) {
+				utilidades.printError(err, res);
+			}
+		);
 };
     
 /**
@@ -37,7 +139,6 @@ exports.buscarDispositivo = function(req, res) {
  *		{
  *			"msg" : "Error description"
  *		}
- *		Or an exception.
  */
 exports.crearDispositivo = function(req, res) {
 	var user = typeof req.body.param !== undefined || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
@@ -65,13 +166,16 @@ exports.crearDispositivo = function(req, res) {
 					req.body.tipoDispositivo
 				],
 				function(err, result) {
-					if (err) throw err;
-					mensaje   = result[3][0]['@resultado'];
-					resultado = result[1][0]['res'];
-			
-					res.contentType('application/json');
-					res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-					res.end();
+					if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+                
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.end();
+                    }
 				}
 			);
 		}
@@ -84,7 +188,7 @@ exports.crearDispositivo = function(req, res) {
             utilidades.buscarIdUsuario(user).then(
                 callback,
                 function(err) {
-                    throw err;
+                    utilidades.printError(err, res);
                 }
             );
     }
@@ -124,7 +228,6 @@ exports.crearDispositivo = function(req, res) {
  *		{
  *			"msg" : "Error description"
  *		}
- *		Or an exception.
  */
 exports.modificarDispositivo = function(req, res) {
 	var device = seguridad.decodeBase64(req.params.val);
@@ -153,13 +256,16 @@ exports.modificarDispositivo = function(req, res) {
                     typeof req.body.activo           !== undefined || req.body.activo           != null ? req.body.activo           : null
 				],
 				function(err, result) {
-					if (err) throw err;
-					mensaje   = result[3][0]['@resultado'];
-					resultado = result[1][0]['res'];
-										
-					res.contentType('application/json');
-					res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-					res.end();
+					if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+                                            
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.end();
+                    }
 				}
 			);
 		}
@@ -173,7 +279,7 @@ exports.modificarDispositivo = function(req, res) {
 				Q.all([utilidades.buscarIdDispositivo, seguridad.decodeBase64(req.body.param)]).then(
 					callback,
 					function(err) {
-						throw err;
+						utilidades.printError(err, res);
 					}
 				);
 		}
@@ -182,14 +288,14 @@ exports.modificarDispositivo = function(req, res) {
 				Q.all([device, utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
 					callback,
 					function(err) {
-						throw err;
+						utilidades.printError(err, res);
 					}
 				);
 			else
 				Q.all([utilidades.buscarIdDispositivo(device), utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
 					callback,
 					function(err) {
-						throw err;
+						utilidades.printError(err, res);
 					}
 				);
 		}
@@ -201,7 +307,7 @@ exports.modificarDispositivo = function(req, res) {
 			Q.all([utilidades.buscarIdDispositivo(device), null]).then(
 				callback,
 				function(err) {
-					throw err;
+					utilidades.printError(err, res);
 				}
 			);
 	}
@@ -232,7 +338,6 @@ exports.modificarDispositivo = function(req, res) {
  *		{
  *			"msg" : "Error description"
  *		}
- *		Or an exception.
  */
 exports.asociarDispositivoSucursal = function(req, res) {
 	var device = seguridad.decodeBase64(req.params.val);
@@ -254,13 +359,16 @@ exports.asociarDispositivoSucursal = function(req, res) {
                     req.body.sucursal
 				],
 				function(err, result) {
-					if (err) throw err;
-					mensaje   = result[3][0]['@resultado'];
-					resultado = result[1][0]['res'];
-										
-					res.contentType('application/json');
-					res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-					res.end();
+					if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+                                            
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.end();
+                    }
 				}
 			);
 		}
@@ -274,7 +382,7 @@ exports.asociarDispositivoSucursal = function(req, res) {
 				Q.all([utilidades.buscarIdDispositivo(device), seguridad.decodeBase64(req.body.param)]).then(
 					callback,
 					function(err) {
-						throw err;
+						utilidades.printError(err, res);
 					}
 				);
 		}
@@ -283,14 +391,14 @@ exports.asociarDispositivoSucursal = function(req, res) {
 				Q.all([device, utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
 					callback,
 					function(err) {
-						throw err;
+						utilidades.printError(err, res);
 					}
 				);
 			else
 				Q.all([utilidades.buscarIdDispositivo(device), utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
 					callback,
 					function(err) {
-						throw err;
+						utilidades.printError(err, res);
 					}
 				);
 		}
@@ -302,7 +410,7 @@ exports.asociarDispositivoSucursal = function(req, res) {
 			Q.all([utilidades.buscarIdDispositivo(device), null]).then(
 				callback,
 				function(err) {
-					throw err;
+					utilidades.printError(err, res);
 				}
 			);
 	}
@@ -327,7 +435,6 @@ exports.asociarDispositivoSucursal = function(req, res) {
  *		{
  *			"msg" : "Error description"
  *		}
- *		Or an exception.
  */
 exports.validarDispositivo = function(req, res) {
 	var device = seguridad.decodeBase64(req.params.val);
@@ -345,13 +452,16 @@ exports.validarDispositivo = function(req, res) {
 				sql,
 				[id],
 				function(err, result) {
-					if (err) throw err;
-					mensaje   = result[3][0]['@resultado'];
-					resultado = result[1][0]['res'];
-			
-					res.contentType('application/json');
-					res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-					res.end();
+					if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+                
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.end();
+                    }
 				}
 			);
 		}	
@@ -363,7 +473,7 @@ exports.validarDispositivo = function(req, res) {
         utilidades.buscarIdDispositivo(device).then(
             callback,
             function(err) {
-                throw err;
+                utilidades.printError(err, res);
             }
         );
 };

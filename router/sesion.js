@@ -27,7 +27,6 @@ var connection = require('../config/db'),
  *		{
  *			"msg" : "Error description"
  *		}
- *		Or an exception.
  */
 exports.autenticar = function(req, res) {
     var sql = '', mensaje = '', resultado = '';
@@ -46,41 +45,45 @@ exports.autenticar = function(req, res) {
 			//],
             [req.body.usuario_n, req.body.usuario_p],
             function(err, result) {
-                if (err) throw err;
-                mensaje   = result[3][0]['@resultado'];
-                resultado = result[1][0]['res'];
-                
-                if ((/ERROR/g).test(mensaje)) {
-                    res.contentType('application/json');
-                    res.write(JSON.stringify({ msg : mensaje }));
-                    res.end();
-                }
+                if (err)
+                    utilidades.printError(err, res);
                 else {
-                    (
-                        function(id) {
-							sql = 
-								'SELECT ' +
-									'S.sesion AS sesion, ' +
-									'DATE_FORMAT(S.fechaInicio, "%Y-%m-%d %H:%i:%s") AS fechaI, ' +
-									'DATE_FORMAT(S.fechaUltimaOp, "%Y-%m-%d %H:%i:%s") AS fechaUO ' +
-								'FROM ' +
-									'promociones.tb_sesion AS S ' +
-								'WHERE ' +
-									'S.id_sesion = ?;';
-						
-                            connection.db.query(
-                                sql,
-                                [id],
-                                function(err, result) {
-                                    if (err) throw err;
-									result[0].sesion = seguridad.encodeBase64(result[0].sesion);								
-                                    res.contentType('application/json');
-                                    res.write(JSON.stringify(result[0]));
-                                    res.end();
-                                }
-                            );       
-                        }
-                    )(resultado);
+                    mensaje   = result[3][0]['@resultado'];
+                    resultado = result[1][0]['res'];
+                    
+                    if ((/ERROR/g).test(mensaje))
+                        utilidades.printError(err, res);
+                    else {
+                        (
+                            function(id) {
+                                sql = 
+                                    'SELECT ' +
+                                        'S.sesion AS sesion, ' +
+                                        'DATE_FORMAT(S.fechaInicio, "%Y-%m-%d %H:%i:%s") AS fechaI, ' +
+                                        'DATE_FORMAT(S.fechaUltimaOp, "%Y-%m-%d %H:%i:%s") AS fechaUO ' +
+                                    'FROM ' +
+                                        'promociones.tb_sesion AS S ' +
+                                    'WHERE ' +
+                                        'S.id_sesion = ?;';
+                            
+                                connection.db.query(
+                                    sql,
+                                    [id],
+                                    function(err, result) {
+                                        if (err)
+                                            utilidades.printError(err, res);
+                                        else {
+                                            result[0].sesion = seguridad.encodeBase64(result[0].sesion);								
+
+                                            res.contentType('application/json');
+                                            res.write(JSON.stringify(result[0]));
+                                            res.end();
+                                        }
+                                    }
+                                );       
+                            }
+                        )(resultado);
+                    }
                 }
             }
         );
@@ -100,7 +103,6 @@ exports.autenticar = function(req, res) {
  *	
  *	@return
  *		A JSON string:
- *		A JSON string:
  *		{
  *			"fechaI"  : "YYYY-MM-DD HH:mm:ss",                                  A string that represents the session start datetime.
  *			"fechaUO" : "YYYY-MM-DD HH:mm:ss",                                  A string that represents the session last operation datetime.
@@ -112,7 +114,6 @@ exports.autenticar = function(req, res) {
  *		{
  *			"msg" : "Error description"
  *		}
- *		Or an exception.
  */
 exports.reautenticar = function(req, res) {
     var callback = function(id) {
@@ -128,41 +129,45 @@ exports.reautenticar = function(req, res) {
                 sql,
                 [id],
                 function(err, result) {
-                    if (err) throw err;
-                    mensaje   = result[3][0]['@resultado'];
-                    resultado = result[1][0]['res'];
-                    
-                    if ((/ERROR/g).test(mensaje)) {
-                        res.contentType('application/json');
-                        res.write(JSON.stringify({ msg : mensaje }));
-                        res.end();
-                    }
+                    if (err)
+                        utilidades.printError(err, res);
                     else {
-                        (
-                            function(id) {
-                                sql =
-                                    'SELECT ' +
-                                        'S.sesion AS sesion, ' +
-                                        'DATE_FORMAT(S.fechaInicio, "%Y-%m-%d %H:%i:%s") AS fechaI, ' +
-                                        'DATE_FORMAT(S.fechaUltimaOp, "%Y-%m-%d %H:%i:%s") AS fechaUO ' +
-                                    'FROM ' +
-                                        'promociones.tb_sesion AS S ' +
-                                    'WHERE ' +
-                                        'S.id_sesion = ?;';
-                                        
-                                connection.db.query(
-                                    sql,
-                                    [id],
-                                    function(err, result) {
-                                        if (err) throw err;
-                                        res.contentType('application/json');
-                                        result[0].sesion = seguridad.encodeBase64(result[0].sesion);
-                                        res.write(JSON.stringify(result[0]));
-                                        res.end();
-                                    }
-                                );       
-                            }
-                        )(resultado);
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+                        
+                        if ((/ERROR/g).test(mensaje))
+                            utilidades.printError(err, res);
+                        else {
+                            (
+                                function(id) {
+                                    sql =
+                                        'SELECT ' +
+                                            'S.sesion AS sesion, ' +
+                                            'DATE_FORMAT(S.fechaInicio, "%Y-%m-%d %H:%i:%s") AS fechaI, ' +
+                                            'DATE_FORMAT(S.fechaUltimaOp, "%Y-%m-%d %H:%i:%s") AS fechaUO ' +
+                                        'FROM ' +
+                                            'promociones.tb_sesion AS S ' +
+                                        'WHERE ' +
+                                            'S.id_sesion = ?;';
+                                            
+                                    connection.db.query(
+                                        sql,
+                                        [id],
+                                        function(err, result) {
+                                            if (err)
+                                                utilidades.printError(err, res);
+                                            else {
+                                                result[0].sesion = seguridad.encodeBase64(result[0].sesion);
+                                                
+                                                res.contentType('application/json');
+                                                res.write(JSON.stringify(result[0]));
+                                                res.end();
+                                            }
+                                        }
+                                    );       
+                                }
+                            )(resultado);
+                        }
                     }
                 }
             );
@@ -172,7 +177,7 @@ exports.reautenticar = function(req, res) {
     utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param)).then(
         callback,
         function(err) {
-            throw err;
+            utilidades.printError(err, res);
         }
     );        
 };
@@ -199,7 +204,6 @@ exports.reautenticar = function(req, res) {
  *		{
  *			"msg" : "Error description"
  *		}
- *		Or an exception.
  */
 exports.desautenticar = function(req, res) {
 	var callback = function(id) {
@@ -215,13 +219,16 @@ exports.desautenticar = function(req, res) {
 				sql,
 				[id],
 				function(err, result) {
-					if (err) throw err;
-					mensaje   = result[3][0]['@resultado'];
-					resultado = result[1][0]['res'];
-					
-					res.contentType('application/json');
-					res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-					res.end();
+					if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+                        
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.end();
+                    }
 				}
 			);
 		}
@@ -230,7 +237,7 @@ exports.desautenticar = function(req, res) {
     utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param)).then(
         callback,
         function(err) {
-            throw err;
+            utilidades.printError(err, res);
         }
     );
 };

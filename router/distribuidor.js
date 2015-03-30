@@ -38,7 +38,6 @@ exports.buscarDistribuidor = function(req, res) {
  *		{
  *			"msg" : "Error description"
  *		}
- *		Or an exception.
  */
 exports.crearDistribuidor = function(req, res) {
 	var user = typeof req.body.param !== undefined || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
@@ -67,13 +66,16 @@ exports.crearDistribuidor = function(req, res) {
                     typeof req.body.superDistribuidor !== undefined || req.body.superDistribuidor != null ? req.body.superDistribuidor : null,
 				],
 				function(err, result) {
-					if (err) throw err;
-					mensaje   = result[3][0]['@resultado'];
-					resultado = result[1][0]['res'];
-			
-					res.contentType('application/json');
-					res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-					res.end();
+					if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+                
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.end();
+                    }
 				}
 			);
 		}
@@ -86,7 +88,7 @@ exports.crearDistribuidor = function(req, res) {
             utilidades.buscarIdUsuario(user).then(
                 callback,
                 function(err) {
-                    throw err;
+                    utilidades.printError(err, res);
                 }
             );
     }
@@ -127,7 +129,6 @@ exports.crearDistribuidor = function(req, res) {
  *		{
  *			"msg" : "Error description"
  *		}
- *		Or an exception.
  */
 exports.modificarDistribuidor = function(req, res) {
 	var dist = seguridad.decodeBase64(req.params.val);
@@ -157,13 +158,16 @@ exports.modificarDistribuidor = function(req, res) {
 					typeof req.body.activo        !== undefined || req.body.activo        != null ? req.body.activo        : null
 				],
 				function(err, result) {
-					if (err) throw err;
-					mensaje   = result[3][0]['@resultado'];
-					resultado = result[1][0]['res'];
-										
-					res.contentType('application/json');
-					res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-					res.end();
+					if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+                                            
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.end();
+                    }
 				}
 			);
 		}
@@ -176,7 +180,7 @@ exports.modificarDistribuidor = function(req, res) {
 			Q.all([dist, utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
 				callback,
 				function(err) {
-					throw err;
+					utilidades.printError(err, res);
 				}
 			);
 	}

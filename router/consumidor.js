@@ -39,7 +39,6 @@ exports.buscarConsumidor = function(req, res) {
  *		{
  *			"msg" : "Error description"
  *		}
- *		Or an exception.
  */
 exports.crearConsumidor = function(req, res) {
 	var user = typeof req.body.param !== undefined || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
@@ -69,13 +68,16 @@ exports.crearConsumidor = function(req, res) {
                     typeof req.body.ciudad          !== undefined || req.body.ciudad          != null ? req.body.ciudad          : null,
 				],
 				function(err, result) {
-					if (err) throw err;
-					mensaje   = result[3][0]['@resultado'];
-					resultado = result[1][0]['res'];
-			
-					res.contentType('application/json');
-					res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-					res.end();
+					if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+                
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.end();
+                    }
 				}
 			);
 		}
@@ -88,7 +90,7 @@ exports.crearConsumidor = function(req, res) {
             utilidades.buscarIdUsuario(user).then(
                 callback,
                 function(err) {
-                    throw err;
+                    utilidades.printError(err, res);
                 }
             );
     }
@@ -130,7 +132,6 @@ exports.crearConsumidor = function(req, res) {
  *		{
  *			"msg" : "Error description"
  *		}
- *		Or an exception.
  */
 exports.modificarConsumidor = function(req, res) {
 	var client = seguridad.decodeBase64(req.params.val);
@@ -161,13 +162,16 @@ exports.modificarConsumidor = function(req, res) {
                     typeof req.body.ciudad          !== undefined || req.body.ciudad          != null ? req.body.ciudad          : null
 				],
 				function(err, result) {
-					if (err) throw err;
-					mensaje   = result[3][0]['@resultado'];
-					resultado = result[1][0]['res'];
-										
-					res.contentType('application/json');
-					res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-					res.end();
+					if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+                                            
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.end();
+                    }
 				}
 			);
 		}
@@ -180,7 +184,7 @@ exports.modificarConsumidor = function(req, res) {
 			Q.all([client, utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
 				callback,
 				function(err) {
-					throw err;
+					utilidades.printError(err, res);
 				}
 			);
 	}

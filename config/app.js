@@ -28,6 +28,12 @@ app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
+app.all('/', function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+    next();
+});
+
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -80,6 +86,7 @@ app.put   ('/usuariod/:val'     , usuariod.modificarUsuarioD );
 /*************************************************************************************************/
 /* HttpGet */
 app.get   ('/dispositivo/:val?'        , dispositivo.buscarDispositivo         );
+app.get   ('/dispositivo/evento/:val?' , dispositivo.buscarEventos             );
 /* [HttpPost] */                                                             
 app.post  ('/dispositivo'              , dispositivo.crearDispositivo          );
 /* [HttpPut] */

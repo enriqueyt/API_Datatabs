@@ -1,7 +1,7 @@
 {
 	"dev" :
 	{
-		"port"    : 3000,
+		"port"    : 6969,
 		"encrypt" : false
 	},
 	"production" :

@@ -1,6 +1,13 @@
 var connection = require('../config/db'),
     Q          = require('q');
 
+exports.printError = function(err, res) {
+    //throw err;
+    res.contentType('application/json');
+    res.write(JSON.stringify({ msg : err }));
+    res.end();
+};
+    
 exports.buscarIdPerfilUsuario = function(sesion) {
     var deferred = Q.defer();
     var sql = '';
@@ -31,9 +38,13 @@ exports.buscarIdPerfilUsuario = function(sesion) {
             sql,
             [sesion],
             function(err, result) {
-                if (err) deferred.reject(err);
-				if (result.length > 0) resultado = result[0];
-                deferred.resolve(resultado);
+                if (err)
+                    deferred.reject(err);
+                else {
+                    if (result.length > 0)
+                        resultado = result[0];
+                    deferred.resolve(resultado);
+                }
             }
         );
         
@@ -44,7 +55,7 @@ exports.buscarIdPerfilUsuario = function(sesion) {
 exports.buscarIdUsuario = function(sesion) {
     var deferred = Q.defer();
 
-    this.buscarIdPerfilUsuarioX(sesion).then(
+    this.buscarIdPerfilUsuario(sesion).then(
         function(data) {
             deferred.resolve(data.usuario);
         },
@@ -59,7 +70,7 @@ exports.buscarIdUsuario = function(sesion) {
 exports.buscarIdPerfil = function(sesion, callback) {
 	var deferred = Q.defer();
 
-    this.buscarIdPerfilUsuarioX(sesion).then(
+    this.buscarIdPerfilUsuario(sesion).then(
         function(data) {
             deferred.resolve(data.perfil);
         },
@@ -74,7 +85,7 @@ exports.buscarIdPerfil = function(sesion, callback) {
 exports.buscarIdUsuarioD = function(sesion, callback) {
 	var deferred = Q.defer();
 
-    this.buscarIdPerfilUsuarioX(sesion).then(
+    this.buscarIdPerfilUsuario(sesion).then(
         function(data) {
             deferred.resolve(data.usuariod);
         },
@@ -103,8 +114,14 @@ exports.buscarIdDispositivo = function(identificador) {
             sql,
             [identificador],
             function(err, result) {
-                if (err) deferred.reject(err);
-				deferred.resolve(result[0].dispostivo);
+                if (err)
+                    deferred.reject(err);
+                else {
+                    if (result.length == 0)
+                        deferred.reject('ERROR - Dispositivo no existe');
+                    else
+                        deferred.resolve(result[0].dispostivo);
+                }
             }
         );
     }

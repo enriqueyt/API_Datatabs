@@ -1,7 +1,7 @@
 var CryptoJS = require('crypto-js');
 
 var key = '123pollitoingles',
-	cfg = 'qwert256';
+	cfg = 'qwerty256';
 
 /* Base64 coding */
 exports.encodeBase64 = function(normalString) {

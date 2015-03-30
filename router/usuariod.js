@@ -33,7 +33,6 @@ exports.buscarUsuarioD = function(req, res) {
  *		{
  *			"msg" : "Error description"
  *		}
- *		Or an exception.
  */
 exports.buscarInfoUsuarioD = function(req, res) {
 	var user = seguridad.decodeBase64(req.params.val);
@@ -51,13 +50,16 @@ exports.buscarInfoUsuarioD = function(req, res) {
 				sql,
 				[id],
 				function(err, result) {
-					if (err) throw err;
-					mensaje   = result[3][0]['@resultado'];
-					resultado = result[1][0];
-			
-					res.contentType('application/json');
-					res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : resultado }));
-					res.end();
+					if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0];
+                
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : resultado }));
+                        res.end();
+                    }
 				}
 			);
 		}
@@ -69,7 +71,7 @@ exports.buscarInfoUsuarioD = function(req, res) {
 		utilidades.buscarIdUsuario(user).then(
             callback,
             function(err) {
-                throw err;
+                utilidades.printError(err, res);
             }
         );
 };
@@ -109,7 +111,6 @@ exports.buscarInfoUsuarioD = function(req, res) {
  *		{
  *			"msg" : "Error description"
  *		}
- *		Or an exception.
  */
 exports.crearUsuarioD = function(req, res) {
 	var user = typeof req.body.param !== undefined || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
@@ -142,13 +143,16 @@ exports.crearUsuarioD = function(req, res) {
                     typeof req.body.usuario    !== undefined || req.body.usuario    != null                   ? req.body.usuario    : id
 				],
 				function(err, result) {
-					if (err) throw err;
-					mensaje   = result[3][0]['@resultado'];
-					resultado = result[1][0]['res'];
-			
-					res.contentType('application/json');
-					res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-					res.end();
+					if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+                
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.end();
+                    }
 				}
 			);
 		}
@@ -161,7 +165,7 @@ exports.crearUsuarioD = function(req, res) {
             utilidades.buscarIdUsuario(user).then(
                 callback,
                 function(err) {
-                    throw err;
+                    utilidades.printError(err, res);
                 }
             );
     }
@@ -206,7 +210,6 @@ exports.crearUsuarioD = function(req, res) {
  *		{
  *			"msg" : "Error description"
  *		}
- *		Or an exception.
  */
 exports.modificarUsuarioD = function(req, res) {
 	var userD = seguridad.decodeBase64(req.params.val);
@@ -240,13 +243,16 @@ exports.modificarUsuarioD = function(req, res) {
                     typeof req.body.activo      !== undefined || req.body.activo      != null ? req.body.activo      : null
 				],
 				function(err, result) {
-					if (err) throw err;
-					mensaje   = result[3][0]['@resultado'];
-					resultado = result[1][0]['res'];
-										
-					res.contentType('application/json');
-					res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-					res.end();
+					if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+                                            
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.end();
+                    }
 				}
 			);
 		}
@@ -259,7 +265,7 @@ exports.modificarUsuarioD = function(req, res) {
 			Q.all([userD, utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
 				callback,
 				function(err) {
-					throw err;
+					utilidades.printError(err, res);
 				}
 			);
 	}

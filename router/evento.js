@@ -33,7 +33,6 @@ exports.buscarEvento = function(req, res) {
  *		{
  *			"msg" : "Error description"
  *		}
- *		Or an exception.
  */
 exports.crearEvento = function(req, res) {
 	var user = typeof req.body.param !== undefined || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
@@ -57,13 +56,16 @@ exports.crearEvento = function(req, res) {
 					typeof req.body.fechaFin    !== undefined || req.body.fechaFin    != null ? req.body.fechaFin    : null
 				],
 				function(err, result) {
-					if (err) throw err;
-					mensaje   = result[3][0]['@resultado'];
-					resultado = result[1][0]['res'];
-			
-					res.contentType('application/json');
-					res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-					res.end();
+					if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+                
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.end();
+                    }
 				}
 			);
 		}
@@ -76,7 +78,7 @@ exports.crearEvento = function(req, res) {
             utilidades.buscarIdUsuario(user).then(
                 callback,
                 function(err) {
-                    throw err;
+                    utilidades.printError(err, res);
                 }
             );
     }
@@ -113,7 +115,6 @@ exports.crearEvento = function(req, res) {
  *		{
  *			"msg" : "Error description"
  *		}
- *		Or an exception.
  */
 exports.modificarEvento = function(req, res) {
 	var event = seguridad.decodeBase64(req.params.val);
@@ -139,13 +140,16 @@ exports.modificarEvento = function(req, res) {
                     typeof req.body.activo      !== undefined || req.body.activo      != null ? req.body.activo      : null
 				],
 				function(err, result) {
-					if (err) throw err;
-					mensaje   = result[3][0]['@resultado'];
-					resultado = result[1][0]['res'];
-										
-					res.contentType('application/json');
-					res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-					res.end();
+					if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+                                            
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.end();
+                    }
 				}
 			);
 		}
@@ -158,7 +162,7 @@ exports.modificarEvento = function(req, res) {
 			Q.all([event, utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
 				callback,
 				function(err) {
-					throw err;
+					utilidades.printError(err, res);
 				}
 			);
 	}
