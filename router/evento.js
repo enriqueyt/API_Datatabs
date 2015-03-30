@@ -3,8 +3,144 @@ var connection = require('../config/db'),
     utilidades = require('../utils/utilidades'),
 	seguridad  = require('../utils/seguridad');
 
+/**
+ *	HttpGet
+ *
+ *  Gets an event or various events.
+ *
+ *  @param
+ *		A request url list parameters (an id in Base64 related to the company, an integer related to an offset and an id in Base64 related to an event, it could be optional.)
+ *
+ *	@return
+ *		A JSON string:
+ *		{
+ *			"msg" : "OK - Base64EncodeString(event id)"
+ *		}
+ *
+ *	@error
+ *		A JSON string:
+ *		{
+ *			"msg" : "Error description"
+ *		}
+ */
 exports.buscarEvento = function(req, res) {
-	var evento = typeof req.params.val !== undefined || req.params.val != null ? seguridad.decodeBase64(req.params.val) : null;
+	var company = seguridad.decodeBase64(req.params.company);
+    var offset  = typeof req.params.offset  !== undefined || req.params.offset  != null ? seguridad.decodeBase64(req.params.offset)  : 10;
+    var event   = typeof req.params.val     !== undefined || req.params.val     != null ? seguridad.decodeBase64(req.params.val)     : null;
+    
+    var sql = '', mensaje = '', resultado = '';
+	
+    if (connection) {
+        if ((/\/next\//g).test(req.route)) {
+            sql =
+                'SELECT ' +
+                    'id_evento, ' +
+                    'evento, ' +
+                    'descripcion, ' +
+                    'fechaInicio, ' +
+                    'fechaFin, ' +
+                    'flujo, ' +
+                    'id_empresa, ' +
+                    'id_imagen ' +
+                'FROM ' +
+                    'promociones.tb_evento AS E ' +
+                'WHERE ' +
+                    'E.id_evento > ? AND ' +
+                    'E.id_empresa = ? AND ' +
+                    'E.activo = 1 ' +
+                'LIMIT 0, ?;';
+                
+            connection.db.query(
+                sql,
+                [event, company, offset],
+                function(err, result) {
+                    if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+                
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.end();
+                    }
+                }
+            );
+        }
+        else if ((/\/previous\//g).test(req.route)) {
+            sql =
+                'SELECT ' +
+                    'id_evento, ' +
+                    'evento, ' +
+                    'descripcion, ' +
+                    'fechaInicio, ' +
+                    'fechaFin, ' +
+                    'flujo, ' +
+                    'id_empresa, ' +
+                    'id_imagen ' +
+                'FROM ' +
+                    'promociones.tb_evento AS E ' +
+                'WHERE ' +
+                    'E.id_evento < ? AND ' +
+                    'E.id_empresa = ? AND ' +
+                    'E.activo = 1 ' +
+                'LIMIT 0, ?;';
+                
+            connection.db.query(
+                sql,
+                [event, company, offset],
+                function(err, result) {
+                    if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+                
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.end();
+                    }
+                }
+            );
+        }
+        else {
+            sql =
+                'SELECT ' +
+                    'id_evento, ' +
+                    'evento, ' +
+                    'descripcion, ' +
+                    'fechaInicio, ' +
+                    'fechaFin, ' +
+                    'flujo, ' +
+                    'id_empresa, ' +
+                    'id_imagen ' +
+                'FROM ' +
+                    'promociones.tb_evento AS E ' +
+                'WHERE ' +
+                    (
+                        event != null
+                        ? 'E.id_evento = ? AND E.id_empresa = ? AND E.activo = 1;'
+                        : 'E.id_empresa = ? AND E.activo = 1 LIMIT 0, ?;'
+                    );
+                    
+            connection.db.query(
+                sql,
+                (event != null ? [event, company] : [company, offset]),
+                function(err, result) {
+                    if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+                
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.end();
+                    }
+                }
+            );
+        }
+    }
 };
     
 /**
