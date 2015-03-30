@@ -13,9 +13,20 @@ var connection = require('../config/db'),
  *
  *	@return
  *		A JSON string:
- *		{
- *			"msg" : "OK - Base64EncodeString(event id)"
- *		}
+ *		[
+ *          {
+ *              "id_evento"   : "Base64EncodeString(XXXXX)",    A string in Base64 that represents the identifier related to an event.
+ *              "evento"      : "XXXXX",                        A string that represents the event's name.
+ *              "descripcion" : "XXXXX",                        A string that represents the event's description.
+ *              "fechaInicio" : "YYYY-MM-DD HH:mm:ss",          A string that represents the event's start date.
+ *              "fechaFin"    : "YYYY-MM-DD HH:mm:ss",          A string that represents the event's end date.
+ *              "flujo"       : [{ XXXXX }],                    A JSON string that represents the event's flow.
+ *              "imagen"      : "XXXXX",                        A string that represents the image file name related to an event.
+ *              "id_empresa"  : "Base64EncodeString(XXXXX)",    A string in Base64 that represents the identifier related to an company.
+ *              "empresa"     : "XXXXX"                         A string that represents the company's name.
+ *          },
+ *          ...
+ *      ]
  *
  *	@error
  *		A JSON string:
@@ -25,10 +36,10 @@ var connection = require('../config/db'),
  */
 exports.buscarEvento = function(req, res) {
 	var company = seguridad.decodeBase64(req.params.company);
-    var offset  = typeof req.params.offset  !== undefined || req.params.offset  != null ? seguridad.decodeBase64(req.params.offset)  : 10;
-    var event   = typeof req.params.val     !== undefined || req.params.val     != null ? seguridad.decodeBase64(req.params.val)     : null;
+    var offset  = typeof req.params.offset  !== undefined || req.params.offset  != null ? req.params.offset                      : 10;
+    var event   = typeof req.params.val     !== undefined || req.params.val     != null ? seguridad.decodeBase64(req.params.val) : null;
     
-    var sql = '', mensaje = '', resultado = '';
+    var sql = '';
 	
     if (connection) {
         if ((/\/next\//g).test(req.route)) {
@@ -57,11 +68,13 @@ exports.buscarEvento = function(req, res) {
                     if (err)
                         utilidades.printError(err, res);
                     else {
-                        mensaje   = result[3][0]['@resultado'];
-                        resultado = result[1][0]['res'];
-                
+                        for (i = 0; i < result.length; i++) {
+                            result[i].id_evento  = seguridad.encodeBase64(result[i].id_evento);
+                            result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
+                        }
+                        
                         res.contentType('application/json');
-                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.write(JSON.stringify(result));
                         res.end();
                     }
                 }
@@ -93,11 +106,13 @@ exports.buscarEvento = function(req, res) {
                     if (err)
                         utilidades.printError(err, res);
                     else {
-                        mensaje   = result[3][0]['@resultado'];
-                        resultado = result[1][0]['res'];
-                
+                        for (i = 0; i < result.length; i++) {
+                            result[i].id_evento  = seguridad.encodeBase64(result[i].id_evento);
+                            result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
+                        }
+                        
                         res.contentType('application/json');
-                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.write(JSON.stringify(result));
                         res.end();
                     }
                 }
@@ -130,11 +145,13 @@ exports.buscarEvento = function(req, res) {
                     if (err)
                         utilidades.printError(err, res);
                     else {
-                        mensaje   = result[3][0]['@resultado'];
-                        resultado = result[1][0]['res'];
-                
+                        for (i = 0; i < result.length; i++) {
+                            result[i].id_evento  = seguridad.encodeBase64(result[i].id_evento);
+                            result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
+                        }
+                        
                         res.contentType('application/json');
-                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.write(JSON.stringify(result));
                         res.end();
                     }
                 }
