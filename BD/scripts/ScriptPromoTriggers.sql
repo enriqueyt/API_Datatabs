@@ -1,13 +1,13 @@
-USE `promociones`;
+USE `datatabs`;
 
 /* TABLAS IDIOMA */
 DROP TRIGGER IF EXISTS tr_idioma_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_idioma_createA AFTER INSERT ON promociones.tb_idioma
+CREATE TRIGGER tr_idioma_createA AFTER INSERT ON tb_idioma
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaidioma
+	INSERT INTO tb_auditoriaidioma
 	(
 		id_usuario,
 		id_registro,
@@ -32,10 +32,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_idioma_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_idioma_updateA AFTER UPDATE ON promociones.tb_idioma
+CREATE TRIGGER tr_idioma_updateA AFTER UPDATE ON tb_idioma
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaidioma
+	INSERT INTO tb_auditoriaidioma
 	(
 		id_usuario,
 		id_registro,
@@ -62,10 +62,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_idioma_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_idioma_deleteA AFTER DELETE ON promociones.tb_idioma
+CREATE TRIGGER tr_idioma_deleteA AFTER DELETE ON tb_idioma
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaidioma
+	INSERT INTO tb_auditoriaidioma
 	(
 		id_registro,
 		fechaRegistro,
@@ -88,10 +88,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_idioma_t_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_idioma_t_createA AFTER INSERT ON promociones.tb_idioma_t
+CREATE TRIGGER tr_idioma_t_createA AFTER INSERT ON tb_idioma_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaidioma
+	INSERT INTO tb_auditoriaidioma
 	(
 		id_usuario,
 		id_registro,
@@ -116,10 +116,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_idioma_t_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_idioma_t_updateA AFTER UPDATE ON promociones.tb_idioma_t
+CREATE TRIGGER tr_idioma_t_updateA AFTER UPDATE ON tb_idioma_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaidioma
+	INSERT INTO tb_auditoriaidioma
 	(
 		id_usuario,
 		id_registro,
@@ -146,10 +146,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_idioma_t_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_idioma_t_deleteA AFTER DELETE ON promociones.tb_idioma_t
+CREATE TRIGGER tr_idioma_t_deleteA AFTER DELETE ON tb_idioma_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaidioma
+	INSERT INTO tb_auditoriaidioma
 	(
 		id_registro,
 		fechaRegistro,
@@ -175,10 +175,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_pais_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_pais_createA AFTER INSERT ON promociones.tb_pais
+CREATE TRIGGER tr_pais_createA AFTER INSERT ON tb_pais
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriapais
+	INSERT INTO tb_auditoriapais
 	(
 		id_usuario,
 		id_registro,
@@ -203,10 +203,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_pais_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_pais_updateA AFTER UPDATE ON promociones.tb_pais
+CREATE TRIGGER tr_pais_updateA AFTER UPDATE ON tb_pais
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriapais
+	INSERT INTO tb_auditoriapais
 	(
 		id_usuario,
 		id_registro,
@@ -233,10 +233,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_pais_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_pais_deleteA AFTER DELETE ON promociones.tb_pais
+CREATE TRIGGER tr_pais_deleteA AFTER DELETE ON tb_pais
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriapais
+	INSERT INTO tb_auditoriapais
 	(
 		id_registro,
 		fechaRegistro,
@@ -259,10 +259,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_pais_t_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_pais_t_createA AFTER INSERT ON promociones.tb_pais_t
+CREATE TRIGGER tr_pais_t_createA AFTER INSERT ON tb_pais_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriapais
+	INSERT INTO tb_auditoriapais
 	(
 		id_usuario,
 		id_registro,
@@ -287,10 +287,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_pais_t_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_pais_t_updateA AFTER UPDATE ON promociones.tb_pais_t
+CREATE TRIGGER tr_pais_t_updateA AFTER UPDATE ON tb_pais_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriapais
+	INSERT INTO tb_auditoriapais
 	(
 		id_usuario,
 		id_registro,
@@ -317,10 +317,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_pais_t_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_pais_t_deleteA AFTER DELETE ON promociones.tb_pais_t
+CREATE TRIGGER tr_pais_t_deleteA AFTER DELETE ON tb_pais_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriapais
+	INSERT INTO tb_auditoriapais
 	(
 		id_registro,
 		fechaRegistro,
@@ -346,10 +346,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_estado_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_estado_createA AFTER INSERT ON promociones.tb_estado
+CREATE TRIGGER tr_estado_createA AFTER INSERT ON tb_estado
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaestado
+	INSERT INTO tb_auditoriaestado
 	(
 		id_usuario,
 		id_registro,
@@ -374,10 +374,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_estado_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_estado_updateA AFTER UPDATE ON promociones.tb_estado
+CREATE TRIGGER tr_estado_updateA AFTER UPDATE ON tb_estado
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaestado
+	INSERT INTO tb_auditoriaestado
 	(
 		id_usuario,
 		id_registro,
@@ -404,10 +404,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_estado_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_estado_deleteA AFTER DELETE ON promociones.tb_estado
+CREATE TRIGGER tr_estado_deleteA AFTER DELETE ON tb_estado
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaestado
+	INSERT INTO tb_auditoriaestado
 	(
 		id_registro,
 		fechaRegistro,
@@ -430,10 +430,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_estado_t_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_estado_t_createA AFTER INSERT ON promociones.tb_estado_t
+CREATE TRIGGER tr_estado_t_createA AFTER INSERT ON tb_estado_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaestado
+	INSERT INTO tb_auditoriaestado
 	(
 		id_usuario,
 		id_registro,
@@ -458,10 +458,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_estado_t_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_estado_t_updateA AFTER UPDATE ON promociones.tb_estado_t
+CREATE TRIGGER tr_estado_t_updateA AFTER UPDATE ON tb_estado_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaestado
+	INSERT INTO tb_auditoriaestado
 	(
 		id_usuario,
 		id_registro,
@@ -488,10 +488,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_estado_t_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_estado_t_deleteA AFTER DELETE ON promociones.tb_estado_t
+CREATE TRIGGER tr_estado_t_deleteA AFTER DELETE ON tb_estado_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaestado
+	INSERT INTO tb_auditoriaestado
 	(
 		id_registro,
 		fechaRegistro,
@@ -517,10 +517,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_ciudad_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_ciudad_createA AFTER INSERT ON promociones.tb_ciudad
+CREATE TRIGGER tr_ciudad_createA AFTER INSERT ON tb_ciudad
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaciudad
+	INSERT INTO tb_auditoriaciudad
 	(
 		id_usuario,
 		id_registro,
@@ -545,10 +545,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_ciudad_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_ciudad_updateA AFTER UPDATE ON promociones.tb_ciudad
+CREATE TRIGGER tr_ciudad_updateA AFTER UPDATE ON tb_ciudad
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaciudad
+	INSERT INTO tb_auditoriaciudad
 	(
 		id_usuario,
 		id_registro,
@@ -575,10 +575,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_ciudad_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_ciudad_deleteA AFTER DELETE ON promociones.tb_ciudad
+CREATE TRIGGER tr_ciudad_deleteA AFTER DELETE ON tb_ciudad
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaciudad
+	INSERT INTO tb_auditoriaciudad
 	(
 		id_registro,
 		fechaRegistro,
@@ -601,10 +601,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_ciudad_t_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_ciudad_t_createA AFTER INSERT ON promociones.tb_ciudad_t
+CREATE TRIGGER tr_ciudad_t_createA AFTER INSERT ON tb_ciudad_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaciudad
+	INSERT INTO tb_auditoriaciudad
 	(
 		id_usuario,
 		id_registro,
@@ -629,10 +629,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_ciudad_t_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_ciudad_t_updateA AFTER UPDATE ON promociones.tb_ciudad_t
+CREATE TRIGGER tr_ciudad_t_updateA AFTER UPDATE ON tb_ciudad_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaciudad
+	INSERT INTO tb_auditoriaciudad
 	(
 		id_usuario,
 		id_registro,
@@ -659,10 +659,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_ciudad_t_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_ciudad_t_deleteA AFTER DELETE ON promociones.tb_ciudad_t
+CREATE TRIGGER tr_ciudad_t_deleteA AFTER DELETE ON tb_ciudad_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaciudad
+	INSERT INTO tb_auditoriaciudad
 	(
 		id_registro,
 		fechaRegistro,
@@ -688,10 +688,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_perfil_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_perfil_createA AFTER INSERT ON promociones.tb_perfil
+CREATE TRIGGER tr_perfil_createA AFTER INSERT ON tb_perfil
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaperfil
+	INSERT INTO tb_auditoriaperfil
 	(
 		id_usuario,
 		id_registro,
@@ -716,10 +716,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_perfil_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_perfil_updateA AFTER UPDATE ON promociones.tb_perfil
+CREATE TRIGGER tr_perfil_updateA AFTER UPDATE ON tb_perfil
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaciudad
+	INSERT INTO tb_auditoriaciudad
 	(
 		id_usuario,
 		id_registro,
@@ -746,10 +746,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_perfil_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_perfil_deleteA AFTER DELETE ON promociones.tb_perfil
+CREATE TRIGGER tr_perfil_deleteA AFTER DELETE ON tb_perfil
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaperfil
+	INSERT INTO tb_auditoriaperfil
 	(
 		id_registro,
 		fechaRegistro,
@@ -772,10 +772,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_perfil_t_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_perfil_t_createA AFTER INSERT ON promociones.tb_perfil_t
+CREATE TRIGGER tr_perfil_t_createA AFTER INSERT ON tb_perfil_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaperfil
+	INSERT INTO tb_auditoriaperfil
 	(
 		id_usuario,
 		id_registro,
@@ -800,10 +800,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_perfil_t_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_perfil_t_updateA AFTER UPDATE ON promociones.tb_perfil_t
+CREATE TRIGGER tr_perfil_t_updateA AFTER UPDATE ON tb_perfil_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaciudad
+	INSERT INTO tb_auditoriaciudad
 	(
 		id_usuario,
 		id_registro,
@@ -830,10 +830,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_perfil_t_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_perfil_t_deleteA AFTER DELETE ON promociones.tb_perfil_t
+CREATE TRIGGER tr_perfil_t_deleteA AFTER DELETE ON tb_perfil_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaperfil
+	INSERT INTO tb_auditoriaperfil
 	(
 		id_registro,
 		fechaRegistro,
@@ -859,10 +859,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_sexo_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_sexo_createA AFTER INSERT ON promociones.tb_sexo
+CREATE TRIGGER tr_sexo_createA AFTER INSERT ON tb_sexo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriasexo
+	INSERT INTO tb_auditoriasexo
 	(
 		id_usuario,
 		id_registro,
@@ -887,10 +887,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_sexo_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_sexo_updateA AFTER UPDATE ON promociones.tb_sexo
+CREATE TRIGGER tr_sexo_updateA AFTER UPDATE ON tb_sexo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriasexo
+	INSERT INTO tb_auditoriasexo
 	(
 		id_usuario,
 		id_registro,
@@ -917,10 +917,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_sexo_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_sexo_deleteA AFTER DELETE ON promociones.tb_sexo
+CREATE TRIGGER tr_sexo_deleteA AFTER DELETE ON tb_sexo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriasexo
+	INSERT INTO tb_auditoriasexo
 	(
 		id_registro,
 		fechaRegistro,
@@ -943,10 +943,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_sexo_t_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_sexo_t_createA AFTER INSERT ON promociones.tb_sexo_t
+CREATE TRIGGER tr_sexo_t_createA AFTER INSERT ON tb_sexo_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriasexo
+	INSERT INTO tb_auditoriasexo
 	(
 		id_usuario,
 		id_registro,
@@ -971,10 +971,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_sexo_t_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_sexo_t_updateA AFTER UPDATE ON promociones.tb_sexo_t
+CREATE TRIGGER tr_sexo_t_updateA AFTER UPDATE ON tb_sexo_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriasexo
+	INSERT INTO tb_auditoriasexo
 	(
 		id_usuario,
 		id_registro,
@@ -1001,10 +1001,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_sexo_t_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_sexo_t_deleteA AFTER DELETE ON promociones.tb_sexo_t
+CREATE TRIGGER tr_sexo_t_deleteA AFTER DELETE ON tb_sexo_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriasexo
+	INSERT INTO tb_auditoriasexo
 	(
 		id_registro,
 		fechaRegistro,
@@ -1030,10 +1030,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_grupo_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_grupo_createA AFTER INSERT ON promociones.tb_grupo
+CREATE TRIGGER tr_grupo_createA AFTER INSERT ON tb_grupo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriagrupo
+	INSERT INTO tb_auditoriagrupo
 	(
 		id_usuario,
 		id_registro,
@@ -1058,10 +1058,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_grupo_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_grupo_updateA AFTER UPDATE ON promociones.tb_grupo
+CREATE TRIGGER tr_grupo_updateA AFTER UPDATE ON tb_grupo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriagrupo
+	INSERT INTO tb_auditoriagrupo
 	(
 		id_usuario,
 		id_registro,
@@ -1088,10 +1088,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_grupo_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_grupo_deleteA AFTER DELETE ON promociones.tb_grupo
+CREATE TRIGGER tr_grupo_deleteA AFTER DELETE ON tb_grupo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriagrupo
+	INSERT INTO tb_auditoriagrupo
 	(
 		id_registro,
 		fechaRegistro,
@@ -1116,10 +1116,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_controlador_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_controlador_createA AFTER INSERT ON promociones.tb_controlador
+CREATE TRIGGER tr_controlador_createA AFTER INSERT ON tb_controlador
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacontrolador
+	INSERT INTO tb_auditoriacontrolador
 	(
 		id_usuario,
 		id_registro,
@@ -1144,10 +1144,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_controlador_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_controlador_updateA AFTER UPDATE ON promociones.tb_controlador
+CREATE TRIGGER tr_controlador_updateA AFTER UPDATE ON tb_controlador
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacontrolador
+	INSERT INTO tb_auditoriacontrolador
 	(
 		id_usuario,
 		id_registro,
@@ -1174,10 +1174,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_controlador_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_controlador_deleteA AFTER DELETE ON promociones.tb_controlador
+CREATE TRIGGER tr_controlador_deleteA AFTER DELETE ON tb_controlador
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacontrolador
+	INSERT INTO tb_auditoriacontrolador
 	(
 		id_registro,
 		fechaRegistro,
@@ -1200,10 +1200,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_controlador_t_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_controlador_t_createA AFTER INSERT ON promociones.tb_controlador_t
+CREATE TRIGGER tr_controlador_t_createA AFTER INSERT ON tb_controlador_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacontrolador
+	INSERT INTO tb_auditoriacontrolador
 	(
 		id_usuario,
 		id_registro,
@@ -1228,10 +1228,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_controlador_t_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_controlador_t_updateA AFTER UPDATE ON promociones.tb_controlador_t
+CREATE TRIGGER tr_controlador_t_updateA AFTER UPDATE ON tb_controlador_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacontrolador
+	INSERT INTO tb_auditoriacontrolador
 	(
 		id_usuario,
 		id_registro,
@@ -1258,10 +1258,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_controlador_t_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_controlador_t_deleteA AFTER DELETE ON promociones.tb_controlador_t
+CREATE TRIGGER tr_controlador_t_deleteA AFTER DELETE ON tb_controlador_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacontrolador
+	INSERT INTO tb_auditoriacontrolador
 	(
 		id_registro,
 		fechaRegistro,
@@ -1287,10 +1287,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_vista_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_vista_createA AFTER INSERT ON promociones.tb_vista
+CREATE TRIGGER tr_vista_createA AFTER INSERT ON tb_vista
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriavista
+	INSERT INTO tb_auditoriavista
 	(
 		id_usuario,
 		id_registro,
@@ -1315,10 +1315,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_vista_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_vista_updateA AFTER UPDATE ON promociones.tb_vista
+CREATE TRIGGER tr_vista_updateA AFTER UPDATE ON tb_vista
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriavista
+	INSERT INTO tb_auditoriavista
 	(
 		id_usuario,
 		id_registro,
@@ -1345,10 +1345,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_vista_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_vista_deleteA AFTER DELETE ON promociones.tb_vista
+CREATE TRIGGER tr_vista_deleteA AFTER DELETE ON tb_vista
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriavista
+	INSERT INTO tb_auditoriavista
 	(
 		id_registro,
 		fechaRegistro,
@@ -1371,10 +1371,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_vista_t_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_vista_t_createA AFTER INSERT ON promociones.tb_vista_t
+CREATE TRIGGER tr_vista_t_createA AFTER INSERT ON tb_vista_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriavista
+	INSERT INTO tb_auditoriavista
 	(
 		id_usuario,
 		id_registro,
@@ -1399,10 +1399,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_vista_t_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_vista_t_updateA AFTER UPDATE ON promociones.tb_vista_t
+CREATE TRIGGER tr_vista_t_updateA AFTER UPDATE ON tb_vista_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriavista
+	INSERT INTO tb_auditoriavista
 	(
 		id_usuario,
 		id_registro,
@@ -1429,10 +1429,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_vista_t_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_vista_t_deleteA AFTER DELETE ON promociones.tb_vista_t
+CREATE TRIGGER tr_vista_t_deleteA AFTER DELETE ON tb_vista_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriavista
+	INSERT INTO tb_auditoriavista
 	(
 		id_registro,
 		fechaRegistro,
@@ -1458,10 +1458,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_usuario_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_usuario_createA AFTER INSERT ON promociones.tb_usuario
+CREATE TRIGGER tr_usuario_createA AFTER INSERT ON tb_usuario
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriausuario
+	INSERT INTO tb_auditoriausuario
 	(
 		id_usuario,
 		id_registro,
@@ -1486,10 +1486,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_usuario_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_usuario_updateA AFTER UPDATE ON promociones.tb_usuario
+CREATE TRIGGER tr_usuario_updateA AFTER UPDATE ON tb_usuario
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriausuario
+	INSERT INTO tb_auditoriausuario
 	(
 		id_usuario,
 		id_registro,
@@ -1516,10 +1516,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_usuario_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_usuario_deleteA AFTER DELETE ON promociones.tb_usuario
+CREATE TRIGGER tr_usuario_deleteA AFTER DELETE ON tb_usuario
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriausuario
+	INSERT INTO tb_auditoriausuario
 	(
 		id_registro,
 		fechaRegistro,
@@ -1542,10 +1542,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_usuarioactivo_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_usuarioactivo_createA AFTER INSERT ON promociones.tb_usuarioactivo
+CREATE TRIGGER tr_usuarioactivo_createA AFTER INSERT ON tb_usuarioactivo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriausuario
+	INSERT INTO tb_auditoriausuario
 	(
 		id_usuario,
 		id_registro,
@@ -1570,10 +1570,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_usuarioactivo_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_usuarioactivo_updateA AFTER UPDATE ON promociones.tb_usuarioactivo
+CREATE TRIGGER tr_usuarioactivo_updateA AFTER UPDATE ON tb_usuarioactivo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriausuarioactivo
+	INSERT INTO tb_auditoriausuarioactivo
 	(
 		id_usuario,
 		id_registro,
@@ -1600,10 +1600,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_usuarioactivo_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_usuarioactivo_deleteA AFTER DELETE ON promociones.tb_usuarioactivo
+CREATE TRIGGER tr_usuarioactivo_deleteA AFTER DELETE ON tb_usuarioactivo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriausuarioactivo
+	INSERT INTO tb_auditoriausuarioactivo
 	(
 		id_registro,
 		fechaRegistro,
@@ -1629,10 +1629,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_superdistribuidor_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_superdistribuidor_createA AFTER INSERT ON promociones.tb_superdistribuidor
+CREATE TRIGGER tr_superdistribuidor_createA AFTER INSERT ON tb_superdistribuidor
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriasuperdistribuidor
+	INSERT INTO tb_auditoriasuperdistribuidor
 	(
 		id_usuario,
 		id_registro,
@@ -1657,10 +1657,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_superdistribuidor_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_superdistribuidor_updateA AFTER UPDATE ON promociones.tb_superdistribuidor
+CREATE TRIGGER tr_superdistribuidor_updateA AFTER UPDATE ON tb_superdistribuidor
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriasuperdistribuidor
+	INSERT INTO tb_auditoriasuperdistribuidor
 	(
 		id_usuario,
 		id_registro,
@@ -1687,10 +1687,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_superdistribuidor_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_superdistribuidor_deleteA AFTER DELETE ON promociones.tb_superdistribuidor
+CREATE TRIGGER tr_superdistribuidor_deleteA AFTER DELETE ON tb_superdistribuidor
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriasuperdistribuidor
+	INSERT INTO tb_auditoriasuperdistribuidor
 	(
 		id_registro,
 		fechaRegistro,
@@ -1716,10 +1716,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_distribuidor_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_distribuidor_createA AFTER INSERT ON promociones.tb_distribuidor
+CREATE TRIGGER tr_distribuidor_createA AFTER INSERT ON tb_distribuidor
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriadistribuidor
+	INSERT INTO tb_auditoriadistribuidor
 	(
 		id_usuario,
 		id_registro,
@@ -1744,10 +1744,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_distribuidor_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_distribuidor_updateA AFTER UPDATE ON promociones.tb_distribuidor
+CREATE TRIGGER tr_distribuidor_updateA AFTER UPDATE ON tb_distribuidor
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriadistribuidor
+	INSERT INTO tb_auditoriadistribuidor
 	(
 		id_usuario,
 		id_registro,
@@ -1774,10 +1774,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_distribuidor_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_distribuidor_deleteA AFTER DELETE ON promociones.tb_distribuidor
+CREATE TRIGGER tr_distribuidor_deleteA AFTER DELETE ON tb_distribuidor
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriadistribuidor
+	INSERT INTO tb_auditoriadistribuidor
 	(
 		id_registro,
 		fechaRegistro,
@@ -1803,10 +1803,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_empresa_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_empresa_createA AFTER INSERT ON promociones.tb_empresa
+CREATE TRIGGER tr_empresa_createA AFTER INSERT ON tb_empresa
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaempresa
+	INSERT INTO tb_auditoriaempresa
 	(
 		id_usuario,
 		id_registro,
@@ -1831,10 +1831,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_empresa_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_empresa_updateA AFTER UPDATE ON promociones.tb_empresa
+CREATE TRIGGER tr_empresa_updateA AFTER UPDATE ON tb_empresa
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaempresa
+	INSERT INTO tb_auditoriaempresa
 	(
 		id_usuario,
 		id_registro,
@@ -1861,10 +1861,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_empresa_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_empresa_deleteA AFTER DELETE ON promociones.tb_empresa
+CREATE TRIGGER tr_empresa_deleteA AFTER DELETE ON tb_empresa
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaempresa
+	INSERT INTO tb_auditoriaempresa
 	(
 		id_registro,
 		fechaRegistro,
@@ -1890,10 +1890,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_sucursal_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_sucursal_createA AFTER INSERT ON promociones.tb_sucursal
+CREATE TRIGGER tr_sucursal_createA AFTER INSERT ON tb_sucursal
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriasucursal
+	INSERT INTO tb_auditoriasucursal
 	(
 		id_usuario,
 		id_registro,
@@ -1918,10 +1918,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_sucursal_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_sucursal_updateA AFTER UPDATE ON promociones.tb_sucursal
+CREATE TRIGGER tr_sucursal_updateA AFTER UPDATE ON tb_sucursal
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriasucursal
+	INSERT INTO tb_auditoriasucursal
 	(
 		id_usuario,
 		id_registro,
@@ -1948,10 +1948,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_sucursal_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_sucursal_deleteA AFTER DELETE ON promociones.tb_sucursal
+CREATE TRIGGER tr_sucursal_deleteA AFTER DELETE ON tb_sucursal
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriasucursal
+	INSERT INTO tb_auditoriasucursal
 	(
 		id_registro,
 		fechaRegistro,
@@ -1977,10 +1977,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipousuariod_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipousuariod_createA AFTER INSERT ON promociones.tb_tipousuariod
+CREATE TRIGGER tr_tipousuariod_createA AFTER INSERT ON tb_tipousuariod
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriausuariod
+	INSERT INTO tb_auditoriausuariod
 	(
 		id_usuario,
 		id_registro,
@@ -2005,10 +2005,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipousuariod_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipousuariod_updateA AFTER UPDATE ON promociones.tb_tipousuariod
+CREATE TRIGGER tr_tipousuariod_updateA AFTER UPDATE ON tb_tipousuariod
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriausuariod
+	INSERT INTO tb_auditoriausuariod
 	(
 		id_usuario,
 		id_registro,
@@ -2035,10 +2035,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipousuariod_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipousuariod_deleteA AFTER DELETE ON promociones.tb_tipousuariod
+CREATE TRIGGER tr_tipousuariod_deleteA AFTER DELETE ON tb_tipousuariod
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriausuariod
+	INSERT INTO tb_auditoriausuariod
 	(
 		id_registro,
 		fechaRegistro,
@@ -2061,10 +2061,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipousuariod_t_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipousuariod_t_createA AFTER INSERT ON promociones.tb_tipousuariod_t
+CREATE TRIGGER tr_tipousuariod_t_createA AFTER INSERT ON tb_tipousuariod_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriausuariod
+	INSERT INTO tb_auditoriausuariod
 	(
 		id_usuario,
 		id_registro,
@@ -2089,10 +2089,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipousuariod_t_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipousuariod_t_updateA AFTER UPDATE ON promociones.tb_tipousuariod_t
+CREATE TRIGGER tr_tipousuariod_t_updateA AFTER UPDATE ON tb_tipousuariod_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriausuariod
+	INSERT INTO tb_auditoriausuariod
 	(
 		id_usuario,
 		id_registro,
@@ -2119,10 +2119,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipousuariod_t_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipousuariod_t_deleteA AFTER DELETE ON promociones.tb_tipousuariod_t
+CREATE TRIGGER tr_tipousuariod_t_deleteA AFTER DELETE ON tb_tipousuariod_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriausuariod
+	INSERT INTO tb_auditoriausuariod
 	(
 		id_registro,
 		fechaRegistro,
@@ -2145,10 +2145,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_usuariod_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_usuariod_createA AFTER INSERT ON promociones.tb_usuariod
+CREATE TRIGGER tr_usuariod_createA AFTER INSERT ON tb_usuariod
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriausuariod
+	INSERT INTO tb_auditoriausuariod
 	(
 		id_usuario,
 		id_registro,
@@ -2173,10 +2173,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_usuariod_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_usuariod_updateA AFTER UPDATE ON promociones.tb_usuariod
+CREATE TRIGGER tr_usuariod_updateA AFTER UPDATE ON tb_usuariod
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriausuariod
+	INSERT INTO tb_auditoriausuariod
 	(
 		id_usuario,
 		id_registro,
@@ -2203,10 +2203,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_usuariod_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_usuariod_deleteA AFTER DELETE ON promociones.tb_usuariod
+CREATE TRIGGER tr_usuariod_deleteA AFTER DELETE ON tb_usuariod
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriausuariod
+	INSERT INTO tb_auditoriausuariod
 	(
 		id_registro,
 		fechaRegistro,
@@ -2232,10 +2232,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipodispositivo_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipodispositivo_createA AFTER INSERT ON promociones.tb_tipodispositivo
+CREATE TRIGGER tr_tipodispositivo_createA AFTER INSERT ON tb_tipodispositivo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriadispositivo
+	INSERT INTO tb_auditoriadispositivo
 	(
 		id_usuario,
 		id_registro,
@@ -2260,10 +2260,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipodispositivo_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipodispositivo_updateA AFTER UPDATE ON promociones.tb_tipodispositivo
+CREATE TRIGGER tr_tipodispositivo_updateA AFTER UPDATE ON tb_tipodispositivo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriadispositivo
+	INSERT INTO tb_auditoriadispositivo
 	(
 		id_usuario,
 		id_registro,
@@ -2290,10 +2290,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipodispositivo_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipodispositivo_deleteA AFTER DELETE ON promociones.tb_tipodispositivo
+CREATE TRIGGER tr_tipodispositivo_deleteA AFTER DELETE ON tb_tipodispositivo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriadispositivo
+	INSERT INTO tb_auditoriadispositivo
 	(
 		id_registro,
 		fechaRegistro,
@@ -2316,10 +2316,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipodispositivo_t_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipodispositivo_t_createA AFTER INSERT ON promociones.tb_tipodispositivo_t
+CREATE TRIGGER tr_tipodispositivo_t_createA AFTER INSERT ON tb_tipodispositivo_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriadispositivo
+	INSERT INTO tb_auditoriadispositivo
 	(
 		id_usuario,
 		id_registro,
@@ -2344,10 +2344,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipodispositivo_t_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipodispositivo_t_updateA AFTER UPDATE ON promociones.tb_tipodispositivo_t
+CREATE TRIGGER tr_tipodispositivo_t_updateA AFTER UPDATE ON tb_tipodispositivo_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriadispositivo
+	INSERT INTO tb_auditoriadispositivo
 	(
 		id_usuario,
 		id_registro,
@@ -2374,10 +2374,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipodispositivo_t_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipodispositivo_t_deleteA AFTER DELETE ON promociones.tb_tipodispositivo_t
+CREATE TRIGGER tr_tipodispositivo_t_deleteA AFTER DELETE ON tb_tipodispositivo_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriadispositivo
+	INSERT INTO tb_auditoriadispositivo
 	(
 		id_registro,
 		fechaRegistro,
@@ -2400,10 +2400,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_dispositivo_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_dispositivo_createA AFTER INSERT ON promociones.tb_dispositivo
+CREATE TRIGGER tr_dispositivo_createA AFTER INSERT ON tb_dispositivo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriadispositivo
+	INSERT INTO tb_auditoriadispositivo
 	(
 		id_usuario,
 		id_registro,
@@ -2428,10 +2428,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_dispositivo_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_dispositivo_updateA AFTER UPDATE ON promociones.tb_dispositivo
+CREATE TRIGGER tr_dispositivo_updateA AFTER UPDATE ON tb_dispositivo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriadispositivo
+	INSERT INTO tb_auditoriadispositivo
 	(
 		id_usuario,
 		id_registro,
@@ -2458,10 +2458,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_dispositivo_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_dispositivo_deleteA AFTER DELETE ON promociones.tb_dispositivo
+CREATE TRIGGER tr_dispositivo_deleteA AFTER DELETE ON tb_dispositivo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriadispositivo
+	INSERT INTO tb_auditoriadispositivo
 	(
 		id_registro,
 		fechaRegistro,
@@ -2487,10 +2487,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_modem_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_modem_createA AFTER INSERT ON promociones.tb_modem
+CREATE TRIGGER tr_modem_createA AFTER INSERT ON tb_modem
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamodem
+	INSERT INTO tb_auditoriamodem
 	(
 		id_usuario,
 		id_registro,
@@ -2515,10 +2515,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_modem_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_modem_updateA AFTER UPDATE ON promociones.tb_modem
+CREATE TRIGGER tr_modem_updateA AFTER UPDATE ON tb_modem
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamodem
+	INSERT INTO tb_auditoriamodem
 	(
 		id_usuario,
 		id_registro,
@@ -2545,10 +2545,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_modem_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_modem_deleteA AFTER DELETE ON promociones.tb_modem
+CREATE TRIGGER tr_modem_deleteA AFTER DELETE ON tb_modem
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamodem
+	INSERT INTO tb_auditoriamodem
 	(
 		id_registro,
 		fechaRegistro,
@@ -2574,10 +2574,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipoconsumidor_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipoconsumidor_createA AFTER INSERT ON promociones.tb_tipoconsumidor
+CREATE TRIGGER tr_tipoconsumidor_createA AFTER INSERT ON tb_tipoconsumidor
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaconsumidor
+	INSERT INTO tb_auditoriaconsumidor
 	(
 		id_usuario,
 		id_registro,
@@ -2602,10 +2602,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipoconsumidor_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipoconsumidor_updateA AFTER UPDATE ON promociones.tb_tipoconsumidor
+CREATE TRIGGER tr_tipoconsumidor_updateA AFTER UPDATE ON tb_tipoconsumidor
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaconsumidor
+	INSERT INTO tb_auditoriaconsumidor
 	(
 		id_usuario,
 		id_registro,
@@ -2632,10 +2632,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipoconsumidor_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipoconsumidor_deleteA AFTER DELETE ON promociones.tb_tipoconsumidor
+CREATE TRIGGER tr_tipoconsumidor_deleteA AFTER DELETE ON tb_tipoconsumidor
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaconsumidor
+	INSERT INTO tb_auditoriaconsumidor
 	(
 		id_registro,
 		fechaRegistro,
@@ -2658,10 +2658,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipoconsumidor_t_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipoconsumidor_t_createA AFTER INSERT ON promociones.tb_tipoconsumidor_t
+CREATE TRIGGER tr_tipoconsumidor_t_createA AFTER INSERT ON tb_tipoconsumidor_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaconsumidor
+	INSERT INTO tb_auditoriaconsumidor
 	(
 		id_usuario,
 		id_registro,
@@ -2686,10 +2686,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipoconsumidor_t_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipoconsumidor_t_updateA AFTER UPDATE ON promociones.tb_tipoconsumidor_t
+CREATE TRIGGER tr_tipoconsumidor_t_updateA AFTER UPDATE ON tb_tipoconsumidor_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaconsumidor
+	INSERT INTO tb_auditoriaconsumidor
 	(
 		id_usuario,
 		id_registro,
@@ -2716,10 +2716,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipoconsumidor_t_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipoconsumidor_t_deleteA AFTER DELETE ON promociones.tb_tipoconsumidor_t
+CREATE TRIGGER tr_tipoconsumidor_t_deleteA AFTER DELETE ON tb_tipoconsumidor_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaconsumidor
+	INSERT INTO tb_auditoriaconsumidor
 	(
 		id_registro,
 		fechaRegistro,
@@ -2742,10 +2742,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_consumidor_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_consumidor_createA AFTER INSERT ON promociones.tb_consumidor
+CREATE TRIGGER tr_consumidor_createA AFTER INSERT ON tb_consumidor
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaconsumidor
+	INSERT INTO tb_auditoriaconsumidor
 	(
 		id_usuario,
 		id_registro,
@@ -2770,10 +2770,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_consumidor_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_consumidor_updateA AFTER UPDATE ON promociones.tb_consumidor
+CREATE TRIGGER tr_consumidor_updateA AFTER UPDATE ON tb_consumidor
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaconsumidor
+	INSERT INTO tb_auditoriaconsumidor
 	(
 		id_usuario,
 		id_registro,
@@ -2800,10 +2800,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_consumidor_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_consumidor_deleteA AFTER DELETE ON promociones.tb_consumidor
+CREATE TRIGGER tr_consumidor_deleteA AFTER DELETE ON tb_consumidor
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaconsumidor
+	INSERT INTO tb_auditoriaconsumidor
 	(
 		id_registro,
 		fechaRegistro,
@@ -2829,10 +2829,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipoimagen_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipoimagen_createA AFTER INSERT ON promociones.tb_tipoimagen
+CREATE TRIGGER tr_tipoimagen_createA AFTER INSERT ON tb_tipoimagen
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamultimedia
+	INSERT INTO tb_auditoriamultimedia
 	(
 		id_usuario,
 		id_registro,
@@ -2857,10 +2857,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipoimagen_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipoimagen_updateA AFTER UPDATE ON promociones.tb_tipoimagen
+CREATE TRIGGER tr_tipoimagen_updateA AFTER UPDATE ON tb_tipoimagen
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamultimedia
+	INSERT INTO tb_auditoriamultimedia
 	(
 		id_usuario,
 		id_registro,
@@ -2887,10 +2887,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipoimagen_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipoimagen_deleteA AFTER DELETE ON promociones.tb_tipoimagen
+CREATE TRIGGER tr_tipoimagen_deleteA AFTER DELETE ON tb_tipoimagen
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamultimedia
+	INSERT INTO tb_auditoriamultimedia
 	(
 		id_registro,
 		fechaRegistro,
@@ -2913,10 +2913,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipoimagen_t_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipoimagen_t_createA AFTER INSERT ON promociones.tb_tipoimagen_t
+CREATE TRIGGER tr_tipoimagen_t_createA AFTER INSERT ON tb_tipoimagen_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamultimedia
+	INSERT INTO tb_auditoriamultimedia
 	(
 		id_usuario,
 		id_registro,
@@ -2941,10 +2941,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipoimagen_t_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipoimagen_t_updateA AFTER UPDATE ON promociones.tb_tipoimagen_t
+CREATE TRIGGER tr_tipoimagen_t_updateA AFTER UPDATE ON tb_tipoimagen_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamultimedia
+	INSERT INTO tb_auditoriamultimedia
 	(
 		id_usuario,
 		id_registro,
@@ -2971,10 +2971,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipoimagen_t_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipoimagen_t_deleteA AFTER DELETE ON promociones.tb_tipoimagen_t
+CREATE TRIGGER tr_tipoimagen_t_deleteA AFTER DELETE ON tb_tipoimagen_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamultimedia
+	INSERT INTO tb_auditoriamultimedia
 	(
 		id_registro,
 		fechaRegistro,
@@ -2997,10 +2997,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_imagen_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_imagen_createA AFTER INSERT ON promociones.tb_imagen
+CREATE TRIGGER tr_imagen_createA AFTER INSERT ON tb_imagen
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamultimedia
+	INSERT INTO tb_auditoriamultimedia
 	(
 		id_usuario,
 		id_registro,
@@ -3025,10 +3025,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_imagen_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_imagen_updateA AFTER UPDATE ON promociones.tb_imagen
+CREATE TRIGGER tr_imagen_updateA AFTER UPDATE ON tb_imagen
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamultimedia
+	INSERT INTO tb_auditoriamultimedia
 	(
 		id_usuario,
 		id_registro,
@@ -3055,10 +3055,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_imagen_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_imagen_deleteA AFTER DELETE ON promociones.tb_imagen
+CREATE TRIGGER tr_imagen_deleteA AFTER DELETE ON tb_imagen
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamultimedia
+	INSERT INTO tb_auditoriamultimedia
 	(
 		id_registro,
 		fechaRegistro,
@@ -3081,10 +3081,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_video_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_video_createA AFTER INSERT ON promociones.tb_video
+CREATE TRIGGER tr_video_createA AFTER INSERT ON tb_video
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamultimedia
+	INSERT INTO tb_auditoriamultimedia
 	(
 		id_usuario,
 		id_registro,
@@ -3109,10 +3109,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_video_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_video_updateA AFTER UPDATE ON promociones.tb_video
+CREATE TRIGGER tr_video_updateA AFTER UPDATE ON tb_video
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamultimedia
+	INSERT INTO tb_auditoriamultimedia
 	(
 		id_usuario,
 		id_registro,
@@ -3139,10 +3139,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_video_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_video_deleteA AFTER DELETE ON promociones.tb_video
+CREATE TRIGGER tr_video_deleteA AFTER DELETE ON tb_video
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamultimedia
+	INSERT INTO tb_auditoriamultimedia
 	(
 		id_registro,
 		fechaRegistro,
@@ -3168,7 +3168,7 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_evento_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_evento_createA AFTER INSERT ON promociones.tb_evento
+CREATE TRIGGER tr_evento_createA AFTER INSERT ON tb_evento
 FOR EACH ROW
 BEGIN
 	DECLARE id_nodo INT         DEFAULT -1;
@@ -3180,7 +3180,7 @@ BEGIN
 			SET MESSAGE_TEXT = 'ERROR - 0 - Ocurrio una excepcion';
 		END;
 
-	INSERT INTO promociones.tb_nodo(id_evento, inicio, id_tipoNodo, id_usuarioCreador)
+	INSERT INTO tb_nodo(id_evento, inicio, id_tipoNodo, id_usuarioCreador)
 	VALUES (NEW.id_evento, 1, 1, NEW.id_usuarioCreador);
 
 	SET id_nodo = LAST_INSERT_ID();
@@ -3192,7 +3192,7 @@ BEGIN
 	END IF;
 
 	/* AUDITORIA */
-	INSERT INTO promociones.tb_auditoriaevento
+	INSERT INTO tb_auditoriaevento
 	(
 		id_usuario,
 		id_registro,
@@ -3217,10 +3217,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_evento_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_evento_updateA AFTER UPDATE ON promociones.tb_evento
+CREATE TRIGGER tr_evento_updateA AFTER UPDATE ON tb_evento
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaevento
+	INSERT INTO tb_auditoriaevento
 	(
 		id_usuario,
 		id_registro,
@@ -3247,10 +3247,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_evento_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_evento_deleteA AFTER DELETE ON promociones.tb_evento
+CREATE TRIGGER tr_evento_deleteA AFTER DELETE ON tb_evento
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaevento
+	INSERT INTO tb_auditoriaevento
 	(
 		id_registro,
 		fechaRegistro,
@@ -3276,10 +3276,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tiponodo_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_tiponodo_createA AFTER INSERT ON promociones.tb_tiponodo
+CREATE TRIGGER tr_tiponodo_createA AFTER INSERT ON tb_tiponodo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditorianodo
+	INSERT INTO tb_auditorianodo
 	(
 		id_usuario,
 		id_registro,
@@ -3304,10 +3304,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tiponodo_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_tiponodo_updateA AFTER UPDATE ON promociones.tb_tiponodo
+CREATE TRIGGER tr_tiponodo_updateA AFTER UPDATE ON tb_tiponodo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditorianodo
+	INSERT INTO tb_auditorianodo
 	(
 		id_usuario,
 		id_registro,
@@ -3334,10 +3334,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tiponodo_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_tiponodo_deleteA AFTER DELETE ON promociones.tb_tiponodo
+CREATE TRIGGER tr_tiponodo_deleteA AFTER DELETE ON tb_tiponodo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditorianodo
+	INSERT INTO tb_auditorianodo
 	(
 		id_registro,
 		fechaRegistro,
@@ -3360,10 +3360,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tiponodo_t_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_tiponodo_t_createA AFTER INSERT ON promociones.tb_tiponodo_t
+CREATE TRIGGER tr_tiponodo_t_createA AFTER INSERT ON tb_tiponodo_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditorianodo
+	INSERT INTO tb_auditorianodo
 	(
 		id_usuario,
 		id_registro,
@@ -3388,10 +3388,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tiponodo_t_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_tiponodo_t_updateA AFTER UPDATE ON promociones.tb_tiponodo_t
+CREATE TRIGGER tr_tiponodo_t_updateA AFTER UPDATE ON tb_tiponodo_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditorianodo
+	INSERT INTO tb_auditorianodo
 	(
 		id_usuario,
 		id_registro,
@@ -3418,10 +3418,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tiponodo_t_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_tiponodo_t_deleteA AFTER DELETE ON promociones.tb_tiponodo_t
+CREATE TRIGGER tr_tiponodo_t_deleteA AFTER DELETE ON tb_tiponodo_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditorianodo
+	INSERT INTO tb_auditorianodo
 	(
 		id_registro,
 		fechaRegistro,
@@ -3444,10 +3444,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_nodo_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_nodo_createA AFTER INSERT ON promociones.tb_nodo
+CREATE TRIGGER tr_nodo_createA AFTER INSERT ON tb_nodo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditorianodo
+	INSERT INTO tb_auditorianodo
 	(
 		id_usuario,
 		id_registro,
@@ -3472,10 +3472,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_nodo_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_nodo_updateA AFTER UPDATE ON promociones.tb_nodo
+CREATE TRIGGER tr_nodo_updateA AFTER UPDATE ON tb_nodo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditorianodo
+	INSERT INTO tb_auditorianodo
 	(
 		id_usuario,
 		id_registro,
@@ -3502,10 +3502,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_nodo_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_nodo_deleteA AFTER DELETE ON promociones.tb_nodo
+CREATE TRIGGER tr_nodo_deleteA AFTER DELETE ON tb_nodo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditorianodo
+	INSERT INTO tb_auditorianodo
 	(
 		id_registro,
 		fechaRegistro,
@@ -3531,10 +3531,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipotiempoespera_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipotiempoespera_createA AFTER INSERT ON promociones.tb_tipotiempoespera
+CREATE TRIGGER tr_tipotiempoespera_createA AFTER INSERT ON tb_tipotiempoespera
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriatiempoespera
+	INSERT INTO tb_auditoriatiempoespera
 	(
 		id_usuario,
 		id_registro,
@@ -3559,10 +3559,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipotiempoespera_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipotiempoespera_updateA AFTER UPDATE ON promociones.tb_tipotiempoespera
+CREATE TRIGGER tr_tipotiempoespera_updateA AFTER UPDATE ON tb_tipotiempoespera
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriatiempoespera
+	INSERT INTO tb_auditoriatiempoespera
 	(
 		id_usuario,
 		id_registro,
@@ -3589,10 +3589,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipotiempoespera_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipotiempoespera_deleteA AFTER DELETE ON promociones.tb_tipotiempoespera
+CREATE TRIGGER tr_tipotiempoespera_deleteA AFTER DELETE ON tb_tipotiempoespera
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriatiempoespera
+	INSERT INTO tb_auditoriatiempoespera
 	(
 		id_registro,
 		fechaRegistro,
@@ -3615,10 +3615,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipotiempoespera_t_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipotiempoespera_t_createA AFTER INSERT ON promociones.tb_tipotiempoespera_t
+CREATE TRIGGER tr_tipotiempoespera_t_createA AFTER INSERT ON tb_tipotiempoespera_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriatiempoespera
+	INSERT INTO tb_auditoriatiempoespera
 	(
 		id_usuario,
 		id_registro,
@@ -3643,10 +3643,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipotiempoespera_t_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipotiempoespera_t_updateA AFTER UPDATE ON promociones.tb_tipotiempoespera_t
+CREATE TRIGGER tr_tipotiempoespera_t_updateA AFTER UPDATE ON tb_tipotiempoespera_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriatiempoespera
+	INSERT INTO tb_auditoriatiempoespera
 	(
 		id_usuario,
 		id_registro,
@@ -3673,10 +3673,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipotiempoespera_t_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipotiempoespera_t_deleteA AFTER DELETE ON promociones.tb_tipotiempoespera_t
+CREATE TRIGGER tr_tipotiempoespera_t_deleteA AFTER DELETE ON tb_tipotiempoespera_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriatiempoespera
+	INSERT INTO tb_auditoriatiempoespera
 	(
 		id_registro,
 		fechaRegistro,
@@ -3699,10 +3699,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tiempoespera_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_tiempoespera_createA AFTER INSERT ON promociones.tb_tiempoespera
+CREATE TRIGGER tr_tiempoespera_createA AFTER INSERT ON tb_tiempoespera
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriatiempoespera
+	INSERT INTO tb_auditoriatiempoespera
 	(
 		id_usuario,
 		id_registro,
@@ -3727,10 +3727,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tiempoespera_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_tiempoespera_updateA AFTER UPDATE ON promociones.tb_tiempoespera
+CREATE TRIGGER tr_tiempoespera_updateA AFTER UPDATE ON tb_tiempoespera
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriatiempoespera
+	INSERT INTO tb_auditoriatiempoespera
 	(
 		id_usuario,
 		id_registro,
@@ -3757,10 +3757,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tiempoespera_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_tiempoespera_deleteA AFTER DELETE ON promociones.tb_tiempoespera
+CREATE TRIGGER tr_tiempoespera_deleteA AFTER DELETE ON tb_tiempoespera
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriatiempoespera
+	INSERT INTO tb_auditoriatiempoespera
 	(
 		id_registro,
 		fechaRegistro,
@@ -3786,10 +3786,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_checkin_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_checkin_createA AFTER INSERT ON promociones.tb_checkin
+CREATE TRIGGER tr_checkin_createA AFTER INSERT ON tb_checkin
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacheckin
+	INSERT INTO tb_auditoriacheckin
 	(
 		id_usuario,
 		id_registro,
@@ -3814,10 +3814,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_checkin_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_checkin_updateA AFTER UPDATE ON promociones.tb_checkin
+CREATE TRIGGER tr_checkin_updateA AFTER UPDATE ON tb_checkin
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacheckin
+	INSERT INTO tb_auditoriacheckin
 	(
 		id_usuario,
 		id_registro,
@@ -3844,10 +3844,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_checkin_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_checkin_deleteA AFTER DELETE ON promociones.tb_checkin
+CREATE TRIGGER tr_checkin_deleteA AFTER DELETE ON tb_checkin
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacheckin
+	INSERT INTO tb_auditoriacheckin
 	(
 		id_registro,
 		fechaRegistro,
@@ -3873,10 +3873,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipopregunta_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipopregunta_createA AFTER INSERT ON promociones.tb_tipopregunta
+CREATE TRIGGER tr_tipopregunta_createA AFTER INSERT ON tb_tipopregunta
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriapregunta
+	INSERT INTO tb_auditoriapregunta
 	(
 		id_usuario,
 		id_registro,
@@ -3901,10 +3901,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipopregunta_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipopregunta_updateA AFTER UPDATE ON promociones.tb_tipopregunta
+CREATE TRIGGER tr_tipopregunta_updateA AFTER UPDATE ON tb_tipopregunta
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriapregunta
+	INSERT INTO tb_auditoriapregunta
 	(
 		id_usuario,
 		id_registro,
@@ -3931,10 +3931,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipopregunta_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipopregunta_deleteA AFTER DELETE ON promociones.tb_tipopregunta
+CREATE TRIGGER tr_tipopregunta_deleteA AFTER DELETE ON tb_tipopregunta
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriapregunta
+	INSERT INTO tb_auditoriapregunta
 	(
 		id_registro,
 		fechaRegistro,
@@ -3957,10 +3957,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipopregunta_t_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipopregunta_t_createA AFTER INSERT ON promociones.tb_tipopregunta_t
+CREATE TRIGGER tr_tipopregunta_t_createA AFTER INSERT ON tb_tipopregunta_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriapregunta
+	INSERT INTO tb_auditoriapregunta
 	(
 		id_usuario,
 		id_registro,
@@ -3985,10 +3985,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipopregunta_t_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipopregunta_t_updateA AFTER UPDATE ON promociones.tb_tipopregunta_t
+CREATE TRIGGER tr_tipopregunta_t_updateA AFTER UPDATE ON tb_tipopregunta_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriapregunta
+	INSERT INTO tb_auditoriapregunta
 	(
 		id_usuario,
 		id_registro,
@@ -4015,10 +4015,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipopregunta_t_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipopregunta_t_deleteA AFTER DELETE ON promociones.tb_tipopregunta_t
+CREATE TRIGGER tr_tipopregunta_t_deleteA AFTER DELETE ON tb_tipopregunta_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriapregunta
+	INSERT INTO tb_auditoriapregunta
 	(
 		id_registro,
 		fechaRegistro,
@@ -4041,10 +4041,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_pregunta_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_pregunta_createA AFTER INSERT ON promociones.tb_pregunta
+CREATE TRIGGER tr_pregunta_createA AFTER INSERT ON tb_pregunta
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriapregunta
+	INSERT INTO tb_auditoriapregunta
 	(
 		id_usuario,
 		id_registro,
@@ -4069,10 +4069,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_pregunta_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_pregunta_updateA AFTER UPDATE ON promociones.tb_pregunta
+CREATE TRIGGER tr_pregunta_updateA AFTER UPDATE ON tb_pregunta
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriapregunta
+	INSERT INTO tb_auditoriapregunta
 	(
 		id_usuario,
 		id_registro,
@@ -4099,10 +4099,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_pregunta_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_pregunta_deleteA AFTER DELETE ON promociones.tb_pregunta
+CREATE TRIGGER tr_pregunta_deleteA AFTER DELETE ON tb_pregunta
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriapregunta
+	INSERT INTO tb_auditoriapregunta
 	(
 		id_registro,
 		fechaRegistro,
@@ -4125,10 +4125,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_respuestaopcion_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_respuestaopcion_createA AFTER INSERT ON promociones.tb_respuestaopcion
+CREATE TRIGGER tr_respuestaopcion_createA AFTER INSERT ON tb_respuestaopcion
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriarespuesta
+	INSERT INTO tb_auditoriarespuesta
 	(
 		id_usuario,
 		id_registro,
@@ -4153,10 +4153,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_respuestaopcion_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_respuestaopcion_updateA AFTER UPDATE ON promociones.tb_respuestaopcion
+CREATE TRIGGER tr_respuestaopcion_updateA AFTER UPDATE ON tb_respuestaopcion
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriarespuesta
+	INSERT INTO tb_auditoriarespuesta
 	(
 		id_usuario,
 		id_registro,
@@ -4183,10 +4183,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_respuestaopcion_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_respuestaopcion_deleteA AFTER DELETE ON promociones.tb_respuestaopcion
+CREATE TRIGGER tr_respuestaopcion_deleteA AFTER DELETE ON tb_respuestaopcion
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriarespuesta
+	INSERT INTO tb_auditoriarespuesta
 	(
 		id_registro,
 		fechaRegistro,
@@ -4209,7 +4209,7 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_respuestaopcion_createB;
 
 DELIMITER //
-CREATE TRIGGER tr_respuestaopcion_createB BEFORE INSERT ON promociones.tb_respuestaopcion
+CREATE TRIGGER tr_respuestaopcion_createB BEFORE INSERT ON tb_respuestaopcion
 FOR EACH ROW
 BEGIN
 	DECLARE max_respuestas, contador INT         DEFAULT 0;
@@ -4217,7 +4217,7 @@ BEGIN
 	SET max_respuestas = 5;
 
 	SELECT COUNT(*) INTO contador 
-	FROM promociones.tb_respuestaopcion
+	FROM tb_respuestaopcion
 	WHERE id_pregunta = NEW.id_pregunta AND activo = 1;
 
 	IF contador >= max_respuestas THEN
@@ -4235,10 +4235,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipomensaje_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipomensaje_createA AFTER INSERT ON promociones.tb_tipomensaje
+CREATE TRIGGER tr_tipomensaje_createA AFTER INSERT ON tb_tipomensaje
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamensaje
+	INSERT INTO tb_auditoriamensaje
 	(
 		id_usuario,
 		id_registro,
@@ -4263,10 +4263,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipomensaje_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipomensaje_updateA AFTER UPDATE ON promociones.tb_tipomensaje
+CREATE TRIGGER tr_tipomensaje_updateA AFTER UPDATE ON tb_tipomensaje
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamensaje
+	INSERT INTO tb_auditoriamensaje
 	(
 		id_usuario,
 		id_registro,
@@ -4293,10 +4293,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipomensaje_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipomensaje_deleteA AFTER DELETE ON promociones.tb_tipomensaje
+CREATE TRIGGER tr_tipomensaje_deleteA AFTER DELETE ON tb_tipomensaje
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamensaje
+	INSERT INTO tb_auditoriamensaje
 	(
 		id_registro,
 		fechaRegistro,
@@ -4319,10 +4319,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipomensaje_t_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipomensaje_t_createA AFTER INSERT ON promociones.tb_tipomensaje_t
+CREATE TRIGGER tr_tipomensaje_t_createA AFTER INSERT ON tb_tipomensaje_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamensaje
+	INSERT INTO tb_auditoriamensaje
 	(
 		id_usuario,
 		id_registro,
@@ -4347,10 +4347,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipomensaje_t_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipomensaje_t_updateA AFTER UPDATE ON promociones.tb_tipomensaje_t
+CREATE TRIGGER tr_tipomensaje_t_updateA AFTER UPDATE ON tb_tipomensaje_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamensaje
+	INSERT INTO tb_auditoriamensaje
 	(
 		id_usuario,
 		id_registro,
@@ -4377,10 +4377,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipomensaje_t_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipomensaje_t_deleteA AFTER DELETE ON promociones.tb_tipomensaje_t
+CREATE TRIGGER tr_tipomensaje_t_deleteA AFTER DELETE ON tb_tipomensaje_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamensaje
+	INSERT INTO tb_auditoriamensaje
 	(
 		id_registro,
 		fechaRegistro,
@@ -4403,10 +4403,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_mensaje_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_mensaje_createA AFTER INSERT ON promociones.tb_mensaje
+CREATE TRIGGER tr_mensaje_createA AFTER INSERT ON tb_mensaje
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamensaje
+	INSERT INTO tb_auditoriamensaje
 	(
 		id_usuario,
 		id_registro,
@@ -4431,10 +4431,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_mensaje_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_mensaje_updateA AFTER UPDATE ON promociones.tb_mensaje
+CREATE TRIGGER tr_mensaje_updateA AFTER UPDATE ON tb_mensaje
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamensaje
+	INSERT INTO tb_auditoriamensaje
 	(
 		id_usuario,
 		id_registro,
@@ -4461,10 +4461,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_mensaje_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_mensaje_deleteA AFTER DELETE ON promociones.tb_mensaje
+CREATE TRIGGER tr_mensaje_deleteA AFTER DELETE ON tb_mensaje
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamensaje
+	INSERT INTO tb_auditoriamensaje
 	(
 		id_registro,
 		fechaRegistro,
@@ -4490,10 +4490,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_formularioconsumidor_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_formularioconsumidor_createA AFTER INSERT ON promociones.tb_formularioconsumidor
+CREATE TRIGGER tr_formularioconsumidor_createA AFTER INSERT ON tb_formularioconsumidor
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaformularioconsumidor
+	INSERT INTO tb_auditoriaformularioconsumidor
 	(
 		id_usuario,
 		id_registro,
@@ -4518,10 +4518,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_formularioconsumidor_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_formularioconsumidor_updateA AFTER UPDATE ON promociones.tb_formularioconsumidor
+CREATE TRIGGER tr_formularioconsumidor_updateA AFTER UPDATE ON tb_formularioconsumidor
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaformularioconsumidor
+	INSERT INTO tb_auditoriaformularioconsumidor
 	(
 		id_usuario,
 		id_registro,
@@ -4548,10 +4548,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_formularioconsumidor_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_formularioconsumidor_deleteA AFTER DELETE ON promociones.tb_formularioconsumidor
+CREATE TRIGGER tr_formularioconsumidor_deleteA AFTER DELETE ON tb_formularioconsumidor
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaformularioconsumidor
+	INSERT INTO tb_auditoriaformularioconsumidor
 	(
 		id_registro,
 		fechaRegistro,
@@ -4577,10 +4577,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_mensajepantalla_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_mensajepantalla_createA AFTER INSERT ON promociones.tb_mensajepantalla
+CREATE TRIGGER tr_mensajepantalla_createA AFTER INSERT ON tb_mensajepantalla
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamensajepantalla
+	INSERT INTO tb_auditoriamensajepantalla
 	(
 		id_usuario,
 		id_registro,
@@ -4605,10 +4605,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_mensajepantalla_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_mensajepantalla_updateA AFTER UPDATE ON promociones.tb_mensajepantalla
+CREATE TRIGGER tr_mensajepantalla_updateA AFTER UPDATE ON tb_mensajepantalla
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamensajepantalla
+	INSERT INTO tb_auditoriamensajepantalla
 	(
 		id_usuario,
 		id_registro,
@@ -4635,10 +4635,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_mensajepantalla_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_mensajepantalla_deleteA AFTER DELETE ON promociones.tb_mensajepantalla
+CREATE TRIGGER tr_mensajepantalla_deleteA AFTER DELETE ON tb_mensajepantalla
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriamensajepantalla
+	INSERT INTO tb_auditoriamensajepantalla
 	(
 		id_registro,
 		fechaRegistro,
@@ -4664,10 +4664,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipoinvitacion_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipoinvitacion_createA AFTER INSERT ON promociones.tb_tipoinvitacion
+CREATE TRIGGER tr_tipoinvitacion_createA AFTER INSERT ON tb_tipoinvitacion
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriainvitacion
+	INSERT INTO tb_auditoriainvitacion
 	(
 		id_usuario,
 		id_registro,
@@ -4692,10 +4692,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipoinvitacion_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipoinvitacion_updateA AFTER UPDATE ON promociones.tb_tipoinvitacion
+CREATE TRIGGER tr_tipoinvitacion_updateA AFTER UPDATE ON tb_tipoinvitacion
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriainvitacion
+	INSERT INTO tb_auditoriainvitacion
 	(
 		id_usuario,
 		id_registro,
@@ -4722,10 +4722,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipoinvitacion_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipoinvitacion_deleteA AFTER DELETE ON promociones.tb_tipoinvitacion
+CREATE TRIGGER tr_tipoinvitacion_deleteA AFTER DELETE ON tb_tipoinvitacion
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriainvitacion
+	INSERT INTO tb_auditoriainvitacion
 	(
 		id_registro,
 		fechaRegistro,
@@ -4748,10 +4748,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipoinvitacion_t_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipoinvitacion_t_createA AFTER INSERT ON promociones.tb_tipoinvitacion_t
+CREATE TRIGGER tr_tipoinvitacion_t_createA AFTER INSERT ON tb_tipoinvitacion_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriainvitacion
+	INSERT INTO tb_auditoriainvitacion
 	(
 		id_usuario,
 		id_registro,
@@ -4776,10 +4776,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipoinvitacion_t_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipoinvitacion_t_updateA AFTER UPDATE ON promociones.tb_tipoinvitacion_t
+CREATE TRIGGER tr_tipoinvitacion_t_updateA AFTER UPDATE ON tb_tipoinvitacion_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriainvitacion
+	INSERT INTO tb_auditoriainvitacion
 	(
 		id_usuario,
 		id_registro,
@@ -4806,10 +4806,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipoinvitacion_t_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipoinvitacion_t_deleteA AFTER DELETE ON promociones.tb_tipoinvitacion_t
+CREATE TRIGGER tr_tipoinvitacion_t_deleteA AFTER DELETE ON tb_tipoinvitacion_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriainvitacion
+	INSERT INTO tb_auditoriainvitacion
 	(
 		id_registro,
 		fechaRegistro,
@@ -4832,10 +4832,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_invitacion_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_invitacion_createA AFTER INSERT ON promociones.tb_invitacion
+CREATE TRIGGER tr_invitacion_createA AFTER INSERT ON tb_invitacion
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriainvitacion
+	INSERT INTO tb_auditoriainvitacion
 	(
 		id_usuario,
 		id_registro,
@@ -4860,10 +4860,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_invitacion_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_invitacion_updateA AFTER UPDATE ON promociones.tb_invitacion
+CREATE TRIGGER tr_invitacion_updateA AFTER UPDATE ON tb_invitacion
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriainvitacion
+	INSERT INTO tb_auditoriainvitacion
 	(
 		id_usuario,
 		id_registro,
@@ -4890,10 +4890,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_invitacion_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_invitacion_deleteA AFTER DELETE ON promociones.tb_invitacion
+CREATE TRIGGER tr_invitacion_deleteA AFTER DELETE ON tb_invitacion
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriainvitacion
+	INSERT INTO tb_auditoriainvitacion
 	(
 		id_registro,
 		fechaRegistro,
@@ -4916,10 +4916,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_datosinvitacion_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_datosinvitacion_createA AFTER INSERT ON promociones.tb_datosinvitacion
+CREATE TRIGGER tr_datosinvitacion_createA AFTER INSERT ON tb_datosinvitacion
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriainvitacion
+	INSERT INTO tb_auditoriainvitacion
 	(
 		id_usuario,
 		id_registro,
@@ -4944,10 +4944,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_datosinvitacion_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_datosinvitacion_updateA AFTER UPDATE ON promociones.tb_datosinvitacion
+CREATE TRIGGER tr_datosinvitacion_updateA AFTER UPDATE ON tb_datosinvitacion
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriainvitacion
+	INSERT INTO tb_auditoriainvitacion
 	(
 		id_usuario,
 		id_registro,
@@ -4974,10 +4974,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_datosinvitacion_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_datosinvitacion_deleteA AFTER DELETE ON promociones.tb_datosinvitacion
+CREATE TRIGGER tr_datosinvitacion_deleteA AFTER DELETE ON tb_datosinvitacion
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriainvitacion
+	INSERT INTO tb_auditoriainvitacion
 	(
 		id_registro,
 		fechaRegistro,
@@ -5003,10 +5003,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_configuracionflujo_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_configuracionflujo_createA AFTER INSERT ON promociones.tb_configuracionflujo
+CREATE TRIGGER tr_configuracionflujo_createA AFTER INSERT ON tb_configuracionflujo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaconfiguracion
+	INSERT INTO tb_auditoriaconfiguracion
 	(
 		id_usuario,
 		id_registro,
@@ -5031,10 +5031,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_configuracionflujo_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_configuracionflujo_updateA AFTER UPDATE ON promociones.tb_configuracionflujo
+CREATE TRIGGER tr_configuracionflujo_updateA AFTER UPDATE ON tb_configuracionflujo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaconfiguracion
+	INSERT INTO tb_auditoriaconfiguracion
 	(
 		id_usuario,
 		id_registro,
@@ -5061,10 +5061,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_configuracionflujo_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_configuracionflujo_deleteA AFTER DELETE ON promociones.tb_configuracionflujo
+CREATE TRIGGER tr_configuracionflujo_deleteA AFTER DELETE ON tb_configuracionflujo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaconfiguracion
+	INSERT INTO tb_auditoriaconfiguracion
 	(
 		id_registro,
 		fechaRegistro,
@@ -5087,10 +5087,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_configuracionnodo_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_configuracionnodo_createA AFTER INSERT ON promociones.tb_configuracionnodo
+CREATE TRIGGER tr_configuracionnodo_createA AFTER INSERT ON tb_configuracionnodo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaconfiguracion
+	INSERT INTO tb_auditoriaconfiguracion
 	(
 		id_usuario,
 		id_registro,
@@ -5115,10 +5115,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_configuracionnodo_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_configuracionnodo_updateA AFTER UPDATE ON promociones.tb_configuracionnodo
+CREATE TRIGGER tr_configuracionnodo_updateA AFTER UPDATE ON tb_configuracionnodo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaconfiguracion
+	INSERT INTO tb_auditoriaconfiguracion
 	(
 		id_usuario,
 		id_registro,
@@ -5145,10 +5145,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_configuracionnodo_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_configuracionnodo_deleteA AFTER DELETE ON promociones.tb_configuracionnodo
+CREATE TRIGGER tr_configuracionnodo_deleteA AFTER DELETE ON tb_configuracionnodo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaconfiguracion
+	INSERT INTO tb_auditoriaconfiguracion
 	(
 		id_registro,
 		fechaRegistro,
@@ -5174,10 +5174,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_plantilla_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_plantilla_createA AFTER INSERT ON promociones.tb_plantilla
+CREATE TRIGGER tr_plantilla_createA AFTER INSERT ON tb_plantilla
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaplantilla
+	INSERT INTO tb_auditoriaplantilla
 	(
 		id_usuario,
 		id_registro,
@@ -5202,10 +5202,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_plantilla_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_plantilla_updateA AFTER UPDATE ON promociones.tb_plantilla
+CREATE TRIGGER tr_plantilla_updateA AFTER UPDATE ON tb_plantilla
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaplantilla
+	INSERT INTO tb_auditoriaplantilla
 	(
 		id_usuario,
 		id_registro,
@@ -5232,10 +5232,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_plantilla_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_plantilla_deleteA AFTER DELETE ON promociones.tb_plantilla
+CREATE TRIGGER tr_plantilla_deleteA AFTER DELETE ON tb_plantilla
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriaplantilla
+	INSERT INTO tb_auditoriaplantilla
 	(
 		id_registro,
 		fechaRegistro,
@@ -5261,10 +5261,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipocondicion_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipocondicion_createA AFTER INSERT ON promociones.tb_tipocondicion
+CREATE TRIGGER tr_tipocondicion_createA AFTER INSERT ON tb_tipocondicion
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacondicionnodo
+	INSERT INTO tb_auditoriacondicionnodo
 	(
 		id_usuario,
 		id_registro,
@@ -5289,10 +5289,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipocondicion_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipocondicion_updateA AFTER UPDATE ON promociones.tb_tipocondicion
+CREATE TRIGGER tr_tipocondicion_updateA AFTER UPDATE ON tb_tipocondicion
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacondicionnodo
+	INSERT INTO tb_auditoriacondicionnodo
 	(
 		id_usuario,
 		id_registro,
@@ -5319,10 +5319,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipocondicion_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipocondicion_deleteA AFTER DELETE ON promociones.tb_tipocondicion
+CREATE TRIGGER tr_tipocondicion_deleteA AFTER DELETE ON tb_tipocondicion
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacondicionnodo
+	INSERT INTO tb_auditoriacondicionnodo
 	(
 		id_registro,
 		fechaRegistro,
@@ -5345,10 +5345,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipocondicion_t_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipocondicion_t_createA AFTER INSERT ON promociones.tb_tipocondicion_t
+CREATE TRIGGER tr_tipocondicion_t_createA AFTER INSERT ON tb_tipocondicion_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacondicionnodo
+	INSERT INTO tb_auditoriacondicionnodo
 	(
 		id_usuario,
 		id_registro,
@@ -5373,10 +5373,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipocondicion_t_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipocondicion_t_updateA AFTER UPDATE ON promociones.tb_tipocondicion_t
+CREATE TRIGGER tr_tipocondicion_t_updateA AFTER UPDATE ON tb_tipocondicion_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacondicionnodo
+	INSERT INTO tb_auditoriacondicionnodo
 	(
 		id_usuario,
 		id_registro,
@@ -5403,10 +5403,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipocondicion_t_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipocondicion_t_deleteA AFTER DELETE ON promociones.tb_tipocondicion_t
+CREATE TRIGGER tr_tipocondicion_t_deleteA AFTER DELETE ON tb_tipocondicion_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacondicionnodo
+	INSERT INTO tb_auditoriacondicionnodo
 	(
 		id_registro,
 		fechaRegistro,
@@ -5429,10 +5429,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipovariable_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipovariable_createA AFTER INSERT ON promociones.tb_tipovariable
+CREATE TRIGGER tr_tipovariable_createA AFTER INSERT ON tb_tipovariable
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacondicionnodo
+	INSERT INTO tb_auditoriacondicionnodo
 	(
 		id_usuario,
 		id_registro,
@@ -5457,10 +5457,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipovariable_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipovariable_updateA AFTER UPDATE ON promociones.tb_tipovariable
+CREATE TRIGGER tr_tipovariable_updateA AFTER UPDATE ON tb_tipovariable
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacondicionnodo
+	INSERT INTO tb_auditoriacondicionnodo
 	(
 		id_usuario,
 		id_registro,
@@ -5487,10 +5487,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipovariable_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipovariable_deleteA AFTER DELETE ON promociones.tb_tipovariable
+CREATE TRIGGER tr_tipovariable_deleteA AFTER DELETE ON tb_tipovariable
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacondicionnodo
+	INSERT INTO tb_auditoriacondicionnodo
 	(
 		id_registro,
 		fechaRegistro,
@@ -5513,10 +5513,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipovariable_t_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipovariable_t_createA AFTER INSERT ON promociones.tb_tipovariable_t
+CREATE TRIGGER tr_tipovariable_t_createA AFTER INSERT ON tb_tipovariable_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacondicionnodo
+	INSERT INTO tb_auditoriacondicionnodo
 	(
 		id_usuario,
 		id_registro,
@@ -5541,10 +5541,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipovariable_t_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipovariable_t_updateA AFTER UPDATE ON promociones.tb_tipovariable_t
+CREATE TRIGGER tr_tipovariable_t_updateA AFTER UPDATE ON tb_tipovariable_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacondicionnodo
+	INSERT INTO tb_auditoriacondicionnodo
 	(
 		id_usuario,
 		id_registro,
@@ -5571,10 +5571,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_tipovariable_t_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_tipovariable_t_deleteA AFTER DELETE ON promociones.tb_tipovariable_t
+CREATE TRIGGER tr_tipovariable_t_deleteA AFTER DELETE ON tb_tipovariable_t
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacondicionnodo
+	INSERT INTO tb_auditoriacondicionnodo
 	(
 		id_registro,
 		fechaRegistro,
@@ -5597,10 +5597,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_condicionnodo_createA;
 
 DELIMITER //
-CREATE TRIGGER tr_condicionnodo_createA AFTER INSERT ON promociones.tb_condicionnodo
+CREATE TRIGGER tr_condicionnodo_createA AFTER INSERT ON tb_condicionnodo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacondicionnodo
+	INSERT INTO tb_auditoriacondicionnodo
 	(
 		id_usuario,
 		id_registro,
@@ -5625,10 +5625,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_condicionnodo_updateA;
 
 DELIMITER //
-CREATE TRIGGER tr_condicionnodo_updateA AFTER UPDATE ON promociones.tb_condicionnodo
+CREATE TRIGGER tr_condicionnodo_updateA AFTER UPDATE ON tb_condicionnodo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacondicionnodo
+	INSERT INTO tb_auditoriacondicionnodo
 	(
 		id_usuario,
 		id_registro,
@@ -5655,10 +5655,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS tr_condicionnodo_deleteA;
 
 DELIMITER //
-CREATE TRIGGER tr_condicionnodo_deleteA AFTER DELETE ON promociones.tb_condicionnodo
+CREATE TRIGGER tr_condicionnodo_deleteA AFTER DELETE ON tb_condicionnodo
 FOR EACH ROW
 BEGIN
-	INSERT INTO promociones.tb_auditoriacondicionnodo
+	INSERT INTO tb_auditoriacondicionnodo
 	(
 		id_registro,
 		fechaRegistro,

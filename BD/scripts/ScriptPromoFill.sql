@@ -1,3 +1,5 @@
+USE `datatabs`;
+
 DROP TEMPORARY TABLE IF EXISTS temp;
 
 INSERT INTO Tb_TipoAuditoria (codigo) VALUES ('C');

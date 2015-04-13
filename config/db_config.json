@@ -3,14 +3,14 @@
     "driver"   : "mysql",
     "host"     : "localhost",
     "user"     : "root",
-    "database" : "promociones",
+    "database" : "datatabs",
     "password" : ""
   },
   "production" : {
     "driver"   : "mysql",
     "host"     : "localhost",
     "user"     : "root",
-    "database" : "promociones",
+    "database" : "datatabs",
     "password" : ""
   }
 }
