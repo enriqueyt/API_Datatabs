@@ -14295,6 +14295,191 @@ END;
 DELIMITER ;
 
 
+DROP PROCEDURE IF EXISTS sp_generarConsumidorGrupo;
+
+DELIMITER //
+CREATE PROCEDURE sp_generarConsumidorGrupo(
+	IN  id_usuarioCreador INT,
+    IN  id_grupo          INT,
+    IN  id_tipoConsumidor INT,
+    IN  id_sexo           INT,
+    IN  edadInicio        INT,
+    IN  edadFin           INT,
+    IN  id_evento         INT,
+    IN  id_sucursal       INT,
+	OUT resultado         VARCHAR(500)
+)
+bye:
+BEGIN
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		SET resultado = 'ERROR - 0 - Ocurrio una excepcion';
+		SELECT 0 AS res;
+        ROLLBACK;
+	END;
+
+	IF id_usuarioCreador IS NOT NULL AND NOT EXISTS (SELECT * FROM tb_usuario AS U WHERE U.id_usuario = id_usuarioCreador) THEN
+		SET resultado = 'ERROR - 1 - Usuario creador no existe';
+		SELECT -1 AS res;
+        LEAVE bye;
+	END IF;
+
+	IF NOT EXISTS (SELECT * FROM tb_grupo AS G WHERE G.id_grupo = id_grupo AND G.activo = 1) THEN
+		SET resultado = 'ERROR - 2 - Grupo no existe';
+		SELECT -2 AS res;
+        LEAVE bye;
+	END IF;
+    
+    IF id_tipoconsumidor IS NOT NULL AND NOT EXISTS (SELECT * FROM tb_tipoconsumidor AS TC WHERE TC.id_tipoConsumidor = id_tipoConsumidor AND TC.activo = 1) THEN
+		SET resultado = 'ERROR - 3 - Tipo consumidor no existe';
+		SELECT -3 AS res;
+        LEAVE bye;
+	END IF;
+    
+    IF id_sexo IS NOT NULL AND NOT EXISTS (SELECT * FROM tb_sexo AS S WHERE S.id_sexo = id_sexo AND S.activo = 1) THEN
+		SET resultado = 'ERROR - 4 - Sexo no existe';
+		SELECT -4 AS res;
+        LEAVE bye;
+	END IF;
+
+	IF id_evento IS NOT NULL AND NOT EXISTS (SELECT * FROM tb_evento AS E WHERE E.id_evento = id_evento AND E.activo = 1) THEN
+		SET resultado = 'ERROR - 5 - Evento no existe';
+		SELECT -5 AS res;
+        LEAVE bye;
+	END IF;
+    
+    IF id_sucursal IS NOT NULL AND NOT EXISTS (SELECT * FROM tb_sucursal AS S WHERE S.id_sucursal = id_sucursal AND S.activo = 1) THEN
+		SET resultado = 'ERROR - 6 - Sucursal no existe';
+		SELECT -6 AS res;
+        LEAVE bye;
+	END IF;
+
+	START TRANSACTION;
+        IF edadInicio IS NOT NULL AND edadFin IS NOT NULL THEN
+			CREATE TEMPORARY TABLE temp AS
+            SELECT
+				C.id_consumidor,
+                id_grupo,
+                id_usuarioCreador
+            FROM
+				tb_consumidor AS C
+                INNER JOIN
+                tb_tipoConsumidor AS TC
+                ON C.id_tipoConsumidor = TC.id_tipoConsumidor
+                INNER JOIN
+                tb_sexo AS S
+                ON C.id_sexo = S.id_sexo
+                INNER JOIN
+                tb_consumidor_evento AS CE
+                ON TC.id_consumidor = CE.id_consumidor
+                INNER JOIN
+                tb_consumidor_sucursal AS CS
+                ON C.id_consumidor = CS.id_consumidor
+            WHERE
+				(C.id_tipoConsumidor = id_tipoConsumidor OR id_tipoConsumidor IS NULL) AND
+                (C.id_sexo = id_sexo OR id_sexo IS NULL) AND
+                (CE.id_evento = id_evento OR id_evento IS NULL) AND
+                (CS.id_sucursal = id_sucursal OR id_sucursal IS NULL) AND
+                TIMESTAMPDIFF(YEAR, C.fechaNacimiento, CURDATE()) >= edadInicio AND
+                TIMESTAMPDIFF(YEAR, C.fechaNacimiento, CURDATE()) <= edadFin;
+        ELSEIF edadInicio IS NOT NULL THEN
+			CREATE TEMPORARY TABLE temp AS
+            SELECT
+				C.id_consumidor,
+                id_grupo,
+                id_usuarioCreador
+            FROM
+				tb_consumidor AS C
+                INNER JOIN
+                tb_tipoConsumidor AS TC
+                ON C.id_tipoConsumidor = TC.id_tipoConsumidor
+                INNER JOIN
+                tb_sexo AS S
+                ON C.id_sexo = S.id_sexo
+                INNER JOIN
+                tb_consumidor_evento AS CE
+                ON TC.id_consumidor = CE.id_consumidor
+                INNER JOIN
+                tb_consumidor_sucursal AS CS
+                ON C.id_consumidor = CS.id_consumidor
+            WHERE
+				(C.id_tipoConsumidor = id_tipoConsumidor OR id_tipoConsumidor IS NULL) AND
+                (C.id_sexo = id_sexo OR id_sexo IS NULL) AND
+                (CE.id_evento = id_evento OR id_evento IS NULL) AND
+                (CS.id_sucursal = id_sucursal OR id_sucursal IS NULL) AND
+                TIMESTAMPDIFF(YEAR, C.fechaNacimiento, CURDATE()) >= edadInicio;
+        ELSEIF edadFin IS NOT NULL THEN
+			CREATE TEMPORARY TABLE temp AS
+            SELECT
+				C.id_consumidor,
+                id_grupo,
+                id_usuarioCreador
+            FROM
+				tb_consumidor AS C
+                INNER JOIN
+                tb_tipoConsumidor AS TC
+                ON C.id_tipoConsumidor = TC.id_tipoConsumidor
+                INNER JOIN
+                tb_sexo AS S
+                ON C.id_sexo = S.id_sexo
+                INNER JOIN
+                tb_consumidor_evento AS CE
+                ON TC.id_consumidor = CE.id_consumidor
+                INNER JOIN
+                tb_consumidor_sucursal AS CS
+                ON C.id_consumidor = CS.id_consumidor
+            WHERE
+				(C.id_tipoConsumidor = id_tipoConsumidor OR id_tipoConsumidor IS NULL) AND
+                (C.id_sexo = id_sexo OR id_sexo IS NULL) AND
+                (CE.id_evento = id_evento OR id_evento IS NULL) AND
+                (CS.id_sucursal = id_sucursal OR id_sucursal IS NULL) AND
+                TIMESTAMPDIFF(YEAR, C.fechaNacimiento, CURDATE()) <= edadFin;
+        ELSE
+			CREATE TEMPORARY TABLE temp AS
+            SELECT
+				C.id_consumidor,
+                id_grupo,
+                id_usuarioCreador
+            FROM
+				tb_consumidor AS C
+                INNER JOIN
+                tb_tipoConsumidor AS TC
+                ON C.id_tipoConsumidor = TC.id_tipoConsumidor
+                INNER JOIN
+                tb_sexo AS S
+                ON C.id_sexo = S.id_sexo
+                INNER JOIN
+                tb_consumidor_evento AS CE
+                ON TC.id_consumidor = CE.id_consumidor
+                INNER JOIN
+                tb_consumidor_sucursal AS CS
+                ON C.id_consumidor = CS.id_consumidor
+            WHERE
+				(C.id_tipoConsumidor = id_tipoConsumidor OR id_tipoConsumidor IS NULL) AND
+                (C.id_sexo = id_sexo OR id_sexo IS NULL) AND
+                (CE.id_evento = id_evento OR id_evento IS NULL) AND
+                (CS.id_sucursal = id_sucursal OR id_sucursal IS NULL);
+        END IF;
+        
+        IF ROW_COUNT() > 0 THEN
+			DELETE CG
+			FROM tb_consumidor_grupo AS CG
+			WHERE CG.id_grupo = id_grupo;
+        
+			INSERT INTO tb_consumidor_grupo (id_consumidor, id_grupo, id_usuarioCreador)
+			SELECT id_consumidor, id_grupo, id_usuarioCreador FROM temp;
+            
+            SET resultado = 'Ok - 1 - Exito operacion';
+            SELECT 1 AS res;
+        ELSE
+			SET resultado = 'Ok - 2 - No se encontraron registros';
+            SELECT 2 AS res;
+        END IF;
+	COMMIT;
+END;
+//
+DELIMITER ;
+
 
 /*
 DROP PROCEDURE IF EXISTS prueba;

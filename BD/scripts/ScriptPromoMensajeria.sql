@@ -16,10 +16,11 @@ CREATE TABLE IF NOT EXISTS `cSMS_Bentrada` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Tabla para registro de mensajes';
 
 CREATE TABLE IF NOT EXISTS `cSMS_DispositivoModem` (
-	`idDispositivo` VARCHAR(45) COLLATE utf8_spanish_ci NOT NULL,
+	`id`            INT(11)                             NOT NULL AUTO_INCREMENT,
+    `idDispositivo` VARCHAR(45) COLLATE utf8_spanish_ci NOT NULL,
 	`idModem`       SMALLINT(6)                         NOT NULL,
 	`cont`          INT(11)                             NOT NULL DEFAULT '0',
-PRIMARY KEY (`idDispositivo`, `idModem`)
+PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Tabla para asociar dispositivos con modems';
 
 CREATE TABLE IF NOT EXISTS `cSMS_BsalidaSpeed` (
@@ -72,8 +73,9 @@ PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Tabla para registro de grupos para mensajeria';
 
 CREATE TABLE IF NOT EXISTS `csms_grupo_consumidor` (
+  `id`           INT(11)                             NOT NULL AUTO_INCREMENT,
   `idGrupo`      INT(11)                             NOT NULL,
   `idConsumidor` INT(11)                             NOT NULL,
   `movil`        VARCHAR(45) COLLATE utf8_spanish_ci DEFAULT NULL,
-PRIMARY KEY (`idGrupo`, `idConsumidor`)
+PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;

@@ -156,17 +156,6 @@ ALTER TABLE `tb_sexo_t`
 ADD CONSTRAINT `tb_sexo_t__tb_sexo`   FOREIGN KEY (`id_sexo`)   REFERENCES `tb_sexo`   (`id_sexo`),
 ADD CONSTRAINT `tb_sexo_t__tb_idioma` FOREIGN KEY (`id_idioma`) REFERENCES `tb_idioma` (`id_idioma`);
 
-CREATE TABLE IF NOT EXISTS `tb_grupo` (
-	`id_grupo`              SMALLINT(6)                          NOT NULL AUTO_INCREMENT,
-	`codigo`                CHAR(5)      COLLATE utf8_spanish_ci DEFAULT NULL,
-	`grupo`                 VARCHAR(50)  COLLATE utf8_spanish_ci NOT NULL,
-	`descripcion`           VARCHAR(300) COLLATE utf8_spanish_ci DEFAULT NULL,
-	`id_usuarioCreador`     INT(11)                              DEFAULT NULL,
-	`id_usuarioModificador` INT(11)                              DEFAULT NULL,
-	`activo`                TINYINT(1)                           NOT NULL DEFAULT '1',
-	PRIMARY KEY (`id_grupo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Tabla para registro de grupos';
-
 CREATE TABLE IF NOT EXISTS `tb_controlador` (
 	`id_controlador`        SMALLINT(6)                          NOT NULL AUTO_INCREMENT,
 	`nombre`                VARCHAR(100) COLLATE utf8_spanish_ci NOT NULL,
@@ -370,6 +359,19 @@ CREATE TABLE IF NOT EXISTS `tb_sucursal` (
 ALTER TABLE `tb_sucursal`
 ADD CONSTRAINT `tb_sucursal__tb_ciudad`  FOREIGN KEY (`id_ciudad`)  REFERENCES `tb_ciudad`  (`id_ciudad`),
 ADD CONSTRAINT `tb_sucursal__tb_empresa` FOREIGN KEY (`id_empresa`) REFERENCES `tb_empresa` (`id_empresa`);
+
+CREATE TABLE IF NOT EXISTS `tb_grupo` (
+	`id_grupo`              SMALLINT(6)                          NOT NULL AUTO_INCREMENT,
+	`codigo`                CHAR(5)      COLLATE utf8_spanish_ci DEFAULT NULL,
+	`grupo`                 VARCHAR(50)  COLLATE utf8_spanish_ci NOT NULL,
+	`descripcion`           VARCHAR(300) COLLATE utf8_spanish_ci DEFAULT NULL,
+    `id_empresa`            INT(11)                              NOT NULL,
+    `id_usuarioCreador`     INT(11)                              DEFAULT NULL,
+	`id_usuarioModificador` INT(11)                              DEFAULT NULL,
+	`activo`                TINYINT(1)                           NOT NULL DEFAULT '1',
+	PRIMARY KEY (`id_grupo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Tabla para registro de grupos';
+
 
 CREATE TABLE IF NOT EXISTS `tb_tipousuariod` (
 	`id_tipoUsuarioD`       TINYINT(1)                         NOT NULL AUTO_INCREMENT,
@@ -637,6 +639,19 @@ CREATE TABLE IF NOT EXISTS `tb_consumidor_sucursal` (
 ALTER TABLE `tb_consumidor_sucursal`
 ADD CONSTRAINT `tb_consumidor_sucursal__tb_consumidor` FOREIGN KEY (`id_consumidor`) REFERENCES `tb_consumidor` (`id_consumidor`),
 ADD CONSTRAINT `tb_consumidor_sucursal__tb_sucursal`   FOREIGN KEY (`id_sucursal`)   REFERENCES `tb_sucursal`   (`id_sucursal`);
+
+CREATE TABLE IF NOT EXISTS `tb_consumidor_grupo` (
+	`id_consumidorGrupo`    INT(11)     NOT NULL AUTO_INCREMENT,
+	`id_consumidor`         INT(11)     NOT NULL,
+	`id_grupo`              SMALLINT(6) NOT NULL,
+	`id_usuarioCreador`     INT(11)     DEFAULT NULL,
+	`id_usuarioModificador` INT(11)     DEFAULT NULL,
+	PRIMARY KEY (`id_consumidorGrupo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Tabla para asociar consumidores con grupos';
+
+ALTER TABLE `tb_consumidor_grupo`
+ADD CONSTRAINT `tb_consumidor_grupo__tb_consumidor` FOREIGN KEY (`id_consumidor`) REFERENCES `tb_consumidor` (`id_consumidor`),
+ADD CONSTRAINT `tb_consumidor_grupo__tb_grupo`      FOREIGN KEY (`id_grupo`)      REFERENCES `tb_grupo`      (`id_grupo`);
 
 CREATE TABLE IF NOT EXISTS `tb_visitasucursal` (
 	`id_visitaSucursal` INT(11)  NOT NULL AUTO_INCREMENT,
