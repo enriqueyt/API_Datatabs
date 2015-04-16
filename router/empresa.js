@@ -4,7 +4,7 @@ var connection = require('../config/db'),
 	seguridad  = require('../utils/seguridad');
     
 exports.buscarEmpresa = function(req, res) {
-	var comp = typeof req.params.val !== undefined || req.params.val != null ? seguridad.decodeBase64(req.params.val) : null;
+	var comp = typeof req.params.val !== 'undefined' || req.params.val != null ? seguridad.decodeBase64(req.params.val) : null;
 };
     
 /**
@@ -40,7 +40,7 @@ exports.buscarEmpresa = function(req, res) {
  *		}
  */
 exports.crearEmpresa = function(req, res) {
-	var user = typeof req.body.param !== undefined || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
+	var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
 	
 	var callback = function(id) {
 		var sql = '', mensaje = '', resultado = '';
@@ -48,7 +48,7 @@ exports.crearEmpresa = function(req, res) {
 		if (connection) {
 			sql =
 				'SET @resultado = ""; ' +
-				'CALL promociones.sp_crearEmpresa(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
+				'CALL datatabs_main.sp_crearEmpresa(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
 				'SELECT @resultado;';
 			
 			connection.db.query(
@@ -139,7 +139,7 @@ exports.modificarEmpresa = function(req, res) {
 		if (connection) {
 			sql =
 				'SET @resultado = ""; ' +
-				'CALL promociones.sp_modificarEmpresa(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
+				'CALL datatabs_main.sp_modificarEmpresa(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
 				'SELECT @resultado;';
 			
 			connection.db.query(

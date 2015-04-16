@@ -1,4 +1,4 @@
-USE `datatabs`;
+USE `datatabs_main`;
 
 SET FOREIGN_KEY_CHECKS = 0; 
 TRUNCATE tb_superdistribuidor;
@@ -573,3 +573,24 @@ INSERT INTO `tb_consumidor` (`nombres`,`apellidos`,`celular`,`id_tipoConsumidor`
 INSERT INTO `tb_consumidor` (`nombres`,`apellidos`,`celular`,`id_tipoConsumidor`) VALUES ("MacKenzie","Chan","04146772718","1");
 INSERT INTO `tb_consumidor` (`nombres`,`apellidos`,`celular`,`id_tipoConsumidor`) VALUES ("Rebecca","Sweet","04263970296","1");
 INSERT INTO `tb_consumidor` (`nombres`,`apellidos`,`celular`,`id_tipoConsumidor`) VALUES ("Rahim","Ballard","04164560606","2");
+
+/* EVENTO */
+INSERT INTO `tb_evento` (`evento`,`descripcion`,`fechaInicio`,`id_usuariod`,`id_empresa`) VALUES ("indigo","Prueba de evento","2015-04-01","11","1");
+INSERT INTO `tb_evento` (`evento`,`descripcion`,`fechaInicio`,`id_usuariod`,`id_empresa`) VALUES ("orange","Prueba de evento","2015-04-01","12","2");
+INSERT INTO `tb_evento` (`evento`,`descripcion`,`fechaInicio`,`id_usuariod`,`id_empresa`) VALUES ("black","Prueba de evento","2015-04-01","13","3");
+INSERT INTO `tb_evento` (`evento`,`descripcion`,`fechaInicio`,`id_usuariod`,`id_empresa`) VALUES ("red","Prueba de evento","2015-04-01","14","4");
+INSERT INTO `tb_evento` (`evento`,`descripcion`,`fechaInicio`,`id_usuariod`,`id_empresa`) VALUES ("yellow","Prueba de evento","2015-04-01","15","5");
+INSERT INTO `tb_evento` (`evento`,`descripcion`,`fechaInicio`,`id_usuariod`,`id_empresa`) VALUES ("green","Prueba de evento","2015-04-01","16","6");
+INSERT INTO `tb_evento` (`evento`,`descripcion`,`fechaInicio`,`id_usuariod`,`id_empresa`) VALUES ("white","Prueba de evento","2015-04-01","17","7");
+INSERT INTO `tb_evento` (`evento`,`descripcion`,`fechaInicio`,`id_usuariod`,`id_empresa`) VALUES ("blue","Prueba de evento","2015-04-01","18","8");
+INSERT INTO `tb_evento` (`evento`,`descripcion`,`fechaInicio`,`id_usuariod`,`id_empresa`) VALUES ("purple","Prueba de evento","2015-04-01","19","9");
+
+INSERT INTO `tb_evento_sucursal` (`id_evento`,`id_sucursal`) VALUES ("1","1");
+INSERT INTO `tb_evento_sucursal` (`id_evento`,`id_sucursal`) VALUES ("2","11");
+INSERT INTO `tb_evento_sucursal` (`id_evento`,`id_sucursal`) VALUES ("3","30");
+INSERT INTO `tb_evento_sucursal` (`id_evento`,`id_sucursal`) VALUES ("4","45");
+INSERT INTO `tb_evento_sucursal` (`id_evento`,`id_sucursal`) VALUES ("5","3");
+INSERT INTO `tb_evento_sucursal` (`id_evento`,`id_sucursal`) VALUES ("6","51");
+INSERT INTO `tb_evento_sucursal` (`id_evento`,`id_sucursal`) VALUES ("7","55");
+INSERT INTO `tb_evento_sucursal` (`id_evento`,`id_sucursal`) VALUES ("8","90");
+INSERT INTO `tb_evento_sucursal` (`id_evento`,`id_sucursal`) VALUES ("9","1");

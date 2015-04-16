@@ -4,10 +4,10 @@ var connection = require('../config/db'),
 	seguridad  = require('../utils/seguridad');
 
 exports.buscarDispositivo = function(req, res) {
-	var user    = typeof req.params.val     !== undefined || req.params.val     != null ? seguridad.decodeBase64(req.params.val)     : null,
-        device  = typeof req.params.device  !== undefined || req.params.device  != null ? seguridad.decodeBase64(req.params.device)  : null,
-        company = typeof req.params.company !== undefined || req.params.company != null ? seguridad.decodeBase64(req.params.company) : null,
-        office  = typeof req.params.office  !== undefined || req.params.office  != null ? seguridad.decodeBase64(req.params.office)  : null;
+	var user    = typeof req.params.val     !== 'undefined' || req.params.val     != null ? seguridad.decodeBase64(req.params.val)     : null,
+        device  = typeof req.params.device  !== 'undefined' || req.params.device  != null ? seguridad.decodeBase64(req.params.device)  : null,
+        company = typeof req.params.company !== 'undefined' || req.params.company != null ? seguridad.decodeBase64(req.params.company) : null,
+        office  = typeof req.params.office  !== 'undefined' || req.params.office  != null ? seguridad.decodeBase64(req.params.office)  : null;
         
     
 };
@@ -62,15 +62,15 @@ exports.buscarEventos = function(req, res) {
                     'Empresa.id_empresa, ' +
                     'Empresa.nombre AS empresa ' +
                 'FROM ' +
-                    'promociones.tb_evento AS Evento ' +
+                    'datatabs_main.tb_evento AS Evento ' +
                     'INNER JOIN ' +
-                    'promociones.tb_evento_dispositivo AS EventoDisp ' +
+                    'datatabs_main.tb_evento_dispositivo AS EventoDisp ' +
                     'ON Evento.id_evento = EventoDisp.id_evento ' +
                     'INNER JOIN ' +
-                    'promociones.tb_empresa AS Empresa ' +
+                    'datatabs_main.tb_empresa AS Empresa ' +
                     'ON Evento.id_empresa = Empresa.id_empresa ' +
                     'LEFT OUTER JOIN ' +
-                    'promociones.tb_imagen AS Imagen ' +
+                    'datatabs_main.tb_imagen AS Imagen ' +
                     'ON Evento.id_imagen = Imagen.id_imagen ' +
                 'WHERE ' +
                     'EventoDisp.id_dispositivo = ? AND ' +
@@ -141,7 +141,7 @@ exports.buscarEventos = function(req, res) {
  *		}
  */
 exports.crearDispositivo = function(req, res) {
-	var user = typeof req.body.param !== undefined || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
+	var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
 	
 	var callback = function(id) {
 		var sql = '', mensaje = '', resultado = '';
@@ -149,7 +149,7 @@ exports.crearDispositivo = function(req, res) {
 		if (connection) {
 			sql =
 				'SET @resultado = ""; ' +
-				'CALL promociones.sp_crearDispositivo(?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
+				'CALL datatabs_main.sp_crearDispositivo(?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
 				'SELECT @resultado;';
 			
 			connection.db.query(
@@ -238,7 +238,7 @@ exports.modificarDispositivo = function(req, res) {
 		if (connection) {
 			sql =
 				'SET @resultado = ""; ' +
-				'CALL promociones.sp_modificarDispositivo(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
+				'CALL datatabs_main.sp_modificarDispositivo(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
 				'SELECT @resultado;';
 			
 			connection.db.query(
@@ -348,7 +348,7 @@ exports.asociarDispositivoSucursal = function(req, res) {
 		if (connection) {
 			sql =
 				'SET @resultado = ""; ' +
-				'CALL promociones.sp_asociarDispositivoSucursal(?, ?, ?, @resultado); ' +
+				'CALL datatabs_main.sp_asociarDispositivoSucursal(?, ?, ?, @resultado); ' +
 				'SELECT @resultado;';
 			
 			connection.db.query(
@@ -451,7 +451,7 @@ exports.asociarEventoDispositivo = function(req, res) {
 		if (connection) {
 			sql =
 				'SET @resultado = ""; ' +
-				'CALL promociones.sp_asociarEventoDispositivo(?, ?, ?, @resultado); ' +
+				'CALL datatabs_main.sp_asociarEventoDispositivo(?, ?, ?, @resultado); ' +
 				'SELECT @resultado;';
 			
 			connection.db.query(
@@ -548,7 +548,7 @@ exports.validarDispositivo = function(req, res) {
 		if (connection) {
 			sql =
 				'SET @resultado = ""; ' +
-				'CALL promociones.sp_validarDispositivo(?, @resultado); ' +
+				'CALL datatabs_main.sp_validarDispositivo(?, @resultado); ' +
 				'SELECT @resultado;';
 			
 			connection.db.query(

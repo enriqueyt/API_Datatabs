@@ -41,7 +41,7 @@ exports.buscarConsumidor = function(req, res) {
  *		}
  */
 exports.crearConsumidor = function(req, res) {
-	var user = typeof req.body.param !== undefined || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
+	var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
 	
 	var callback = function(id) {
 		var sql = '', mensaje = '', resultado = '';
@@ -49,7 +49,7 @@ exports.crearConsumidor = function(req, res) {
 		if (connection) {
 			sql =
 				'SET @resultado = ""; ' +
-				'CALL promociones.sp_crearConsumidor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
+				'CALL datatabs_main.sp_crearConsumidor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
 				'SELECT @resultado;';
 			
 			connection.db.query(
@@ -142,7 +142,7 @@ exports.modificarConsumidor = function(req, res) {
 		if (connection) {
 			sql =
 				'SET @resultado = ""; ' +
-				'CALL promociones.sp_modificarConsumidor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
+				'CALL datatabs_main.sp_modificarConsumidor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
 				'SELECT @resultado;';
 			
 			connection.db.query(

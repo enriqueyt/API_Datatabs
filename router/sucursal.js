@@ -4,7 +4,7 @@ var connection = require('../config/db'),
 	seguridad  = require('../utils/seguridad');
     
 exports.buscarSucursal = function(req, res) {
-	var branch = typeof req.params.val !== undefined || req.params.val != null ? seguridad.decodeBase64(req.params.val) : null;
+	var branch = typeof req.params.val !== 'undefined' || req.params.val != null ? seguridad.decodeBase64(req.params.val) : null;
 };
     
 /**
@@ -35,7 +35,7 @@ exports.buscarSucursal = function(req, res) {
  *		}
  */
 exports.crearSucursal = function(req, res) {
-	var user = typeof req.body.param !== undefined || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
+	var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
 	
 	var callback = function(id) {
 		var sql = '', mensaje = '', resultado = '';
@@ -43,7 +43,7 @@ exports.crearSucursal = function(req, res) {
 		if (connection) {
 			sql =
 				'SET @resultado = ""; ' +
-				'CALL promociones.sp_crearSucursal(?, ?, ?, ?, ?, @resultado); ' +
+				'CALL datatabs_main.sp_crearSucursal(?, ?, ?, ?, ?, @resultado); ' +
 				'SELECT @resultado;';
 			
 			connection.db.query(
@@ -124,7 +124,7 @@ exports.modificarSucursal = function(req, res) {
 		if (connection) {
 			sql =
 				'SET @resultado = ""; ' +
-				'CALL promociones.sp_modificarSucursal(?, ?, ?, ?, ?, ?, @resultado); ' +
+				'CALL datatabs_main.sp_modificarSucursal(?, ?, ?, ?, ?, ?, @resultado); ' +
 				'SELECT @resultado;';
 			
 			connection.db.query(

@@ -9,7 +9,8 @@ var connection = require('../config/db'),
  *  Gets an event or various events.
  *
  *  @param
- *		A request url list parameters (an id in Base64 related to the company, an integer related to an offset and an id in Base64 related to an event, it could be optional.)
+ *		A request url list parameters:
+ *          An id in Base64 related to the company, an id in Base64 related to the branch office (this can be 0), an integer related to an offset and an id in Base64 related to an event (this can be optional).
  *
  *	@return
  *		A JSON string:
@@ -22,8 +23,10 @@ var connection = require('../config/db'),
  *              "fechaFin"    : "YYYY-MM-DD HH:mm:ss",          A string that represents the event's end date.
  *              "flujo"       : [{ XXXXX }],                    A JSON string that represents the event's flow.
  *              "imagen"      : "XXXXX",                        A string that represents the image file name related to an event.
- *              "id_empresa"  : "Base64EncodeString(XXXXX)",    A string in Base64 that represents the identifier related to an company.
+ *              "id_empresa"  : "Base64EncodeString(XXXXX)",    A string in Base64 that represents the identifier related to a company.
  *              "empresa"     : "XXXXX"                         A string that represents the company's name.
+ *              "id_sucursal" : "Base64EncodeString(XXXXX)",    A string in Base64 that represents the identifier related to a branch office. This field can be optional if the office request  parameter value is 0.
+ *              "sucursal"    : "XXXXX"                         A string that represents the branch office's name. This field can be optional if the office request parameter value is 0.
  *          },
  *          ...
  *      ]
@@ -35,9 +38,10 @@ var connection = require('../config/db'),
  *		}
  */
 exports.buscarEvento = function(req, res) {
-	var company = seguridad.decodeBase64(req.params.company);
-    var offset  = typeof req.params.offset  !== undefined || req.params.offset  != null ? req.params.offset                      : 10;
-    var event   = typeof req.params.val     !== undefined || req.params.val     != null ? seguridad.decodeBase64(req.params.val) : null;
+	var company = parseInt(seguridad.decodeBase64(req.params.company));
+    var office  = parseInt(seguridad.decodeBase64(req.params.office));
+    var offset  = typeof req.params.offset  !== 'undefined' || req.params.offset  != null ? parseInt(req.params.offset)                      : 10;
+    var event   = typeof req.params.val     !== 'undefined' || req.params.val     != null ? parseInt(seguridad.decodeBase64(req.params.val)) : null;
     
     var sql = '';
 	
@@ -45,25 +49,53 @@ exports.buscarEvento = function(req, res) {
         if ((/\/next\//g).test(req.route)) {
             sql =
                 'SELECT ' +
-                    'id_evento, ' +
-                    'evento, ' +
-                    'descripcion, ' +
-                    'fechaInicio, ' +
-                    'fechaFin, ' +
-                    'flujo, ' +
-                    'id_empresa, ' +
-                    'id_imagen ' +
+                    'E.id_evento, ' +
+                    'E.evento, ' +
+                    'E.descripcion, ' +
+                    'E.fechaInicio, ' +
+                    'E.fechaFin, ' +
+                    'E.flujo, ' +
+                    'E.id_empresa, ' +
+                    'C.nombre, ' +
+                    (
+                        office != 0
+                        ?
+                            'ES.id_sucursal, ' +
+                            'S.sucursal, '
+                        :
+                            ''
+                    ) +
+                    'I.imagen ' +
                 'FROM ' +
-                    'promociones.tb_evento AS E ' +
+                    'datatabs_main.tb_evento AS E ' +
+                    'INNER JOIN ' +
+                    'datatabs_main.tb_empresa AS C ' +
+                    'ON E.id_empresa = C.id_empresa ' +
+                    (
+                        office != 0
+                        ?
+                            'LEFT OUTER JOIN ' +
+                            'datatabs_main.tb_evento_sucursal AS ES ' +
+                            'ON E.id_evento = ES.id_evento ' +
+                            'INNER JOIN ' +
+                            'datatabs_main.tb_sucursal AS S ' +
+                            'ON ES.id_sucursal = S.id_sucursal '
+                        :
+                            ''
+                    ) +
+                    'LEFT OUTER JOIN ' +
+                    'datatabs_main.tb_imagen AS I ' +
+                    'ON E.id_imagen = I.id_imagen ' +
                 'WHERE ' +
                     'E.id_evento > ? AND ' +
                     'E.id_empresa = ? AND ' +
+                    (office != 0 ? 'ES.id_sucursal = ? AND ' : '') +
                     'E.activo = 1 ' +
                 'LIMIT 0, ?;';
                 
             connection.db.query(
                 sql,
-                [event, company, offset],
+                (office != 0 ? [event, company, office, offset] : [event, company, offset]),
                 function(err, result) {
                     if (err)
                         utilidades.printError(err, res);
@@ -71,6 +103,8 @@ exports.buscarEvento = function(req, res) {
                         for (i = 0; i < result.length; i++) {
                             result[i].id_evento  = seguridad.encodeBase64(result[i].id_evento);
                             result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
+                            if (office != 0)
+                                result[i].id_sucursal = seguridad.encodeBase64(result[i].id_sucursal);
                         }
                         
                         res.contentType('application/json');
@@ -83,25 +117,53 @@ exports.buscarEvento = function(req, res) {
         else if ((/\/previous\//g).test(req.route)) {
             sql =
                 'SELECT ' +
-                    'id_evento, ' +
-                    'evento, ' +
-                    'descripcion, ' +
-                    'fechaInicio, ' +
-                    'fechaFin, ' +
-                    'flujo, ' +
-                    'id_empresa, ' +
-                    'id_imagen ' +
+                    'E.id_evento, ' +
+                    'E.evento, ' +
+                    'E.descripcion, ' +
+                    'E.fechaInicio, ' +
+                    'E.fechaFin, ' +
+                    'E.flujo, ' +
+                    'E.id_empresa, ' +
+                    'C.nombre, ' +
+                    (
+                        office != 0
+                        ?
+                            'ES.id_sucursal, ' +
+                            'S.sucursal, '
+                        :
+                            ''
+                    ) +
+                    'I.imagen ' +
                 'FROM ' +
-                    'promociones.tb_evento AS E ' +
+                    'datatabs_main.tb_evento AS E ' +
+                    'INNER JOIN ' +
+                    'datatabs_main.tb_empresa AS C ' +
+                    'ON E.id_empresa = C.id_empresa ' +
+                    (
+                        office != 0
+                        ?
+                            'LEFT OUTER JOIN ' +
+                            'datatabs_main.tb_evento_sucursal AS ES ' +
+                            'ON E.id_evento = ES.id_evento ' +
+                            'INNER JOIN ' +
+                            'datatabs_main.tb_sucursal AS S ' +
+                            'ON ES.id_sucursal = S.id_sucursal '
+                        :
+                            ''
+                    ) +
+                    'LEFT OUTER JOIN ' +
+                    'datatabs_main.tb_imagen AS I ' +
+                    'ON E.id_imagen = I.id_imagen ' +
                 'WHERE ' +
                     'E.id_evento < ? AND ' +
                     'E.id_empresa = ? AND ' +
+                    (office != 0 ? 'ES.id_sucursal = ? AND ' : '') +
                     'E.activo = 1 ' +
                 'LIMIT 0, ?;';
                 
             connection.db.query(
                 sql,
-                [event, company, offset],
+                (office != 0 ? [event, company, office, offset] : [event, company, offset]),
                 function(err, result) {
                     if (err)
                         utilidades.printError(err, res);
@@ -109,6 +171,8 @@ exports.buscarEvento = function(req, res) {
                         for (i = 0; i < result.length; i++) {
                             result[i].id_evento  = seguridad.encodeBase64(result[i].id_evento);
                             result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
+                            if (office != 0)
+                                result[i].id_sucursal = seguridad.encodeBase64(result[i].id_sucursal);
                         }
                         
                         res.contentType('application/json');
@@ -121,33 +185,79 @@ exports.buscarEvento = function(req, res) {
         else {
             sql =
                 'SELECT ' +
-                    'id_evento, ' +
-                    'evento, ' +
-                    'descripcion, ' +
-                    'fechaInicio, ' +
-                    'fechaFin, ' +
-                    'flujo, ' +
-                    'id_empresa, ' +
-                    'id_imagen ' +
+                    'E.id_evento, ' +
+                    'E.evento, ' +
+                    'E.descripcion, ' +
+                    'E.fechaInicio, ' +
+                    'E.fechaFin, ' +
+                    'E.flujo, ' +
+                    'E.id_empresa, ' +
+                    'C.nombre, ' +
+                    (
+                        office != 0
+                        ?
+                            'ES.id_sucursal, ' +
+                            'S.sucursal, '
+                        :
+                            ''
+                    ) +
+                    'I.imagen ' +
                 'FROM ' +
-                    'promociones.tb_evento AS E ' +
+                    'datatabs_main.tb_evento AS E ' +
+                    'INNER JOIN ' +
+                    'datatabs_main.tb_empresa AS C ' +
+                    'ON E.id_empresa = C.id_empresa ' +
+                    (
+                        office != 0
+                        ?
+                            'LEFT OUTER JOIN ' +
+                            'datatabs_main.tb_evento_sucursal AS ES ' +
+                            'ON E.id_evento = ES.id_evento ' +
+                            'INNER JOIN ' +
+                            'datatabs_main.tb_sucursal AS S ' +
+                            'ON ES.id_sucursal = S.id_sucursal '
+                        :
+                            ''
+                    ) +
+                    'LEFT OUTER JOIN ' +
+                    'datatabs_main.tb_imagen AS I ' +
+                    'ON E.id_imagen = I.id_imagen ' +
                 'WHERE ' +
                     (
                         event != null
-                        ? 'E.id_evento = ? AND E.id_empresa = ? AND E.activo = 1;'
-                        : 'E.id_empresa = ? AND E.activo = 1 LIMIT 0, ?;'
+                        ? 
+                            'E.id_evento = ? AND ' +
+                            'E.id_empresa = ? AND ' +
+                            (office != 0 ? 'ES.id_sucursal = ? AND ' : '') +
+                            'E.activo = 1;'
+                        :
+                            'E.id_empresa = ? AND ' +
+                            (office != 0 ? 'ES.id_sucursal = ? AND ' : '') +
+                            'E.activo = 1 ' +
+                            'LIMIT 0, ?;'
                     );
-                    
+            
             connection.db.query(
                 sql,
-                (event != null ? [event, company] : [company, offset]),
+                (
+                    event != null
+                    ?
+                        (office != 0 ? [event, company, office] : [event, company])
+                    :
+                        (office != 0 ? [company, office, offset] : [company, offset])
+                ),
                 function(err, result) {
-                    if (err)
+                    if (err) {
+                        console.log('error')
                         utilidades.printError(err, res);
+                    }
                     else {
+                        console.log(JSON.stringify(result))
                         for (i = 0; i < result.length; i++) {
                             result[i].id_evento  = seguridad.encodeBase64(result[i].id_evento);
                             result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
+                            if (office != 0)
+                                result[i].id_sucursal = seguridad.encodeBase64(result[i].id_sucursal);
                         }
                         
                         res.contentType('application/json');
@@ -159,7 +269,7 @@ exports.buscarEvento = function(req, res) {
         }
     }
 };
-    
+ 
 /**
  *	HttpPost
  *
@@ -188,7 +298,7 @@ exports.buscarEvento = function(req, res) {
  *		}
  */
 exports.crearEvento = function(req, res) {
-	var user = typeof req.body.param !== undefined || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
+	var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
 	
 	var callback = function(id) {
 		var sql = '', mensaje = '', resultado = '';
@@ -196,7 +306,7 @@ exports.crearEvento = function(req, res) {
 		if (connection) {
 			sql =
 				'SET @resultado = ""; ' +
-				'CALL promociones.sp_crearEvento(?, ?, ?, ?, ?, @resultado); ' +
+				'CALL datatabs_main.sp_crearEvento(?, ?, ?, ?, ?, @resultado); ' +
 				'SELECT @resultado;';
 			
 			connection.db.query(
@@ -278,7 +388,7 @@ exports.modificarEvento = function(req, res) {
 		if (connection) {
 			sql =
 				'SET @resultado = ""; ' +
-				'CALL promociones.sp_modificarEvento(?, ?, ?, ?, ?, ?, ?, @resultado); ' +
+				'CALL datatabs_main.sp_modificarEvento(?, ?, ?, ?, ?, ?, ?, @resultado); ' +
 				'SELECT @resultado;';
 			
 			connection.db.query(
@@ -358,7 +468,7 @@ exports.asociarEventoSucursal = function(req, res) {
 		if (connection) {
 			sql =
 				'SET @resultado = ""; ' +
-				'CALL promociones.sp_asociarEventoSucursal(?, ?, ?, @resultado); ' +
+				'CALL datatabs_main.sp_asociarEventoSucursal(?, ?, ?, @resultado); ' +
 				'SELECT @resultado;';
 			
 			connection.db.query(

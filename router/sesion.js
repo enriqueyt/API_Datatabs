@@ -34,7 +34,7 @@ exports.autenticar = function(req, res) {
     if (connection) {
 		sql =
 			'SET @resultado = ""; ' +
-            'CALL promociones.sp_autenticarUsuario(?, ?, @resultado); ' +
+            'CALL datatabs_main.sp_autenticarUsuario(?, ?, @resultado); ' +
             'SELECT @resultado;';
 			
         connection.db.query(
@@ -62,7 +62,7 @@ exports.autenticar = function(req, res) {
                                         'DATE_FORMAT(S.fechaInicio, "%Y-%m-%d %H:%i:%s") AS fechaI, ' +
                                         'DATE_FORMAT(S.fechaUltimaOp, "%Y-%m-%d %H:%i:%s") AS fechaUO ' +
                                     'FROM ' +
-                                        'promociones.tb_sesion AS S ' +
+                                        'datatabs_main.tb_sesion AS S ' +
                                     'WHERE ' +
                                         'S.id_sesion = ?;';
                             
@@ -122,7 +122,7 @@ exports.reautenticar = function(req, res) {
         if (connection) {
             sql =
                 'SET @resultado = ""; ' +
-                'CALL promociones.sp_reautenticarUsuario(?, @resultado); ' +
+                'CALL datatabs_main.sp_reautenticarUsuario(?, @resultado); ' +
                 'SELECT @resultado;';
         
             connection.db.query(
@@ -146,7 +146,7 @@ exports.reautenticar = function(req, res) {
                                             'DATE_FORMAT(S.fechaInicio, "%Y-%m-%d %H:%i:%s") AS fechaI, ' +
                                             'DATE_FORMAT(S.fechaUltimaOp, "%Y-%m-%d %H:%i:%s") AS fechaUO ' +
                                         'FROM ' +
-                                            'promociones.tb_sesion AS S ' +
+                                            'datatabs_main.tb_sesion AS S ' +
                                         'WHERE ' +
                                             'S.id_sesion = ?;';
                                             
@@ -212,7 +212,7 @@ exports.desautenticar = function(req, res) {
 		if (connection) {
 			sql =
 				'SET @resultado = ""; ' +
-				'CALL promociones.sp_desautenticarUsuario(?, @resultado); ' +
+				'CALL datatabs_main.sp_desautenticarUsuario(?, @resultado); ' +
 				'SELECT @resultado;';
 		
 			connection.db.query(

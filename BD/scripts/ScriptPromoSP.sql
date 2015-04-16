@@ -1,4 +1,4 @@
-USE `datatabs`;
+USE `datatabs_main`;
 
 /************************* TABLAS IDIOMA *************************/
 DROP PROCEDURE IF EXISTS sp_crearIdioma;
@@ -13645,32 +13645,40 @@ BEGIN
 			UD.id_usuarioD = id_usuarioD;
     ELSEIF id_perfil = 3 THEN
 		SELECT
-			UD.id_usuarioD      AS usuariod,
-            UD.nombres          AS nombre,
-            UD.apellidos        AS apellido,
-            id_perfil           AS perfil,
-            UD.id_idioma        AS idioma,
-            UDD.id_distribuidor AS distribuidor
+			UD.id_usuarioD         AS usuariod,
+            UD.nombres             AS nombre,
+            UD.apellidos           AS apellido,
+            id_perfil              AS perfil,
+            UD.id_idioma           AS idioma,
+            D.id_superDistribuidor AS superDistribuidor,
+            UDD.id_distribuidor    AS distribuidor
         FROM
 			tb_usuariod AS UD
             INNER JOIN
             tb_usuariod_distribuidor AS UDD
             ON UD.id_usuarioD = UDD.id_usuarioD
+            LEFT OUTER JOIN
+            tb_distribuidor AS D
+            ON UDD.id_distribuidor = D.id_distribuidor
 		WHERE
 			UD.id_usuarioD = id_usuarioD;
     ELSEIF id_perfil = 4 THEN
 		SELECT
-			UD.id_usuarioD AS usuariod,
-            UD.nombres     AS nombre,
-            UD.apellidos   AS apellido,
-            id_perfil      AS perfil,
-            UD.id_idioma   AS idioma,
-            UDE.id_empresa AS empresa
+			UD.id_usuarioD    AS usuariod,
+            UD.nombres        AS nombre,
+            UD.apellidos      AS apellido,
+            id_perfil         AS perfil,
+            UD.id_idioma      AS idioma,
+            E.id_distribuidor AS distribuidor,
+            UDE.id_empresa    AS empresa
         FROM
 			tb_usuariod AS UD
             INNER JOIN
             tb_usuariod_empresa AS UDE
             ON UD.id_usuarioD = UDE.id_usuarioD
+            INNER JOIN
+            tb_empresa AS E
+            ON UDE.id_empresa = E.id_empresa
 		WHERE
 			UD.id_usuarioD = id_usuarioD;
     ELSEIF id_perfil = 5 THEN
@@ -13680,12 +13688,16 @@ BEGIN
             UD.apellidos    AS apellido,
             id_perfil       AS perfil,
             UD.id_idioma    AS idioma,
+            S.id_empresa    AS empresa,
             UDS.id_sucursal AS sucursal
         FROM
 			tb_usuariod AS UD
             INNER JOIN
             tb_usuariod_sucursal AS UDS
             ON UD.id_usuarioD = UDS.id_usuarioD
+            INNER JOIN
+            tb_sucursal AS S
+            ON UDS.id_sucursal = S.id_sucursal
 		WHERE
 			UD.id_usuarioD = id_usuarioD;
     END IF;

@@ -1,7 +1,7 @@
-DROP SCHEMA IF EXISTS `datatabs`;
+DROP SCHEMA IF EXISTS `datatabs_main`;
 
-CREATE DATABASE IF NOT EXISTS `datatabs` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
-USE `datatabs`;
+CREATE DATABASE IF NOT EXISTS `datatabs_main` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
+USE `datatabs_main`;
 
 CREATE TABLE IF NOT EXISTS `tb_idioma` (
 	`id_idioma`             TINYINT(3)                         NOT NULL AUTO_INCREMENT,

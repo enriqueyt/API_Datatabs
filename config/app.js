@@ -102,12 +102,12 @@ app.put   ('/dispositivo/validar/:val' , dispositivo.validarDispositivo        )
 /******************************************** EVENTO *********************************************/
 /*************************************************************************************************/
 /* HttpGet */
-app.get   ('/evento/:company/:offset/:val?'        , evento.buscarEvento         );
-app.get   ('/evento/:company/next/:offset/:val'    , evento.buscarEvento         );
-app.get   ('/evento/:company/previous/:offset/:val', evento.buscarEvento         );
+app.get   ('/evento/:company/:office/:offset/:val?'        , evento.buscarEvento );
+app.get   ('/evento/:company/:office/next/:offset/:val'    , evento.buscarEvento );
+app.get   ('/evento/:company/:office/previous/:offset/:val', evento.buscarEvento );
 /* [HttpPost] */                                                 
 app.post  ('/evento'                               , evento.crearEvento          );
-/* [HttpPut] */                                                                  
+/* [HttpPut] */                                                                        
 app.put   ('/evento/:val'                          , evento.modificarEvento      );
 app.put   ('/evento/sucursal/:val'                 , evento.asociarEventoSucursal);
 /* [HttpDelete] */

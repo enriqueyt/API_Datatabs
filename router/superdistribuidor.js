@@ -4,7 +4,7 @@ var connection = require('../config/db'),
 	seguridad  = require('../utils/seguridad');
 
 exports.buscarSuperDistribuidor = function(req, res) {
-	var superDist = typeof req.params.val !== undefined || req.params.val != null ? seguridad.decodeBase64(req.params.val) : null;
+	var superDist = typeof req.params.val !== 'undefined' || req.params.val != null ? seguridad.decodeBase64(req.params.val) : null;
 };
     
 /**
@@ -39,7 +39,7 @@ exports.buscarSuperDistribuidor = function(req, res) {
  *		}
  */
 exports.crearSuperDistribuidor = function(req, res) {
-	var user = typeof req.body.param !== undefined || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
+	var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
 	
 	var callback = function(id) {
 		var sql = '', mensaje = '', resultado = '';
@@ -47,7 +47,7 @@ exports.crearSuperDistribuidor = function(req, res) {
 		if (connection) {
 			sql =
 				'SET @resultado = ""; ' +
-				'CALL promociones.sp_crearSuperDistribuidor(?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
+				'CALL datatabs_main.sp_crearSuperDistribuidor(?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
 				'SELECT @resultado;';
 			
 			connection.db.query(
@@ -137,7 +137,7 @@ exports.modificarSuperDistribuidor = function(req, res) {
 		if (connection) {
 			sql =
 				'SET @resultado = ""; ' +
-				'CALL promociones.sp_modificarSuperDistribuidor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
+				'CALL datatabs_main.sp_modificarSuperDistribuidor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
 				'SELECT @resultado;';
 			
 			connection.db.query(

@@ -4,7 +4,7 @@ var connection = require('../config/db'),
 	seguridad  = require('../utils/seguridad');
 
 exports.buscarUsuarioD = function(req, res) {
-	var userD = typeof req.params.val !== undefined || req.params.val != null ? seguridad.decodeBase64(req.params.val) : null;
+	var userD = typeof req.params.val !== 'undefined' || req.params.val != null ? seguridad.decodeBase64(req.params.val) : null;
 };
    
 /**
@@ -22,9 +22,9 @@ exports.buscarUsuarioD = function(req, res) {
  *          "apellido"          : "XXXXX",  A string that represents the user last name.
  *          "perfil"            : 0,        An integer identifier that represents the profile related to the user.
  *          "idioma"            : 0,        An integer identifier that represents the language related to the user.
- *          "superdistribuidor" : 0,        An integer identifier that represents the super distributor related to the user. This field applies when the profile value is 2.
- *          "distribuidor"      : 0,        An integer identifier that represents the distributor related to the user. This field applies when the profile value is 3.
- *          "empresa"           : 0,        An integer identifier that represents the company related to the user. This field applies when the profile value is 4.
+ *          "superdistribuidor" : 0,        An integer identifier that represents the super distributor related to the user. This field applies when the profile value is 2 and 3.
+ *          "distribuidor"      : 0,        An integer identifier that represents the distributor related to the user. This field applies when the profile value is 3 and 4.
+ *          "empresa"           : 0,        An integer identifier that represents the company related to the user. This field applies when the profile value is 4 and 5.
  *          "sucursal"          : 0         An integer identifier that represents the branch office related to the user. This field applies when the profile value is 5.
  *		}
  *
@@ -43,7 +43,7 @@ exports.buscarInfoUsuarioD = function(req, res) {
 		if (connection) {
 			sql =
 				'SET @resultado = ""; ' +
-				'CALL promociones.sp_buscarInfoUsuario(?, @resultado); ' +
+				'CALL datatabs_main.sp_buscarInfoUsuario(?, @resultado); ' +
 				'SELECT @resultado;';
 			
 			connection.db.query(
@@ -55,6 +55,18 @@ exports.buscarInfoUsuarioD = function(req, res) {
                     else {
                         mensaje   = result[3][0]['@resultado'];
                         resultado = result[1][0];
+                        
+                        resultado.id_usuarioD = seguridad.encodeBase64(resultado.id_usuarioD);
+                        resultado.id_perfil   = seguridad.encodeBase64(resultado.id_perfil);
+                        resultado.id_idioma   = seguridad.encodeBase64(resultado.id_idioma);
+                        if (typeof resultado.id_superDistribuidor !== 'undefined' && resultado.id_superDistribuidor != null)
+                            resultado.id_superDistribuidor = seguridad.encodeBase64(resultado.id_superDistribuidor);
+                        if (typeof resultado.id_distribuidor !== 'undefined' && resultado.id_distribuidor != null)
+                            resultado.id_distribuidor = seguridad.encodeBase64(resultado.id_distribuidor);
+                        if (typeof resultado.id_empresa !== 'undefined' && resultado.id_empresa != null)
+                            resultado.id_empresa = seguridad.encodeBase64(resultado.id_empresa);
+                        if (typeof resultado.id_sucursal !== 'undefined' && resultado.id_sucursal != null)
+                            resultado.id_sucursal = seguridad.encodeBase64(resultado.id_sucursal);
                 
                         res.contentType('application/json');
                         res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : resultado }));
@@ -113,7 +125,7 @@ exports.buscarInfoUsuarioD = function(req, res) {
  *		}
  */
 exports.crearUsuarioD = function(req, res) {
-	var user = typeof req.body.param !== undefined || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
+	var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
 	
 	var callback = function(id) {
 		var sql = '', mensaje = '', resultado = '';
@@ -121,7 +133,7 @@ exports.crearUsuarioD = function(req, res) {
 		if (connection) {
 			sql =
 				'SET @resultado = ""; ' +
-				'CALL promociones.sp_crearUsuarioD(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
+				'CALL datatabs_main.sp_crearUsuarioD(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
 				'SELECT @resultado;';
 			
 			connection.db.query(
@@ -220,7 +232,7 @@ exports.modificarUsuarioD = function(req, res) {
 		if (connection) {
 			sql =
 				'SET @resultado = ""; ' +
-				'CALL promociones.sp_modificarUsuarioD(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, @resultado); ' +
+				'CALL datatabs_main.sp_modificarUsuarioD(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, @resultado); ' +
 				'SELECT @resultado;';
 			
 			connection.db.query(

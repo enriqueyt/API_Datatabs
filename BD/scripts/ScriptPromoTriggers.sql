@@ -1,4 +1,4 @@
-USE `datatabs`;
+USE `datatabs_main`;
 
 /* TABLAS IDIOMA */
 DROP TRIGGER IF EXISTS tr_idioma_createA;

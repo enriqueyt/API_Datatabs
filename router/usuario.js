@@ -30,7 +30,7 @@ exports.crearAdmin = function(req, res) {
     if (connection) {
         sql =
             'SET @resultado = ""; ' +
-            'CALL promociones.sp_crearUsuarioAdmin(?, ?, ?, @resultado); ' +
+            'CALL datatabs_main.sp_crearUsuarioAdmin(?, ?, ?, @resultado); ' +
             'SELECT @resultado;';
 
         connection.db.query(
@@ -86,7 +86,7 @@ exports.existeUsuario = function(req, res) {
         sql =
             'SELECT * ' +
             'FROM ' +
-                'promociones.tb_usuario AS U ' +
+                'datatabs_main.tb_usuario AS U ' +
             'WHERE ' +
                 'U.usuario_ = ? OR U.usuarioCorreo_ = ?;';
                 
@@ -135,7 +135,7 @@ exports.existeCorreo = function(req, res) {
         sql =
             'SELECT * ' +
             'FROM ' +
-                'promociones.tb_usuario AS U ' +
+                'datatabs_main.tb_usuario AS U ' +
             'WHERE ' +
                 'U.usuarioCorreo_ = ?;';
 		
@@ -192,7 +192,7 @@ exports.crearUsuario = function(req, res) {
         if (connection) {
 			sql =
 				'SET @resultado = ""; ' +
-				'CALL promociones.sp_crearUsuario(?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
+				'CALL datatabs_main.sp_crearUsuario(?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
 				'SELECT @resultado;';
 			
             connection.db.query(
@@ -285,7 +285,7 @@ exports.modificarUsuario = function(req, res) {
         if (connection) {
             sql =
                 'SET @resultado = ""; ' +
-                'CALL promociones.sp_modificarUsuario(?, ?, ?, ?, ?, ?, NULL, NULL, @resultado); ' +
+                'CALL datatabs_main.sp_modificarUsuario(?, ?, ?, ?, ?, ?, NULL, NULL, @resultado); ' +
                 'SELECT @resultado;';
 
             connection.db.query(
@@ -371,7 +371,7 @@ exports.modificarContrasena = function(req, res) {
                 'SELECT ' +
                     '? AS id, U.usuario AS usuario, U.usuarioCorreo AS usuarioCorreo ' +
                 'FROM ' +
-                    'promociones.tb_usuario AS U ' +
+                    'datatabs_main.tb_usuario AS U ' +
                 'WHERE ' +
                     'U.id_usuario = ?;';
 
@@ -400,7 +400,7 @@ exports.modificarContrasena = function(req, res) {
         if (connection) {
             sql =
                 'SET @resultado = ""; ' +
-                'CALL promociones.sp_modificarUsuario(?, ?, ?, NULL, ?, NULL, ?, NULL, @resultado); ' +
+                'CALL datatabs_main.sp_modificarUsuario(?, ?, ?, NULL, ?, NULL, ?, NULL, @resultado); ' +
                 'SELECT @resultado;';
 
             connection.db.query(
