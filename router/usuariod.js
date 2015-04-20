@@ -18,14 +18,14 @@ exports.buscarUsuarioD = function(req, res) {
  *	@return
  *		A JSON string:
  *		{
- *			"nombre"            : "XXXXX",  A string that represents the user name.
- *          "apellido"          : "XXXXX",  A string that represents the user last name.
- *          "perfil"            : 0,        An integer identifier that represents the profile related to the user.
- *          "idioma"            : 0,        An integer identifier that represents the language related to the user.
- *          "superdistribuidor" : 0,        An integer identifier that represents the super distributor related to the user. This field applies when the profile value is 2 and 3.
- *          "distribuidor"      : 0,        An integer identifier that represents the distributor related to the user. This field applies when the profile value is 3 and 4.
- *          "empresa"           : 0,        An integer identifier that represents the company related to the user. This field applies when the profile value is 4 and 5.
- *          "sucursal"          : 0         An integer identifier that represents the branch office related to the user. This field applies when the profile value is 5.
+ *			"nombre"            : "XXXXX",                 A string that represents the user name.
+ *          "apellido"          : "XXXXX",                 A string that represents the user last name.
+ *          "perfil"            : 0,                       An integer identifier that represents the profile related to the user.
+ *          "idioma"            : 0,                       An integer identifier that represents the language related to the user.
+ *          "superdistribuidor" : "Base64EncodeString(1)", An integer identifier in Base64 that represents the super distributor related to the user. This field applies when the profile value is 2 and 3.
+ *          "distribuidor"      : "Base64EncodeString(1)", An integer identifier in Base64 that represents the distributor related to the user. This field applies when the profile value is 3 and 4.
+ *          "empresa"           : "Base64EncodeString(1)", An integer identifier in Base64 that represents the company related to the user. This field applies when the profile value is 4 and 5.
+ *          "sucursal"          : "Base64EncodeString(1)"  An integer identifier in Base64 that represents the branch office related to the user. This field applies when the profile value is 5.
  *		}
  *
  *	@error
@@ -108,8 +108,8 @@ exports.buscarInfoUsuarioD = function(req, res) {
  *          "tipoUsuario" : 0,                                                          An integer identifier that represents the user type related to the user whom we want to create his/her information.
  *          "ciudad"      : 0,                                                          An integer identifier that represents the city related to the user whom we want to create his/her information.
  *          "idioma"      : 0,                                                          An integer identifier that represents the language related to the user whom we want to create his/her information. This field can be optional.
- *          "sede"        : 0,                                                          An integer identifier that represents the working place related to the user whom we want to create his/her information. If the type user value is 1, this field can be optional.
- *          "usuario"     : 0                                                           An integer identifier that represents the user id related to the user whom we want to create his/her information.
+ *          "sede"        : "Base64EncodeString(1)",                                    An integer identifier in Base64 that represents the working place related to the user whom we want to create his/her information. If the type user value is 1, this field can be optional.
+ *          "usuario"     : "Base64EncodeString(1)"                                     An integer identifier in Base64 that represents the user id related to the user whom we want to create his/her information.
  *		}
  *	
  *	@return
@@ -140,19 +140,19 @@ exports.crearUsuarioD = function(req, res) {
 				sql,
 				[
 					id,
-					typeof req.body.documento  !== undefined || req.body.documento  != null                   ? req.body.documento  : null,
-					typeof req.body.nombre     !== undefined || req.body.nombre     != null                   ? req.body.nombre     : null,
-					typeof req.body.apellido   !== undefined || req.body.apellido   != null                   ? req.body.apellido   : null,
-					req.body.correo,                                                                                                
-					typeof req.body.tlfCasa    !== undefined || req.body.tlfCasa    != null                   ? req.body.tlfCasa    : null,
-                    typeof req.body.tlfOficina !== undefined || req.body.tlfOficina != null                   ? req.body.tlfOficina : null,
-					typeof req.body.tlfCelular !== undefined || req.body.tlfCelular != null                   ? req.body.tlfCelular : null,
-					req.body.sexo,                                                                            
-                    req.body.tipoUsuario,                                                                     
-                    req.body.ciudad,                                                                          
-                    typeof req.body.idioma     !== undefined || req.body.idioma     != null                   ? req.body.idioma     : null,
-                    req.body.tipoUsuario > 1 && (typeof req.body.sede !== undefined || req.body.sede != null) ? req.body.sede       : null,
-                    typeof req.body.usuario    !== undefined || req.body.usuario    != null                   ? req.body.usuario    : id
+					typeof req.body.documento  !== undefined || req.body.documento  != null                   ? req.body.documento                       : null,
+					typeof req.body.nombre     !== undefined || req.body.nombre     != null                   ? req.body.nombre                          : null,
+					typeof req.body.apellido   !== undefined || req.body.apellido   != null                   ? req.body.apellido                        : null,
+					req.body.correo,                                                                                                                     
+					typeof req.body.tlfCasa    !== undefined || req.body.tlfCasa    != null                   ? req.body.tlfCasa                         : null,
+                    typeof req.body.tlfOficina !== undefined || req.body.tlfOficina != null                   ? req.body.tlfOficina                      : null,
+					typeof req.body.tlfCelular !== undefined || req.body.tlfCelular != null                   ? req.body.tlfCelular                      : null,
+					req.body.sexo,                                                                                                                       
+                    req.body.tipoUsuario,                                                                                                                
+                    req.body.ciudad,                                                                                                                     
+                    typeof req.body.idioma     !== undefined || req.body.idioma     != null                   ? req.body.idioma                          : null,
+                    req.body.tipoUsuario > 1 && (typeof req.body.sede !== undefined || req.body.sede != null) ? seguridad.decodeBase64(req.body.sede)    : null,
+                    typeof req.body.usuario    !== undefined || req.body.usuario    != null                   ? seguridad.decodeBase64(req.body.usuario) : id
 				],
 				function(err, result) {
 					if (err)
@@ -207,7 +207,7 @@ exports.crearUsuarioD = function(req, res) {
  *          "tipoUsuario" : 0,                                                          An integer identifier that represents the user type related to the user whom we want to create his/her information.
  *          "ciudad"      : 0,                                                          An integer identifier that represents the city related to the user whom we want to create his/her information.
  *          "idioma"      : 0,                                                          An integer identifier that represents the language related to the user whom we want to create his/her information.
- *          "sede"        : 0,                                                          An integer identifier that represents the working place related to the user whom we want to create his/her information.
+ *          "sede"        : "Base64EncodeString(1)",                                    An integer identifier in Base64 that represents the working place related to the user whom we want to create his/her information.
  *          "activo"      : 1                                                           An integer that represents the user status (1 for active and 0 for inactive) related to the user whom we want to create his/her information.
  *		}
  *	
@@ -251,7 +251,7 @@ exports.modificarUsuarioD = function(req, res) {
                     typeof req.body.ciudad      !== undefined || req.body.ciudad      != null ? req.body.ciudad      : null,  
                     typeof req.body.idioma      !== undefined || req.body.idioma      != null ? req.body.idioma      : null,
                     typeof req.body.tipoUsuario !== undefined || req.body.tipoUsuario != null ? req.body.tipoUsuario : null,                                                                     
-                    typeof req.body.tipoUsuario !== undefined && req.body.tipoUsuario > 1 && (typeof req.body.sede !== undefined || req.body.sede != null) ? req.body.sede : null,
+                    typeof req.body.tipoUsuario !== undefined && req.body.tipoUsuario > 1 && (typeof req.body.sede !== undefined || req.body.sede != null) ? seguridad.decodeBase64(req.body.sede) : null,
                     typeof req.body.activo      !== undefined || req.body.activo      != null ? req.body.activo      : null
 				],
 				function(err, result) {

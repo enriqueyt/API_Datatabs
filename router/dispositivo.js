@@ -24,14 +24,14 @@ exports.buscarDispositivo = function(req, res) {
  *		A JSON string:
  *		[
  *          {
- *              "id_evento"   : "Base64EncodeString(XXXXX)",    A string in Base64 that represents the identifier related to an event.
+ *              "id_evento"   : "Base64EncodeString(1)",        A string in Base64 that represents the identifier related to an event.
  *              "evento"      : "XXXXX",                        A string that represents the event's name.
  *              "descripcion" : "XXXXX",                        A string that represents the event's description.
  *              "fechaInicio" : "YYYY-MM-DD HH:mm:ss",          A string that represents the event's start date.
  *              "fechaFin"    : "YYYY-MM-DD HH:mm:ss",          A string that represents the event's end date.
  *              "flujo"       : [{ XXXXX }],                    A JSON string that represents the event's flow.
  *              "imagen"      : "XXXXX",                        A string that represents the image file name related to an event.
- *              "id_empresa"  : "Base64EncodeString(XXXXX)",    A string in Base64 that represents the identifier related to an company.
+ *              "id_empresa"  : "Base64EncodeString(1)",        A string in Base64 that represents the identifier related to an company.
  *              "empresa"     : "XXXXX"                         A string that represents the company's name.
  *          },
  *          ...

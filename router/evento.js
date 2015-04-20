@@ -16,16 +16,16 @@ var connection = require('../config/db'),
  *		A JSON string:
  *		[
  *          {
- *              "id_evento"   : "Base64EncodeString(XXXXX)",    A string in Base64 that represents the identifier related to an event.
+ *              "id_evento"   : "Base64EncodeString(1)",        A string in Base64 that represents the identifier related to an event.
  *              "evento"      : "XXXXX",                        A string that represents the event's name.
  *              "descripcion" : "XXXXX",                        A string that represents the event's description.
  *              "fechaInicio" : "YYYY-MM-DD HH:mm:ss",          A string that represents the event's start date.
  *              "fechaFin"    : "YYYY-MM-DD HH:mm:ss",          A string that represents the event's end date.
  *              "flujo"       : [{ XXXXX }],                    A JSON string that represents the event's flow.
  *              "imagen"      : "XXXXX",                        A string that represents the image file name related to an event.
- *              "id_empresa"  : "Base64EncodeString(XXXXX)",    A string in Base64 that represents the identifier related to a company.
+ *              "id_empresa"  : "Base64EncodeString(1)",        A string in Base64 that represents the identifier related to a company.
  *              "empresa"     : "XXXXX"                         A string that represents the company's name.
- *              "id_sucursal" : "Base64EncodeString(XXXXX)",    A string in Base64 that represents the identifier related to a branch office. This field can be optional if the office request  parameter value is 0.
+ *              "id_sucursal" : "Base64EncodeString(1)",        A string in Base64 that represents the identifier related to a branch office. This field can be optional if the office request  parameter value is 0.
  *              "sucursal"    : "XXXXX"                         A string that represents the branch office's name. This field can be optional if the office request parameter value is 0.
  *          },
  *          ...
