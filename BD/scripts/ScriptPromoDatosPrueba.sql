@@ -15,6 +15,13 @@ TRUNCATE tb_usuariod_empresa;
 TRUNCATE tb_usuariod_sucursal;
 TRUNCATE tb_evento;
 TRUNCATE tb_consumidor;
+
+TRUNCATE tb_dispositivo;
+TRUNCATE tb_evento_dispositivo;
+TRUNCATE tb_imagen;
+TRUNCATE tb_nodo;
+TRUNCATE tb_checkin;
+TRUNCATE tb_vertice;
 SET FOREIGN_KEY_CHECKS = 1;
 
 /* SUPERDISTRIBUIDORES */
@@ -660,3 +667,6 @@ VALUES ("1","2","2015-01-01");
 
 INSERT INTO `tb_nodo` (`id_evento`,`id_tipoNodo`,`id_objeto`,`id_tipoNodoPadre`,`id_objetoPadre`)
 VALUES ("1","2","1","1","1");
+
+INSERT INTO `tb_vertice` (`id_nodoHijo`,`id_nodoPadre`)
+VALUES ("10","1");

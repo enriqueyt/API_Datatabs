@@ -13792,11 +13792,11 @@ BEGIN
 	END IF;
 
 	SELECT
-		IFNULL(N.id_nodoPadre, 0) INTO id_nodoPadre
+		IFNULL(V.id_nodoPadre, 0) INTO id_nodoPadre
 	FROM
 		tb_vertice AS V
 	WHERE
-		V.id_nodo = id_nodo AND V.activo = 1;
+		V.id_nodoHijo = id_nodo AND V.activo = 1;
 
 	IF id_nodoPadre <= 0 THEN
 		SET resultado = 'ERROR - 8 - Nodo padre no existe';
@@ -13809,7 +13809,7 @@ BEGIN
 	FROM
 		tb_nodo AS N
 	WHERE
-		N.id_nodo = id_nodo AND S.activo = 1;
+		N.id_nodo = id_nodo AND N.activo = 1;
 
 	IF id_objeto <= 0 THEN
 		SET resultado = 'ERROR - 9 - Objeto no existe';
@@ -13820,7 +13820,7 @@ BEGIN
 	SET fecha = NOW();
 
 	START TRANSACTION;
-		IF NOT EXISTS (SELECT * FROM tb_consumidor_evento AS CE WHERE CD.id_consumidor = id_consumidor AND CE.id_evento = id_evento) THEN
+		IF NOT EXISTS (SELECT * FROM tb_consumidor_evento AS CE WHERE CE.id_consumidor = id_consumidor AND CE.id_evento = id_evento) THEN
 			INSERT INTO tb_consumidor_evento (id_consumidor, id_evento)
 			VALUES (id_consumidor, id_evento);
 		ELSE
@@ -13879,12 +13879,12 @@ BEGIN
 	COMMIT;
 
 	SELECT DISTINCT
-		SUM(S.visitaGlobal) INTO t_contador
+		SUM(CS.visitaGlobal) INTO t_contador
 	FROM
 		tb_consumidor_sucursal AS CS
 		INNER JOIN
 		tb_sucursal AS S
-		ON CS.id_sucursal = id_sucursal
+		ON CS.id_sucursal = S.id_sucursal
 	WHERE
 		CS.id_consumidor = id_consumidor AND S.id_empresa = id_empresa;
 

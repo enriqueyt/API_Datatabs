@@ -1,3 +1,4 @@
+DROP SCHEMA IF EXISTS `datatabs_mensajeria`;
 DROP SCHEMA IF EXISTS `datatabs_main`;
 
 CREATE DATABASE IF NOT EXISTS `datatabs_main` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
@@ -865,8 +866,8 @@ CREATE TABLE IF NOT EXISTS `tb_consumidor_nodo` (
 	`id_consumidorNodo` INT(11) NOT NULL AUTO_INCREMENT,
 	`id_consumidor`     INT(11) NOT NULL,
 	`id_nodo`           INT(11) NOT NULL,
-	`contadorGlobal`    INT(11) NOT NULL DEFAULT '1',
-	`contadorActual`    INT(11) NOT NULL DEFAULT '1',
+	`visitaGlobal`    INT(11) NOT NULL DEFAULT '1',
+	`visitaActual`    INT(11) NOT NULL DEFAULT '1',
 	PRIMARY KEY (`id_consumidorNodo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Tabla para asociar consumidores con nodos';
 
