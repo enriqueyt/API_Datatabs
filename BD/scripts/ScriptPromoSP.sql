@@ -13619,7 +13619,7 @@ BEGIN
 	    
     IF id_perfil = 1 THEN
 		SELECT
-			UD.id_usuarioD AS usuariod,
+			UD.id_usuarioD AS usuarioD,
             UD.nombres     AS nombre,
             UD.apellidos   AS apellido,
             id_perfil      AS perfil,
@@ -13630,7 +13630,7 @@ BEGIN
 			UD.id_usuarioD = id_usuarioD;
     ELSEIF id_perfil = 2 THEN
 		SELECT
-			UD.id_usuarioD            AS usuariod,
+			UD.id_usuarioD            AS usuarioD,
             UD.nombres                AS nombre,
             UD.apellidos              AS apellido,
             id_perfil                 AS perfil,
@@ -13645,7 +13645,7 @@ BEGIN
 			UD.id_usuarioD = id_usuarioD;
     ELSEIF id_perfil = 3 THEN
 		SELECT
-			UD.id_usuarioD         AS usuariod,
+			UD.id_usuarioD         AS usuarioD,
             UD.nombres             AS nombre,
             UD.apellidos           AS apellido,
             id_perfil              AS perfil,
@@ -13664,7 +13664,7 @@ BEGIN
 			UD.id_usuarioD = id_usuarioD;
     ELSEIF id_perfil = 4 THEN
 		SELECT
-			UD.id_usuarioD    AS usuariod,
+			UD.id_usuarioD    AS usuarioD,
             UD.nombres        AS nombre,
             UD.apellidos      AS apellido,
             id_perfil         AS perfil,
@@ -13683,7 +13683,7 @@ BEGIN
 			UD.id_usuarioD = id_usuarioD;
     ELSEIF id_perfil = 5 THEN
 		SELECT
-			UD.id_usuarioD  AS usuariod,
+			UD.id_usuarioD  AS usuarioD,
             UD.nombres      AS nombre,
             UD.apellidos    AS apellido,
             id_perfil       AS perfil,

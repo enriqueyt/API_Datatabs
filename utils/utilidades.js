@@ -24,12 +24,12 @@ exports.buscarIdPerfilUsuario = function(sesion) {
 				'IFNULL(UP.id_perfil   , -1) AS perfil, ' +
 				'IFNULL(UUD.id_usuariod, -1) AS usuariod ' +
 			'FROM ' +
-				'promociones.tb_sesion AS S ' +
+				'datatabs_main.tb_sesion AS S ' +
 				'INNER JOIN ' +
-				'promociones.tb_usuario_perfil UP ' +
+				'datatabs_main.tb_usuario_perfil UP ' +
 				'ON S.id_usuario = UP.id_usuario ' +
 				'LEFT OUTER JOIN ' +
-				'promociones.tb_usuario_usuarioD UUD ' +
+				'datatabs_main.tb_usuario_usuarioD UUD ' +
 				'ON S.id_usuario = UUD.id_usuario ' +
 			'WHERE ' +
 				'S.sesion = ? AND S.activo = 1;';

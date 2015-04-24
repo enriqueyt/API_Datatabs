@@ -56,17 +56,15 @@ exports.buscarInfoUsuarioD = function(req, res) {
                         mensaje   = result[3][0]['@resultado'];
                         resultado = result[1][0];
                         
-                        resultado.id_usuarioD = seguridad.encodeBase64(resultado.id_usuarioD);
-                        resultado.id_perfil   = seguridad.encodeBase64(resultado.id_perfil);
-                        resultado.id_idioma   = seguridad.encodeBase64(resultado.id_idioma);
-                        if (typeof resultado.id_superDistribuidor !== 'undefined' && resultado.id_superDistribuidor != null)
-                            resultado.id_superDistribuidor = seguridad.encodeBase64(resultado.id_superDistribuidor);
-                        if (typeof resultado.id_distribuidor !== 'undefined' && resultado.id_distribuidor != null)
-                            resultado.id_distribuidor = seguridad.encodeBase64(resultado.id_distribuidor);
-                        if (typeof resultado.id_empresa !== 'undefined' && resultado.id_empresa != null)
-                            resultado.id_empresa = seguridad.encodeBase64(resultado.id_empresa);
-                        if (typeof resultado.id_sucursal !== 'undefined' && resultado.id_sucursal != null)
-                            resultado.id_sucursal = seguridad.encodeBase64(resultado.id_sucursal);
+                        resultado.usuarioD = seguridad.encodeBase64(resultado.usuarioD);
+                        if (typeof resultado.superDistribuidor !== 'undefined' && resultado.superDistribuidor != null)
+                            resultado.superDistribuidor = seguridad.encodeBase64(resultado.superDistribuidor);
+                        if (typeof resultado.distribuidor !== 'undefined' && resultado.distribuidor != null)
+                            resultado.distribuidor = seguridad.encodeBase64(resultado.distribuidor);
+                        if (typeof resultado.empresa !== 'undefined' && resultado.empresa != null)
+                            resultado.empresa = seguridad.encodeBase64(resultado.empresa);
+                        if (typeof resultado.sucursal !== 'undefined' && resultado.sucursal != null)
+                            resultado.sucursal = seguridad.encodeBase64(resultado.sucursal);
                 
                         res.contentType('application/json');
                         res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : resultado }));
@@ -78,8 +76,8 @@ exports.buscarInfoUsuarioD = function(req, res) {
 	};
 	
 	if ((/^\d+$/g).test(user))
-		callback(user);
-	else 
+        callback(user);
+	else
 		utilidades.buscarIdUsuario(user).then(
             callback,
             function(err) {

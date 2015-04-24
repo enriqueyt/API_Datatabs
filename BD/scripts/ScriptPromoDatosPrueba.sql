@@ -152,6 +152,8 @@ INSERT INTO `tb_usuario_perfil` (`id_usuario`,`id_perfil`)
 VALUES (1, 1);
 INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfCasa`,`tlfOficina`,`tlfCelular`,`id_sexo`,`id_tipoUsuarioD`,`id_ciudad`,`id_idioma`)
 VALUES ("7102","James","Patrick","tristique.neque.venenatis@scelerisquenequesed.net","58-212-257-4905","58-212-907-0728","58-416-187-8960","1","1","1","1");
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("1","1");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
 VALUES ("ZoeAdmin","ZoeAdmin","vitae.mauris.sit@lectusNullam.ca","vitae.mauris.sit@lectusNullam.ca","123456");
@@ -161,6 +163,8 @@ INSERT INTO `tb_usuario_perfil` (`id_usuario`, `id_perfil`)
 VALUES (2, 1);
 INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfCasa`,`tlfOficina`,`tlfCelular`,`id_sexo`,`id_tipoUsuarioD`,`id_ciudad`,`id_idioma`)
 VALUES ("7753","Zoe","Carney","vitae.mauris.sit@lectusNullam.ca","58-212-900-1198","58-212-427-5927","58-412-756-5327","2","1","1","1");
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("2","2");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
 VALUES ("MiaAdmin","MiaAdmin","vel.est@ridiculusmusDonec.ca","vel.est@ridiculusmusDonec.ca","123456");
@@ -170,6 +174,8 @@ INSERT INTO `tb_usuario_perfil` (`id_usuario`, `id_perfil`)
 VALUES (3, 1);
 INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfCasa`,`tlfOficina`,`tlfCelular`,`id_sexo`,`id_tipoUsuarioD`,`id_ciudad`,`id_idioma`)
 VALUES ("6785","Mia","Horton","vel.est@ridiculusmusDonec.ca","58-212-108-6063","58-212-700-7634","58-414-207-5955","2","1","1","2");
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("3","3");
 
 /* SUPERDISTRIBUIDORES */
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
@@ -182,6 +188,8 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("9160","Xavier","Gardner","Quisque.ac@vitaealiquam.org","58-212-223-2970","58-212-895-8387","58-424-322-8802","1","1","1","2");
 INSERT INTO `tb_usuariod_superdistribuidor` (`id_usuariod`,`id_superDistribuidor`)
 VALUES (4, 1);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("4","4");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
 VALUES ("LacySD","LacySD","dolor.sit.amet@in.ca","dolor.sit.amet@in.ca","123456");
@@ -193,6 +201,8 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("7753","Laura","Carney","dolor.sit.amet@in.ca","58-212-900-1198","58-212-427-5927","58-412-756-5327","2","1","1","1");
 INSERT INTO `tb_usuariod_superdistribuidor` (`id_usuariod`,`id_superDistribuidor`)
 VALUES (5, 2);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("5","5");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
 VALUES ("JinSD","JinSD","enim@velit.co.uk","enim@velit.co.uk","123456");
@@ -204,10 +214,12 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("4089","Gil","Morrow","enim@velit.co.uk","58-212-261-6669","58-212-445-7925","58-412-824-7547","1","1","1","1");
 INSERT INTO `tb_usuariod_superdistribuidor` (`id_usuariod`,`id_superDistribuidor`)
 VALUES (6, 3);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("6","6");
 
 /* DISTRIBUIDOR */
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
-VALUES ("JasonSD","JasonD","amet.risus.Donec@fringillaestMauris.edu","amet.risus.Donec@fringillaestMauris.edu","123456");
+VALUES ("JasonD","JasonD","amet.risus.Donec@fringillaestMauris.edu","amet.risus.Donec@fringillaestMauris.edu","123456");
 INSERT INTO `tb_usuarioactivo` (`id_usuario`,`activo`)
 VALUES (7, 1);
 INSERT INTO `tb_usuario_perfil` (`id_usuario`,`id_perfil`)
@@ -216,20 +228,11 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("4557","Jason","Colon","amet.risus.Donec@fringillaestMauris.edu","58-212-907-2735","58-212-886-9617","58-426-593-8315","1","1","1","2");
 INSERT INTO `tb_usuariod_distribuidor` (`id_usuariod`,`id_distribuidor`)
 VALUES (7, 1);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("7","7");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
-VALUES ("LucianSD","LucianD","egestas.nunc.sed@Aliquam.ca","egestas.nunc.sed@Aliquam.ca","123456");
-INSERT INTO `tb_usuarioactivo` (`id_usuario`,`activo`)
-VALUES (8, 1);
-INSERT INTO `tb_usuario_perfil` (`id_usuario`,`id_perfil`)
-VALUES (8, 3);
-INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfCasa`,`tlfOficina`,`tlfCelular`,`id_sexo`,`id_tipoUsuarioD`,`id_ciudad`,`id_idioma`) 
-VALUES ("7946","Lucian","Bauer","egestas.nunc.sed@Aliquam.ca","58-212-373-9005","58-212-805-4578","58-424-798-2176","1","1","1","2");
-INSERT INTO `tb_usuariod_distribuidor` (`id_usuariod`,`id_distribuidor`)
-VALUES (8, 2);
-
-INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
-VALUES ("EricaSD","EricaD","nonummy.ac.feugiat@urnaVivamusmolestie.com","nonummy.ac.feugiat@urnaVivamusmolestie.com","123456");
+VALUES ("EricaD","EricaD","nonummy.ac.feugiat@urnaVivamusmolestie.com","nonummy.ac.feugiat@urnaVivamusmolestie.com","123456");
 INSERT INTO `tb_usuarioactivo` (`id_usuario`,`activo`)
 VALUES (8, 1);
 INSERT INTO `tb_usuario_perfil` (`id_usuario`,`id_perfil`)
@@ -238,9 +241,11 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("3629","Erica","Adkins","nonummy.ac.feugiat@urnaVivamusmolestie.com","58-212-966-8374","58-212-590-3997","58-412-625-4580","2","1","1","2");
 INSERT INTO `tb_usuariod_distribuidor` (`id_usuariod`,`id_distribuidor`)
 VALUES (8, 3);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("8","8");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
-VALUES ("AdeleSD","AdeleD","Ut@acsemut.org","Ut@acsemut.org","123456");
+VALUES ("AdeleD","AdeleD","Ut@acsemut.org","Ut@acsemut.org","123456");
 INSERT INTO `tb_usuarioactivo` (`id_usuario`,`activo`)
 VALUES (9, 1);
 INSERT INTO `tb_usuario_perfil` (`id_usuario`,`id_perfil`)
@@ -249,9 +254,11 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("3464","Adele","Albert","Ut@acsemut.org","58-212-530-4507","58-212-451-1841","58-424-354-3095","2","1","1","1");
 INSERT INTO `tb_usuariod_distribuidor` (`id_usuariod`,`id_distribuidor`)
 VALUES (9, 4);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("9","9");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
-VALUES ("VictorSD","VictorD","cursus.non.egestas@libero.ca","cursus.non.egestas@libero.ca","123456");
+VALUES ("VictorD","VictorD","cursus.non.egestas@libero.ca","cursus.non.egestas@libero.ca","123456");
 INSERT INTO `tb_usuarioactivo` (`id_usuario`,`activo`)
 VALUES (10, 1);
 INSERT INTO `tb_usuario_perfil` (`id_usuario`,`id_perfil`)
@@ -260,6 +267,8 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("5320","Victor","Tyson","cursus.non.egestas@libero.ca","58-212-254-0013","58-212-414-0883","58-416-891-9237","1","1","1","1");
 INSERT INTO `tb_usuariod_distribuidor` (`id_usuariod`,`id_distribuidor`)
 VALUES (10, 5);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("10","10");
 
 /* EMPRESAS */
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
@@ -272,6 +281,8 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("6201","Peter","Craig","laoreet@nisi.net","58-212-696-0237","58-212-145-1966","58-416-683-8791","1","1","1","1");
 INSERT INTO `tb_usuariod_empresa` (`id_usuariod`,`id_empresa`)
 VALUES (11, 1);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("11","11");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
 VALUES ("KeelyE","KeelyE","consequat@lacusNulla.org","consequat@lacusNulla.org","123456");
@@ -283,6 +294,8 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("9259","Keeyly","Thomas","consequat@lacusNulla.org","58-212-601-9920","58-212-391-2537","58-412-229-8325","2","1","1","1");
 INSERT INTO `tb_usuariod_empresa` (`id_usuariod`,`id_empresa`)
 VALUES (12, 2);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("12","12");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
 VALUES ("AdriaE","AdriaE","mauris.sapien@Nullatempor.com","mauris.sapien@Nullatempor.com","123456");
@@ -294,6 +307,8 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("3138","Adria","Mendoza","mauris.sapien@Nullatempor.com","58-212-928-6387","58-212-260-2397","58-412-549-7756","2","1","1","1");
 INSERT INTO `tb_usuariod_empresa` (`id_usuariod`,`id_empresa`)
 VALUES (13, 3);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("13","13");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
 VALUES ("SelmaE","SelmaE","vulputate.nisi.sem@IntegermollisInteger.edu","vulputate.nisi.sem@IntegermollisInteger.edu","123456");
@@ -305,6 +320,8 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("7367","Selma","Dale","vulputate.nisi.sem@IntegermollisInteger.edu","58-212-402-6517","58-212-280-7933","58-414-254-2727","2","1","1","2");
 INSERT INTO `tb_usuariod_empresa` (`id_usuariod`,`id_empresa`)
 VALUES (14, 4);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("14","14");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
 VALUES ("FinnE","FinnE","orci.luctus.et@elitpedemalesuada.edu","orci.luctus.et@elitpedemalesuada.edu","123456");
@@ -316,6 +333,8 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("8153","Finn","Dejesus","orci.luctus.et@elitpedemalesuada.edu","58-212-298-2299","58-212-268-4210","58-412-439-9438","1","1","1","2");
 INSERT INTO `tb_usuariod_empresa` (`id_usuariod`,`id_empresa`)
 VALUES (15, 5);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("15","15");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
 VALUES ("SkylerE","SkylerE","pede@quamdignissimpharetra.com","pede@quamdignissimpharetra.com","123456");
@@ -327,6 +346,8 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("8594","Skyler","Calhoun","pede@quamdignissimpharetra.com","58-212-926-7767","58-212-582-8807","58-412-730-8416","2","1","1","1");
 INSERT INTO `tb_usuariod_empresa` (`id_usuariod`,`id_empresa`)
 VALUES (16, 6);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("16","16");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
 VALUES ("CarlosE","CarlosE","enim.consequat@dolor.com","enim.consequat@dolor.com","123456");
@@ -338,6 +359,8 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("4195","Carlos","Cline","enim.consequat@dolor.com","58-212-666-7644","58-212-986-2634","58-416-428-2821","1","1","1","2");
 INSERT INTO `tb_usuariod_empresa` (`id_usuariod`,`id_empresa`)
 VALUES (17, 7);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("17","17");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
 VALUES ("NathanielE","NathanielE","nonummy@odioEtiam.net","nonummy@odioEtiam.net","123456");
@@ -349,6 +372,8 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("8504","NathanielE","Schmidt","nonummy@odioEtiam.net","58-212-210-3008","58-212-267-5414","58-424-577-3973","1","1","1","1");
 INSERT INTO `tb_usuariod_empresa` (`id_usuariod`,`id_empresa`)
 VALUES (18, 8);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("18","18");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
 VALUES ("DoraE","DoraE","velit.Aliquam@nisisemsemper.co.uk","velit.Aliquam@nisisemsemper.co.uk","123456");
@@ -360,6 +385,8 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("4537","Dora","Shelton","velit.Aliquam@nisisemsemper.co.uk","58-212-892-1776","58-212-758-3282","58-416-560-5767","2","1","1","2");
 INSERT INTO `tb_usuariod_empresa` (`id_usuariod`,`id_empresa`)
 VALUES (19, 9);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("19","19");
 
 /* SUCURSALES */
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
@@ -372,6 +399,8 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("4537","Reece","Shelton","malesuada.malesuada.Integer@atauctor.com","58-212-892-1776","58-212-758-3282","58-416-560-5767","1","1","1","1");
 INSERT INTO `tb_usuariod_sucursal` (`id_usuariod`,`id_sucursal`)
 VALUES (20, 1);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("20","20");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
 VALUES ("HillaryS","HillaryS","luctus@Proin.org","luctus@Proin.org","123456");
@@ -383,6 +412,8 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("9259","Hillary","Thomas","luctus@Proin.org","58-212-601-9920","58-212-391-2537","58-412-229-8325","2","1","1","1");
 INSERT INTO `tb_usuariod_sucursal` (`id_usuariod`,`id_sucursal`)
 VALUES (21, 11);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("21","21");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
 VALUES ("SandraS","SandraS","cursus.Integer@ac.ca","cursus.Integer@ac.ca","123456");
@@ -394,6 +425,8 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("1555","Sandra","Sexton","cursus.Integer@ac.ca","58-212-384-3413","58-212-404-5599","58-414-794-0496","2","1","1","1");
 INSERT INTO `tb_usuariod_sucursal` (`id_usuariod`,`id_sucursal`)
 VALUES (22, 30);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("22","22");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
 VALUES ("RhodaS","RhodaS","lorem.ut.aliquam@nonfeugiat.net","lorem.ut.aliquam@nonfeugiat.net","123456");
@@ -405,6 +438,8 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("7028","Rhoda","Patterson","lorem.ut.aliquam@nonfeugiat.net","58-212-188-3646","58-212-804-7532","58-426-818-6439","2","1","1","1");
 INSERT INTO `tb_usuariod_sucursal` (`id_usuariod`,`id_sucursal`)
 VALUES (23, 45);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("23","23");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
 VALUES ("BradyS","BradyS","nisi.Aenean.eget@disparturient.co.uk","nisi.Aenean.eget@disparturient.co.uk","123456");
@@ -416,6 +451,8 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("9528","Brady","Lee","nisi.Aenean.eget@disparturient.co.uk","58-212-753-3954","58-212-177-0542","58-412-396-0619","1","1","1","2");
 INSERT INTO `tb_usuariod_sucursal` (`id_usuariod`,`id_sucursal`)
 VALUES (24, 1);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("24","24");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
 VALUES ("KendallS","KendallS","tempus@pretiumaliquet.co.uk","tempus@pretiumaliquet.co.uk","123456");
@@ -427,6 +464,8 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("7057","Kendall","Lambert","tempus@pretiumaliquet.co.uk","58-212-126-0979","58-212-121-2661","58-412-373-5693","1","1","1","1");
 INSERT INTO `tb_usuariod_sucursal` (`id_usuariod`,`id_sucursal`)
 VALUES (25, 11);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("25","25");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
 VALUES ("UrsaS","UrsaS","dui@nec.org","dui@nec.org","123456");
@@ -438,6 +477,8 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("7057","Ursa","Lambert","dui@nec.org","58-212-126-0979","58-212-121-2661","58-412-373-5693","1","1","1","1");
 INSERT INTO `tb_usuariod_sucursal` (`id_usuariod`,`id_sucursal`)
 VALUES (26, 3);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("26","26");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
 VALUES ("XerxesS","XerxesS","euismod@estmauris.net","euismod@estmauris.net","123456");
@@ -449,6 +490,8 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("2075","Xerses","Bryan","magna@magna.co.uk","58-212-480-6484","58-212-864-9557","58-412-501-6875","1","1","1","1");
 INSERT INTO `tb_usuariod_sucursal` (`id_usuariod`,`id_sucursal`)
 VALUES (27, 51);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("27","27");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
 VALUES ("KyleS","KyleeS","auctor.velit.Aliquam@tellus.co.uk","auctor.velit.Aliquam@tellus.co.uk","123456");
@@ -460,6 +503,8 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("1802","Kyle","Miranda","auctor.velit.Aliquam@tellus.co.uk","58-212-438-8872","58-212-363-7529","58-412-261-2855","1","1","1","1");
 INSERT INTO `tb_usuariod_sucursal` (`id_usuariod`,`id_sucursal`)
 VALUES (28, 55);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("28","28");
 
 INSERT INTO `tb_usuario` (`usuario`,`usuario_`,`usuarioCorreo`,`usuarioCorreo_`,`contrasena`)
 VALUES ("PatrickS","PatrickS","arcu@vestibulumnequesed.com","arcu@vestibulumnequesed.com","123456");
@@ -471,6 +516,8 @@ INSERT INTO `tb_usuariod` (`identificacion`,`nombres`,`apellidos`,`correo`,`tlfC
 VALUES ("1959","Patrick","Reyes","arcu@vestibulumnequesed.com","58-212-965-9673","58-212-501-3746","58-416-404-8294","1","1","1","2");
 INSERT INTO `tb_usuariod_sucursal` (`id_usuariod`,`id_sucursal`)
 VALUES (29, 90);
+INSERT INTO `tb_usuario_usuariod` (`id_usuario`,`id_usuarioD`)
+VALUES ("29","29");
 
 /* CONSUMIDORES */
 INSERT INTO `tb_consumidor` (`nombres`,`apellidos`,`celular`,`id_tipoConsumidor`) VALUES ("Simon","Heath","04123372288","1");
@@ -594,3 +641,22 @@ INSERT INTO `tb_evento_sucursal` (`id_evento`,`id_sucursal`) VALUES ("6","51");
 INSERT INTO `tb_evento_sucursal` (`id_evento`,`id_sucursal`) VALUES ("7","55");
 INSERT INTO `tb_evento_sucursal` (`id_evento`,`id_sucursal`) VALUES ("8","90");
 INSERT INTO `tb_evento_sucursal` (`id_evento`,`id_sucursal`) VALUES ("9","1");
+
+
+
+INSERT INTO `tb_dispositivo` (`nombre`,`identificacion`,`marca`,`modelo`,`serial`,`id_tipodispositivo`,`id_sucursal`)
+VALUES ("TEST","123456789124587","Samsung","TEST","TEST","1","1");
+
+INSERT INTO `tb_evento_dispositivo` (`id_evento`,`id_dispositivo`)
+VALUES ("1","1");
+
+INSERT INTO `tb_imagen` (`imagen`,`id_tipoImagen`)
+VALUES ("FondoTest","1");
+INSERT INTO `tb_imagen` (`imagen`,`id_tipoImagen`)
+VALUES ("TecladoTest","1");
+
+INSERT INTO `tb_checkin` (`background`,`teclado`,`fechaInicio`)
+VALUES ("1","2","2015-01-01");
+
+INSERT INTO `tb_nodo` (`id_evento`,`id_tipoNodo`,`id_objeto`,`id_tipoNodoPadre`,`id_objetoPadre`)
+VALUES ("1","2","1","1","1");
