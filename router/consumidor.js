@@ -6,7 +6,7 @@ var connection = require('../config/db'),
 exports.buscarConsumidor = function(req, res) {
 	var client = typeof req.params.val !== undefined || req.params.val != null ? seguridad.decodeBase64(req.params.val) : null;
 };
-    
+
 /**
  *	HttpPost
  *
@@ -190,6 +190,91 @@ exports.modificarConsumidor = function(req, res) {
 	}
 	else
 		callback([client, null]);
+};
+
+/**
+ *	HttpPut
+ *
+ *  Validates a client.
+ *
+ *	@param
+ *		A request url parameter (an contact number in Base64 related to the client that we want to validate).
+ *	@param
+ *		A JSON request body:
+ *		{
+ *			
+ *          "evento"      : "Base64EncodeString(1)",      An integer identifier in Base64 that represents the event which we want to validate.
+ *          "nodo"        : "Base64EncodeString(1)",      An integer identifier in Base64 that represents the check-in node related to the event.
+ *          "dispositivo" : "Base64EncodeString(XXXX|1)", An IMEI's device or integer identifier in Base64 that represents the device which is used to validate.
+ *		}
+ *	
+ *	@return
+ *		A JSON string:
+ *		{
+ *			"consumidor"             : "Base64EncodeString(client id)", An integer identifier in Base64 that represents the client who was validated.
+ *          "contadorGlobalEmpresa"  : 1,                               An integer that represents the total company visit counter.
+ *		    "contadorGlobalSucursal" : 1,                               An integer that represents the total branch office visits counter.
+ *		    "contadorActualSucursal" : 1,                               An integer that represents the actual branch office visits counter.
+ *		    "contadorGlobalEvento"   : 1,                               An integer that represents the total event visits counter.
+ *		    "contadorActualEvento"   : 1                                An integer that represents the actual event visits counter.
+ *		}
+ *
+ *	@error
+ *		A JSON string:
+ *		{
+ *			"msg" : "Error description"
+ *		}
+ */
+exports.validarConsumidor = function(req, res) {
+	var contact = seguridad.decodeBase64(req.params.val);
+	var device  = seguridad.decodeBase64(req.body.dispositivo);
+	
+	var callback = function(id) {
+		var sql = '', mensaje = '', resultado = '';
+		
+		if (connection) {
+			sql =
+				'SET @resultado = ""; ' +
+				'CALL datatabs_main.sp_validarConsumidor(?, ?, ?, ?, @resultado); ' +
+				'SELECT @resultado;';
+			
+			connection.db.query(
+				sql,
+				[
+					contact,
+					seguridad.decodeBase64(req.body.evento),
+					seguridad.decodeBase64(req.body.nodo),
+					id
+				],
+				function(err, result) {
+					if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+						
+						if ((/ERROR/g).test(mensaje))
+							utilidades.printError(mensaje, res);
+						else {              
+							res.contentType('application/json');
+							res.write(JSON.stringify(resultado));
+							res.end();
+						}
+                    }
+				}
+			);
+		}
+    };
+	
+	if ((/^\d+$/g).test(device))
+        callback(device);
+	else
+        utilidades.buscarIdDispositivo(device).then(
+			callback,
+			function(err) {
+				utilidades.printError(err, res);
+			}
+		);
 };
 
 //exports.eliminarConsumidor = function(req, res) {

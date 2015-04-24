@@ -52,7 +52,7 @@ exports.autenticar = function(req, res) {
                     resultado = result[1][0]['res'];
                     
                     if ((/ERROR/g).test(mensaje))
-                        utilidades.printError(err, res);
+                        utilidades.printError(mensaje, res);
                     else {
                         (
                             function(id) {
@@ -136,7 +136,7 @@ exports.reautenticar = function(req, res) {
                         resultado = result[1][0]['res'];
                         
                         if ((/ERROR/g).test(mensaje))
-                            utilidades.printError(err, res);
+                            utilidades.printError(mensaje, res);
                         else {
                             (
                                 function(id) {
