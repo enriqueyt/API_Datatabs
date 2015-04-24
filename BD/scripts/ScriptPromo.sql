@@ -829,17 +829,18 @@ ADD CONSTRAINT `tb_tiponodo_t__tb_idioma`   FOREIGN KEY (`id_idioma`)   REFERENC
 ADD CONSTRAINT `tb_tiponodo_t__tb_tiponodo` FOREIGN KEY (`id_tipoNodo`) REFERENCES `tb_tiponodo` (`id_tipoNodo`);
 
 CREATE TABLE IF NOT EXISTS `tb_nodo` (
-	`id_nodo`               INT(11)    NOT NULL AUTO_INCREMENT,
-	`inicio`                TINYINT(1) NOT NULL DEFAULT '0',
-	`condicion`             TINYINT(1) NOT NULL DEFAULT '0',
-	`id_evento`             INT(11)    NOT NULL,
-	`id_tipoNodo`           TINYINT(1) NOT NULL,
-	`id_objeto`             INT(11)    DEFAULT NULL,
-	`id_tipoNodoPadre`      TINYINT(1) DEFAULT NULL,
-	`id_objetoPadre`        INT(11)    DEFAULT NULL,
-	`id_usuarioCreador`     INT(11)    DEFAULT NULL,
-	`id_usuarioModificador` INT(11)    DEFAULT NULL,
-	`activo`                TINYINT(1) NOT NULL DEFAULT '1',
+	`id_nodo`               INT(11)                             NOT NULL AUTO_INCREMENT,
+    `alias`                 VARCHAR(25) COLLATE utf8_spanish_ci DEFAULT NULL,
+	`inicio`                TINYINT(1)                          NOT NULL DEFAULT '0',
+	`condicion`             TINYINT(1)                          NOT NULL DEFAULT '0',
+	`id_evento`             INT(11)                             NOT NULL,
+	`id_tipoNodo`           TINYINT(1)                          NOT NULL,
+	`id_objeto`             INT(11)                             DEFAULT NULL,
+	`id_tipoNodoPadre`      TINYINT(1)                          DEFAULT NULL,
+	`id_objetoPadre`        INT(11)                             DEFAULT NULL,
+	`id_usuarioCreador`     INT(11)                             DEFAULT NULL,
+	`id_usuarioModificador` INT(11)                             DEFAULT NULL,
+	`activo`                TINYINT(1)                          NOT NULL DEFAULT '1',
 	PRIMARY KEY (`id_nodo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='Tabla para registro de nodos';
 

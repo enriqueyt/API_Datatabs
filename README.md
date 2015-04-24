@@ -1,7 +1,7 @@
 # API_Datatabs
 An API developed on Node.js
 
-This API is using the following libraries:
+This API uses the following libraries:
 - express
 - mysql
 - crypto-js
