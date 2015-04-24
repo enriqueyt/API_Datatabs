@@ -29,10 +29,10 @@ app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
 app.use(function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    res.header("Access-Control-Allow-Methods", 'GET, POST', 'PUT');
-    next();
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT');
+	next();
 });
 
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -171,11 +171,12 @@ app.put   ('/sucursal/:val' , sucursal.modificarSucursal);
 /******************************************* CONSUMIDOR ******************************************/
 /*************************************************************************************************/
 /* HttpGet */
-app.get   ('/consumidor/:val?', consumidor.buscarConsumidor   );
-/* [HttpPost] */
-app.post  ('/consumidor'      , consumidor.crearConsumidor    );
-/* [HttpPut] */
-app.put   ('/consumidor/:val' , consumidor.modificarConsumidor);
+app.get   ('/consumidor/:val?'       , consumidor.buscarConsumidor   );
+/* [HttpPost] */                     
+app.post  ('/consumidor'             , consumidor.crearConsumidor    );
+/* [HttpPut] */                      
+app.put   ('/consumidor/:val'        , consumidor.modificarConsumidor);
+app.put   ('/consumidor/validar/:val', consumidor.validarConsumidor  );
 /* [HttpDelete] */
 //app.delete('/consumidor/:id'  , consumidor.eliminarConsumidor );
 
