@@ -6,11 +6,11 @@ var connection = require('../config/db'),
 /**
  *	HttpGet
  *
- *  Gets an event or various events.
+ *  Gets an event or many events.
  *
  *  @param
  *		A request url list parameters:
- *          An id in Base64 related to the company, an id in Base64 related to the branch office (this can be 0), an integer related to an offset and an id in Base64 related to an event (this can be optional).
+ *          An id in Base64 related to the company (this can be 0), an id in Base64 related to the branch office (this can be 0), an integer related to an offset and an id in Base64 related to an event (this can be optional).
  *
  *	@return
  *		A JSON string:
@@ -23,9 +23,9 @@ var connection = require('../config/db'),
  *              "fechaFin"    : "YYYY-MM-DD HH:mm:ss",          A string that represents the event's end date.
  *              "flujo"       : [{ XXXXX }],                    A JSON string that represents the event's flow.
  *              "imagen"      : "XXXXX",                        A string that represents the image file name related to an event.
- *              "id_empresa"  : "Base64EncodeString(1)",        A string in Base64 that represents the identifier related to a company.
- *              "empresa"     : "XXXXX"                         A string that represents the company's name.
- *              "id_sucursal" : "Base64EncodeString(1)",        A string in Base64 that represents the identifier related to a branch office. This field can be optional if the office request  parameter value is 0.
+ *              "id_empresa"  : "Base64EncodeString(1)",        A string in Base64 that represents the identifier related to a company. This field can be optional if the company request parameter value is 0.
+ *              "empresa"     : "XXXXX"                         A string that represents the company's name. This field can be optional if the company request parameter value is 0.
+ *              "id_sucursal" : "Base64EncodeString(1)",        A string in Base64 that represents the identifier related to a branch office. This field can be optional if the office request parameter value is 0.
  *              "sucursal"    : "XXXXX"                         A string that represents the branch office's name. This field can be optional if the office request parameter value is 0.
  *          },
  *          ...
@@ -55,8 +55,14 @@ exports.buscarEvento = function(req, res) {
                     'E.fechaInicio, ' +
                     'E.fechaFin, ' +
                     'E.flujo, ' +
-                    'E.id_empresa, ' +
-                    'C.nombre, ' +
+                    (
+						company != 0
+						?
+							'E.id_empresa, ' +
+							'C.nombre, '
+						:
+							''
+					) +
                     (
                         office != 0
                         ?
@@ -88,21 +94,32 @@ exports.buscarEvento = function(req, res) {
                     'ON E.id_imagen = I.id_imagen ' +
                 'WHERE ' +
                     'E.id_evento > ? AND ' +
-                    'E.id_empresa = ? AND ' +
-                    (office != 0 ? 'ES.id_sucursal = ? AND ' : '') +
+                    (company != 0 ? 'E.id_empresa = ? AND ' : '') +
+                    (office  != 0 ? 'ES.id_sucursal = ? AND ' : '') +
                     'E.activo = 1 ' +
                 'LIMIT 0, ?;';
                 
             connection.db.query(
                 sql,
-                (office != 0 ? [event, company, office, offset] : [event, company, offset]),
+                (
+					company != 0 && office != 0
+					?
+						[event, company, office, offset]
+					:   
+						(
+							company != 0
+							? [event, company, offset]
+							: [event, office, offset]
+						)
+				),
                 function(err, result) {
                     if (err)
                         utilidades.printError(err, res);
                     else {
                         for (i = 0; i < result.length; i++) {
                             result[i].id_evento  = seguridad.encodeBase64(result[i].id_evento);
-                            result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
+                            if (company != 0)
+								result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
                             if (office != 0)
                                 result[i].id_sucursal = seguridad.encodeBase64(result[i].id_sucursal);
                         }
@@ -123,8 +140,14 @@ exports.buscarEvento = function(req, res) {
                     'E.fechaInicio, ' +
                     'E.fechaFin, ' +
                     'E.flujo, ' +
-                    'E.id_empresa, ' +
-                    'C.nombre, ' +
+                    (
+						company != 0
+						?
+							'E.id_empresa, ' +
+							'C.nombre, '
+						:
+							''
+					) +
                     (
                         office != 0
                         ?
@@ -156,21 +179,32 @@ exports.buscarEvento = function(req, res) {
                     'ON E.id_imagen = I.id_imagen ' +
                 'WHERE ' +
                     'E.id_evento < ? AND ' +
-                    'E.id_empresa = ? AND ' +
+                    (company != 0 ? 'E.id_empresa = ? AND ' : '') +
                     (office != 0 ? 'ES.id_sucursal = ? AND ' : '') +
                     'E.activo = 1 ' +
                 'LIMIT 0, ?;';
                 
             connection.db.query(
                 sql,
-                (office != 0 ? [event, company, office, offset] : [event, company, offset]),
+                (
+					company != 0 && office != 0
+					?
+						[event, company, office, offset]
+					:   
+						(
+							company != 0
+							? [event, company, offset]
+							: [event, office, offset]
+						)
+				),
                 function(err, result) {
                     if (err)
                         utilidades.printError(err, res);
                     else {
                         for (i = 0; i < result.length; i++) {
                             result[i].id_evento  = seguridad.encodeBase64(result[i].id_evento);
-                            result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
+                            if (company != 0)
+								result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
                             if (office != 0)
                                 result[i].id_sucursal = seguridad.encodeBase64(result[i].id_sucursal);
                         }
@@ -191,8 +225,14 @@ exports.buscarEvento = function(req, res) {
                     'E.fechaInicio, ' +
                     'E.fechaFin, ' +
                     'E.flujo, ' +
-                    'E.id_empresa, ' +
-                    'C.nombre, ' +
+                    (
+						company != 0
+						?
+							'E.id_empresa, ' +
+							'C.nombre, '
+						:
+							''
+					) +
                     (
                         office != 0
                         ?
@@ -227,11 +267,11 @@ exports.buscarEvento = function(req, res) {
                         event != null
                         ? 
                             'E.id_evento = ? AND ' +
-                            'E.id_empresa = ? AND ' +
+                            (company != 0 ? 'E.id_empresa = ? AND ' : '') +
                             (office != 0 ? 'ES.id_sucursal = ? AND ' : '') +
                             'E.activo = 1;'
                         :
-                            'E.id_empresa = ? AND ' +
+                            (company != 0 ? 'E.id_empresa = ? AND ' : '') +
                             (office != 0 ? 'ES.id_sucursal = ? AND ' : '') +
                             'E.activo = 1 ' +
                             'LIMIT 0, ?;'
@@ -242,9 +282,27 @@ exports.buscarEvento = function(req, res) {
                 (
                     event != null
                     ?
-                        (office != 0 ? [event, company, office] : [event, company])
+                        (
+							company != 0 && office != 0
+							? [event, company, office]
+							: 
+								(
+									company != 0
+									? [event, company]
+									: [event, office]
+								)
+						)
                     :
-                        (office != 0 ? [company, office, offset] : [company, offset])
+                        (
+							company != 0 && office != 0
+							? [company, office, offset]
+							: 
+								(
+									company != 0
+									? [company, offset]
+									: [office, offset]
+								)
+						)
                 ),
                 function(err, result) {
                     if (err) {
@@ -255,7 +313,8 @@ exports.buscarEvento = function(req, res) {
                         console.log(JSON.stringify(result))
                         for (i = 0; i < result.length; i++) {
                             result[i].id_evento  = seguridad.encodeBase64(result[i].id_evento);
-                            result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
+                            if (company != 0)
+								result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
                             if (office != 0)
                                 result[i].id_sucursal = seguridad.encodeBase64(result[i].id_sucursal);
                         }

@@ -103,16 +103,16 @@ app.put   ('/dispositivo/validar/:val' , dispositivo.validarDispositivo        )
 /******************************************** EVENTO *********************************************/
 /*************************************************************************************************/
 /* HttpGet */
-app.get   ('/evento/:company/:office/:offset/:val?'        , evento.buscarEvento );
-app.get   ('/evento/:company/:office/next/:offset/:val'    , evento.buscarEvento );
-app.get   ('/evento/:company/:office/previous/:offset/:val', evento.buscarEvento );
+app.get   ('/evento/:company/:office/:offset/:val?'        , evento.buscarEvento         );
+app.get   ('/evento/:company/:office/next/:offset/:val'    , evento.buscarEvento         );
+app.get   ('/evento/:company/:office/previous/:offset/:val', evento.buscarEvento         );
 /* [HttpPost] */                                                 
-app.post  ('/evento'                               , evento.crearEvento          );
-/* [HttpPut] */                                                                        
-app.put   ('/evento/:val'                          , evento.modificarEvento      );
-app.put   ('/evento/sucursal/:val'                 , evento.asociarEventoSucursal);
-/* [HttpDelete] */
-//app.delete('/evento/:id'                           , evento.eliminarEvento       );
+app.post  ('/evento'                                       , evento.crearEvento          );
+/* [HttpPut] */                                                                                
+app.put   ('/evento/:val'                                  , evento.modificarEvento      );
+app.put   ('/evento/sucursal/:val'                         , evento.asociarEventoSucursal);
+/* [HttpDelete] */                                         
+//app.delete('/evento/:id'                                   , evento.eliminarEvento       );
 
 
 /*************************************************************************************************/
@@ -158,13 +158,15 @@ app.put   ('/empresa/:val' , empresa.modificarEmpresa);
 /******************************************** SUCURSAL *******************************************/
 /*************************************************************************************************/
 /* HttpGet */
-app.get   ('/sucursal/:val?', sucursal.buscarSucursal   );
+app.get   ('/sucursal/:company/:offset/:val?'        , sucursal.buscarSucursal );
+app.get   ('/sucursal/:company/next/:offset/:val'    , sucursal.buscarSucursal );
+app.get   ('/sucursal/:company/previous/:offset/:val', sucursal.buscarSucursal );
 /* [HttpPost] */
-app.post  ('/sucursal'      , sucursal.crearSucursal    );
-/* [HttpPut] */
-app.put   ('/sucursal/:val' , sucursal.modificarSucursal);
+app.post  ('/sucursal'                               , sucursal.crearSucursal    );
+/* [HttpPut] */                                      
+app.put   ('/sucursal/:val'                          , sucursal.modificarSucursal);
 /* [HttpDelete] */
-//app.delete('/sucursal/:id'  , sucursal.eliminarSucursal );
+//app.delete('/sucursal/:id'                           , sucursal.eliminarSucursal );
 
 
 /*************************************************************************************************/
