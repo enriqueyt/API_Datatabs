@@ -13,6 +13,55 @@ exports.buscarDispositivo = function(req, res) {
 };
 
 /**
+ *  HttpGet
+ *
+ *  Checks if a device exists.
+ *
+ *  @param
+ *      A request url parameter (a device identifier).
+ *	
+ *  @return
+ *      A JSON string:
+ *      {
+ *          "msg" : true (or false)
+ *      }
+ *
+ *  @error
+ *      A JSON string:
+ *      {
+ *          "msg" : "Error description"
+ *      }
+ */
+exports.existeDispositivo = function(req, res) {
+	var device = seguridad.decodeBase64(req.params.val);
+    var sql = '';
+    
+    if (connection) {
+        sql =
+            'SELECT * ' +
+            'FROM ' +
+                'datatabs_main.tb_dispositivo AS D ' +
+            'WHERE ' +
+                'D.identificacion = ?;';
+                
+        connection.db.query(
+            sql,
+            [device],
+            function(err, result) {
+                if (err)
+                    utilidades.printError(err, res);
+                else {
+                    res.contentType('application/json');
+                    res.write(JSON.stringify({ msg : result.length > 0 ? true : false }));
+                    res.end();
+                }
+            }
+        );
+    }
+};
+
+
+/**
  *	HttpGet
  *
  *  Gets active device's events.

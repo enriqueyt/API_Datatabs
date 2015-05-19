@@ -86,17 +86,18 @@ app.put   ('/usuariod/:val'     , usuariod.modificarUsuarioD );
 /***************************************** DISPOSITIVO *******************************************/
 /*************************************************************************************************/
 /* HttpGet */
-app.get   ('/dispositivo/:val?'        , dispositivo.buscarDispositivo         );
-app.get   ('/dispositivo/evento/:val?' , dispositivo.buscarEventos             );
-/* [HttpPost] */                                                             
-app.post  ('/dispositivo'              , dispositivo.crearDispositivo          );
-/* [HttpPut] */
-app.put   ('/dispositivo/:val'         , dispositivo.modificarDispositivo      );
-app.put   ('/dispositivo/sucursal/:val', dispositivo.asociarDispositivoSucursal);
-app.put   ('/dispositivo/evento/:val'  , dispositivo.asociarEventoDispositivo  );
-app.put   ('/dispositivo/validar/:val' , dispositivo.validarDispositivo        );
-/* [HttpDelete] */
-//app.delete('/dispositivo/:id'          , dispositivo.eliminarDispositivo       );
+app.get   ('/dispositivo/:val?'           , dispositivo.buscarDispositivo         );
+app.get   ('/dispositivo/dispositivo/:val', dispositivo.existeDispositivo         );
+app.get   ('/dispositivo/evento/:val?'    , dispositivo.buscarEventos             );
+/* [HttpPost] */                                                                
+app.post  ('/dispositivo'                 , dispositivo.crearDispositivo          );
+/* [HttpPut] */                           
+app.put   ('/dispositivo/:val'            , dispositivo.modificarDispositivo      );
+app.put   ('/dispositivo/sucursal/:val'   , dispositivo.asociarDispositivoSucursal);
+app.put   ('/dispositivo/evento/:val'     , dispositivo.asociarEventoDispositivo  );
+app.put   ('/dispositivo/validar/:val'    , dispositivo.validarDispositivo        );
+/* [HttpDelete] */                        
+//app.delete('/dispositivo/:id'             , dispositivo.eliminarDispositivo       );
 
 
 /*************************************************************************************************/
