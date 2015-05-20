@@ -106,7 +106,7 @@ exports.buscarIdDispositivo = function(identificador) {
 			'SELECT ' +
 				'IFNULL(D.id_dispositivo, -1) AS dispostivo ' +
 			'FROM ' +
-				'promociones.tb_dispositivo AS D ' +
+				'datatabs_main.tb_dispositivo AS D ' +
 			'WHERE ' +
 				'D.identificacion = ?;';
 		

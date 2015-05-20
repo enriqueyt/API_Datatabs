@@ -123,7 +123,7 @@ exports.buscarEventos = function(req, res) {
                     'ON Evento.id_imagen = Imagen.id_imagen ' +
                 'WHERE ' +
                     'EventoDisp.id_dispositivo = ? AND ' +
-                    'Evento.fechaFin >= NOW() AND ' +
+                    '(Evento.fechaFin >= NOW() OR Evento.fechaFin IS NULL) AND ' +
                     'Evento.activo = 1;';
 			
 			connection.db.query(

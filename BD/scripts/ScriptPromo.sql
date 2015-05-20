@@ -522,7 +522,7 @@ ADD CONSTRAINT `tb_tipodispositivo_t__tb_tipodispositivo` FOREIGN KEY (`id_tipoD
 CREATE TABLE IF NOT EXISTS `tb_dispositivo` (
 	`id_dispositivo`        INT(11)                             NOT NULL AUTO_INCREMENT,
 	`nombre`                VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL,
-    `identificacion`        VARCHAR(20) COLLATE utf8_spanish_ci NOT NULL,
+    `identificacion`        VARCHAR(50) COLLATE utf8_spanish_ci NOT NULL,
 	`marca`                 VARCHAR(50) COLLATE utf8_spanish_ci NOT NULL,
 	`modelo`                VARCHAR(50) COLLATE utf8_spanish_ci NOT NULL,
 	`serial`                VARCHAR(50) COLLATE utf8_spanish_ci NOT NULL,

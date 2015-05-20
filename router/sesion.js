@@ -50,7 +50,7 @@ exports.autenticar = function(req, res) {
                 else {
                     mensaje   = result[3][0]['@resultado'];
                     resultado = result[1][0]['res'];
-                    
+
                     if ((/ERROR/g).test(mensaje))
                         utilidades.printError(mensaje, res);
                     else {
