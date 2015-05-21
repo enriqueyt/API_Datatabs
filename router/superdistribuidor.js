@@ -4,7 +4,13 @@ var connection = require('../config/db'),
 	seguridad  = require('../utils/seguridad');
 
 exports.buscarSuperDistribuidor = function(req, res) {
-	var superDist = typeof req.params.val !== 'undefined' || req.params.val != null ? seguridad.decodeBase64(req.params.val) : null;
+    try {
+        var superDist = typeof req.params.val !== 'undefined' || req.params.val != null ? seguridad.decodeBase64(req.params.val) : null;
+        
+    }
+    catch (err) {
+        utilidades.printError(err, res);
+    }
 };
     
 /**
@@ -39,59 +45,64 @@ exports.buscarSuperDistribuidor = function(req, res) {
  *		}
  */
 exports.crearSuperDistribuidor = function(req, res) {
-	var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
-	
-	var callback = function(id) {
-		var sql = '', mensaje = '', resultado = '';
-	
-		if (connection) {
-			sql =
-				'SET @resultado = ""; ' +
-				'CALL datatabs_main.sp_crearSuperDistribuidor(?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
-				'SELECT @resultado;';
-			
-			connection.db.query(
-				sql,
-				[
-					id,
-					typeof req.body.identificador !== undefined || req.body.idntificador != null ? req.body.identificador : null,
-					req.body.nombre,
-					req.body.documento,
-					typeof req.body.tlfOficina    !== undefined || req.body.tlfOficina   != null ? req.body.tlfOficina    : null,
-					typeof req.body.tlfFax        !== undefined || req.body.tlfFax       != null ? req.body.tlfFax        : null,
-					typeof req.body.correo        !== undefined || req.body.correo       != null ? req.body.correo        : null,
-					typeof req.body.direccion     !== undefined || req.body.direccion    != null ? req.body.direccion     : null,
-					req.body.ciudad
-				],
-				function(err, result) {
-					if (err)
-                        utilidades.printError(err, res);
-                    else {
-                        mensaje   = result[3][0]['@resultado'];
-                        resultado = result[1][0]['res'];
+	try {
+        var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
+        
+        var callback = function(id) {
+            var sql = '', mensaje = '', resultado = '';
+        
+            if (connection) {
+                sql =
+                    'SET @resultado = ""; ' +
+                    'CALL datatabs_main.sp_crearSuperDistribuidor(?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
+                    'SELECT @resultado;';
                 
-                        res.contentType('application/json');
-                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-                        res.end();
+                connection.db.query(
+                    sql,
+                    [
+                        id,
+                        typeof req.body.identificador !== undefined || req.body.idntificador != null ? req.body.identificador : null,
+                        req.body.nombre,
+                        req.body.documento,
+                        typeof req.body.tlfOficina    !== undefined || req.body.tlfOficina   != null ? req.body.tlfOficina    : null,
+                        typeof req.body.tlfFax        !== undefined || req.body.tlfFax       != null ? req.body.tlfFax        : null,
+                        typeof req.body.correo        !== undefined || req.body.correo       != null ? req.body.correo        : null,
+                        typeof req.body.direccion     !== undefined || req.body.direccion    != null ? req.body.direccion     : null,
+                        req.body.ciudad
+                    ],
+                    function(err, result) {
+                        if (err)
+                            utilidades.printError(err, res);
+                        else {
+                            mensaje   = result[3][0]['@resultado'];
+                            resultado = result[1][0]['res'];
+                    
+                            res.contentType('application/json');
+                            res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                            res.end();
+                        }
                     }
-				}
-			);
-		}
-	};
-    
-    if (user != null) {
-        if ((/^\d+$/g).test(user))
-            callback(user);
+                );
+            }
+        };
+        
+        if (user != null) {
+            if ((/^\d+$/g).test(user))
+                callback(user);
+            else
+                utilidades.buscarIdUsuario(user).then(
+                    callback,
+                    function(err) {
+                        utilidades.printError(err, res);
+                    }
+                );
+        }
         else
-            utilidades.buscarIdUsuario(user).then(
-                callback,
-                function(err) {
-                    utilidades.printError(err, res);
-                }
-            );
+            callback(null);
     }
-	else
-		callback(null);
+    catch (err) {
+        utilidades.printError(err, res);
+    }
 };
 
 /**
@@ -129,61 +140,66 @@ exports.crearSuperDistribuidor = function(req, res) {
  *		}
  */
 exports.modificarSuperDistribuidor = function(req, res) {
-	var superDist = seguridad.decodeBase64(req.params.val);
-	
-	var callback = function(data) {
-		var sql = '', mensaje = '', resultado = '';
-		
-		if (connection) {
-			sql =
-				'SET @resultado = ""; ' +
-				'CALL datatabs_main.sp_modificarSuperDistribuidor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
-				'SELECT @resultado;';
-			
-			connection.db.query(
-				sql,
-				[
-					data[1],
-					data[0],
-                    typeof req.body.identificador !== undefined || req.body.identificador != null ? req.body.identificador : null,
-					typeof req.body.nombre        !== undefined || req.body.nombre        != null ? req.body.nombre        : null,
-					typeof req.body.documento     !== undefined || req.body.documento     != null ? req.body.documento     : null,
-					typeof req.body.tlfOficina    !== undefined || req.body.tlfOficina    != null ? req.body.tlfOficina    : null,
-                    typeof req.body.tlfFax        !== undefined || req.body.tlfFax        != null ? req.body.tlfFax        : null,
-					typeof req.body.correo        !== undefined || req.body.correo        != null ? req.body.correo        : null,
-					typeof req.body.direccion     !== undefined || req.body.direccion     != null ? req.body.direccion     : null,
-					typeof req.body.ciudad        !== undefined || req.body.ciudad        != null ? req.body.ciudad        : null,
-					typeof req.body.activo        !== undefined || req.body.activo        != null ? req.body.activo        : null
-				],
-				function(err, result) {
-					if (err)
-                        utilidades.printError(err, res);
-                    else { 
-                        mensaje   = result[3][0]['@resultado'];
-                        resultado = result[1][0]['res'];
-                                            
-                        res.contentType('application/json');
-                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-                        res.end();
+	try {
+        var superDist = seguridad.decodeBase64(req.params.val);
+        
+        var callback = function(data) {
+            var sql = '', mensaje = '', resultado = '';
+            
+            if (connection) {
+                sql =
+                    'SET @resultado = ""; ' +
+                    'CALL datatabs_main.sp_modificarSuperDistribuidor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
+                    'SELECT @resultado;';
+                
+                connection.db.query(
+                    sql,
+                    [
+                        data[1],
+                        data[0],
+                        typeof req.body.identificador !== undefined || req.body.identificador != null ? req.body.identificador : null,
+                        typeof req.body.nombre        !== undefined || req.body.nombre        != null ? req.body.nombre        : null,
+                        typeof req.body.documento     !== undefined || req.body.documento     != null ? req.body.documento     : null,
+                        typeof req.body.tlfOficina    !== undefined || req.body.tlfOficina    != null ? req.body.tlfOficina    : null,
+                        typeof req.body.tlfFax        !== undefined || req.body.tlfFax        != null ? req.body.tlfFax        : null,
+                        typeof req.body.correo        !== undefined || req.body.correo        != null ? req.body.correo        : null,
+                        typeof req.body.direccion     !== undefined || req.body.direccion     != null ? req.body.direccion     : null,
+                        typeof req.body.ciudad        !== undefined || req.body.ciudad        != null ? req.body.ciudad        : null,
+                        typeof req.body.activo        !== undefined || req.body.activo        != null ? req.body.activo        : null
+                    ],
+                    function(err, result) {
+                        if (err)
+                            utilidades.printError(err, res);
+                        else { 
+                            mensaje   = result[3][0]['@resultado'];
+                            resultado = result[1][0]['res'];
+                                                
+                            res.contentType('application/json');
+                            res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                            res.end();
+                        }
                     }
-				}
-			);
-		}
-    };
-	
-	if (typeof req.body.param !== undefined || req.body.param != null) {
-		if ((/^\d+$/g).test(seguridad.decodeBase64(req.body.param)))
-			callback([superDist, seguridad.decodeBase64(req.body.param)]);
-		else
-			Q.all([superDist, utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
-				callback,
-				function(err) {
-					utilidades.printError(err, res);
-				}
-			);
-	}
-	else
-		callback([superDist, null]);
+                );
+            }
+        };
+        
+        if (typeof req.body.param !== undefined || req.body.param != null) {
+            if ((/^\d+$/g).test(seguridad.decodeBase64(req.body.param)))
+                callback([superDist, seguridad.decodeBase64(req.body.param)]);
+            else
+                Q.all([superDist, utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
+                    callback,
+                    function(err) {
+                        utilidades.printError(err, res);
+                    }
+                );
+        }
+        else
+            callback([superDist, null]);
+    }
+    catch (err) {
+        utilidades.printError(err, res);
+    }
 };
 
 //exports.eliminarSuperDistribuidor = function(req, res) {

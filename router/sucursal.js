@@ -32,136 +32,140 @@ var connection = require('../config/db'),
  *		}
  */
 exports.buscarSucursal = function(req, res) {
-	var company = parseInt(seguridad.decodeBase64(req.params.company));
-    var offset  = typeof req.params.offset !== 'undefined' || req.params.offset != null ? parseInt(req.params.offset)                      : 10;
-    var office  = typeof req.params.val    !== 'undefined' || req.params.val    != null ? parseInt(seguridad.decodeBase64(req.params.val)) : null;
-    
-    var sql = '';
-	
-    if (connection) {
-        if ((/\/next\//g).test(req.route)) {
-            sql =
-                'SELECT ' +
-                    'S.id_sucursal, ' +
-					'S.sucursal, ' +
-					'S.direccion, ' +
-					'C.id_ciudad, ' +
-					'C.ciudad ' +
-                'FROM ' +
-                    'datatabs_main.tb_sucursal AS S ' +
-					'INNER JOIN ' +
-					'datatabs_main.tb_ciudad_t AS C ' +
-					'ON S.id_ciudad = C.id_ciudad ' +
-                'WHERE ' +
-					'C.id_idioma = 1 AND ' +
-					'S.id_sucursal > ? AND ' +
-					'S.id_empresa = ? AND ' +
-                    'S.activo = 1 ' +
-				'LIMIT 0, ?;';
-                
-            connection.db.query(
-                sql,
-                [office, company, offset],
-                function(err, result) {
-                    if (err)
-                        utilidades.printError(err, res);
-                    else {
-                        for (i = 0; i < result.length; i++)
-                            result[i].id_sucursal = seguridad.encodeBase64(result[i].id_sucursal);
-                        
-                        res.contentType('application/json');
-                        res.write(JSON.stringify(result));
-                        res.end();
+    try {
+        var company = parseInt(seguridad.decodeBase64(req.params.company));
+        var offset  = typeof req.params.offset !== 'undefined' || req.params.offset != null ? parseInt(req.params.offset)                      : 10;
+        var office  = typeof req.params.val    !== 'undefined' || req.params.val    != null ? parseInt(seguridad.decodeBase64(req.params.val)) : null;
+        
+        var sql = '';
+        
+        if (connection) {
+            if ((/\/next\//g).test(req.route)) {
+                sql =
+                    'SELECT ' +
+                        'S.id_sucursal, ' +
+                        'S.sucursal, ' +
+                        'S.direccion, ' +
+                        'C.id_ciudad, ' +
+                        'C.ciudad ' +
+                    'FROM ' +
+                        'datatabs_main.tb_sucursal AS S ' +
+                        'INNER JOIN ' +
+                        'datatabs_main.tb_ciudad_t AS C ' +
+                        'ON S.id_ciudad = C.id_ciudad ' +
+                    'WHERE ' +
+                        'C.id_idioma = 1 AND ' +
+                        'S.id_sucursal > ? AND ' +
+                        'S.id_empresa = ? AND ' +
+                        'S.activo = 1 ' +
+                    'LIMIT 0, ?;';
+                    
+                connection.db.query(
+                    sql,
+                    [office, company, offset],
+                    function(err, result) {
+                        if (err)
+                            utilidades.printError(err, res);
+                        else {
+                            for (i = 0; i < result.length; i++)
+                                result[i].id_sucursal = seguridad.encodeBase64(result[i].id_sucursal);
+                            
+                            res.contentType('application/json');
+                            res.write(JSON.stringify(result));
+                            res.end();
+                        }
                     }
-                }
-            );
-        }
-        else if ((/\/previous\//g).test(req.route)) {
-            sql =
-                'SELECT ' +
-                    'S.id_sucursal, ' +
-					'S.sucursal, ' +
-					'S.direccion, ' +
-					'C.id_ciudad, ' +
-					'C.ciudad ' +
-                'FROM ' +
-                    'datatabs_main.tb_sucursal AS S ' +
-					'INNER JOIN ' +
-					'datatabs_main.tb_ciudad_t AS C ' +
-					'ON S.id_ciudad = C.id_ciudad ' +
-                'WHERE ' +
-					'C.id_idioma = 1 AND ' +
-					'S.id_sucursal < ? AND ' +
-					'S.id_empresa = ? AND ' +
-                    'S.activo = 1 ' +
-				'LIMIT 0, ?;';
-                
-            connection.db.query(
-                sql,
-                [office, company, offset],
-                function(err, result) {
-                    if (err)
-                        utilidades.printError(err, res);
-                    else {
-                        for (i = 0; i < result.length; i++)
-                            result[i].id_sucursal = seguridad.encodeBase64(result[i].id_sucursal);
-                        
-                        res.contentType('application/json');
-                        res.write(JSON.stringify(result));
-                        res.end();
+                );
+            }
+            else if ((/\/previous\//g).test(req.route)) {
+                sql =
+                    'SELECT ' +
+                        'S.id_sucursal, ' +
+                        'S.sucursal, ' +
+                        'S.direccion, ' +
+                        'C.id_ciudad, ' +
+                        'C.ciudad ' +
+                    'FROM ' +
+                        'datatabs_main.tb_sucursal AS S ' +
+                        'INNER JOIN ' +
+                        'datatabs_main.tb_ciudad_t AS C ' +
+                        'ON S.id_ciudad = C.id_ciudad ' +
+                    'WHERE ' +
+                        'C.id_idioma = 1 AND ' +
+                        'S.id_sucursal < ? AND ' +
+                        'S.id_empresa = ? AND ' +
+                        'S.activo = 1 ' +
+                    'LIMIT 0, ?;';
+                    
+                connection.db.query(
+                    sql,
+                    [office, company, offset],
+                    function(err, result) {
+                        if (err)
+                            utilidades.printError(err, res);
+                        else {
+                            for (i = 0; i < result.length; i++)
+                                result[i].id_sucursal = seguridad.encodeBase64(result[i].id_sucursal);
+                            
+                            res.contentType('application/json');
+                            res.write(JSON.stringify(result));
+                            res.end();
+                        }
                     }
-                }
-            );
-        }
-        else {
-            sql =
-                'SELECT ' +
-                    'S.id_sucursal, ' +
-					'S.sucursal, ' +
-					'S.direccion, ' +
-					'C.id_ciudad, ' +
-					'C.ciudad ' +
-                'FROM ' +
-                    'datatabs_main.tb_sucursal AS S ' +
-					'INNER JOIN ' +
-					'datatabs_main.tb_ciudad_t AS C ' +
-					'ON S.id_ciudad = C.id_ciudad ' +
-                'WHERE ' +
-					'C.id_idioma = 1 AND ' +
+                );
+            }
+            else {
+                sql =
+                    'SELECT ' +
+                        'S.id_sucursal, ' +
+                        'S.sucursal, ' +
+                        'S.direccion, ' +
+                        'C.id_ciudad, ' +
+                        'C.ciudad ' +
+                    'FROM ' +
+                        'datatabs_main.tb_sucursal AS S ' +
+                        'INNER JOIN ' +
+                        'datatabs_main.tb_ciudad_t AS C ' +
+                        'ON S.id_ciudad = C.id_ciudad ' +
+                    'WHERE ' +
+                        'C.id_idioma = 1 AND ' +
+                        'S.activo = 1 AND ' +
+                        (
+                            office != null
+                            ? 
+                                'S.id_sucursal = ? AND ' +
+                                'S.id_empresa = ?;'
+                            :
+                                'S.id_empresa = ? ' +
+                                'LIMIT 0, ?;'
+                        );
+                
+                connection.db.query(
+                    sql,
                     (
-                        office != null
-                        ? 
-                            'S.id_sucursal = ? AND ' +
-                            'S.id_empresa = ? AND ' +
-                            'S.activo = 1;'
-                        :
-                            'S.id_empresa = ? AND ' +
-                            'S.activo = 1 ' +
-                            'LIMIT 0, ?;'
-                    );
-            
-            connection.db.query(
-                sql,
-                (
-                    office != null ? [office, company] : [company, offset]
-                ),
-                function(err, result) {
-                    if (err) {
-                        console.log('error')
-                        utilidades.printError(err, res);
+                        office != null ? [office, company] : [company, offset]
+                    ),
+                    function(err, result) {
+                        if (err) {
+                            console.log('error')
+                            utilidades.printError(err, res);
+                        }
+                        else {
+                            console.log(JSON.stringify(result))
+                            for (i = 0; i < result.length; i++)
+                                result[i].id_sucursal = seguridad.encodeBase64(result[i].id_sucursal);
+                            
+                            res.contentType('application/json');
+                            res.write(JSON.stringify(result));
+                            res.end();
+                        }
                     }
-                    else {
-                        console.log(JSON.stringify(result))
-                        for (i = 0; i < result.length; i++)
-                            result[i].id_sucursal = seguridad.encodeBase64(result[i].id_sucursal);
-                        
-                        res.contentType('application/json');
-                        res.write(JSON.stringify(result));
-                        res.end();
-                    }
-                }
-            );
+                );
+            }
         }
+    }
+    catch (err) {
+        utilidades.printError(err, res);
     }
 };
     
@@ -193,55 +197,60 @@ exports.buscarSucursal = function(req, res) {
  *		}
  */
 exports.crearSucursal = function(req, res) {
-	var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
-	
-	var callback = function(id) {
-		var sql = '', mensaje = '', resultado = '';
-	
-		if (connection) {
-			sql =
-				'SET @resultado = ""; ' +
-				'CALL datatabs_main.sp_crearSucursal(?, ?, ?, ?, ?, @resultado); ' +
-				'SELECT @resultado;';
-			
-			connection.db.query(
-				sql,
-				[
-					id,
-					req.body.nombre,
-					typeof req.body.direccion !== undefined || req.body.direccion != null ? req.body.direccion : null,
-					req.body.ciudad,
-                    req.body.empresa
-				],
-				function(err, result) {
-					if (err)
-                        utilidades.printError(err, res);
-                    else {
-                        mensaje   = result[3][0]['@resultado'];
-                        resultado = result[1][0]['res'];
+	try {
+        var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
+        
+        var callback = function(id) {
+            var sql = '', mensaje = '', resultado = '';
+        
+            if (connection) {
+                sql =
+                    'SET @resultado = ""; ' +
+                    'CALL datatabs_main.sp_crearSucursal(?, ?, ?, ?, ?, @resultado); ' +
+                    'SELECT @resultado;';
                 
-                        res.contentType('application/json');
-                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-                        res.end();
+                connection.db.query(
+                    sql,
+                    [
+                        id,
+                        req.body.nombre,
+                        typeof req.body.direccion !== undefined || req.body.direccion != null ? req.body.direccion : null,
+                        req.body.ciudad,
+                        req.body.empresa
+                    ],
+                    function(err, result) {
+                        if (err)
+                            utilidades.printError(err, res);
+                        else {
+                            mensaje   = result[3][0]['@resultado'];
+                            resultado = result[1][0]['res'];
+                    
+                            res.contentType('application/json');
+                            res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                            res.end();
+                        }
                     }
-				}
-			);
-		}
-	};
-    
-    if (user != null) {
-        if ((/^\d+$/g).test(user))
-            callback(user);
+                );
+            }
+        };
+        
+        if (user != null) {
+            if ((/^\d+$/g).test(user))
+                callback(user);
+            else
+                utilidades.buscarIdUsuario(user).then(
+                    callback,
+                    function(err) {
+                        utilidades.printError(err, res);
+                    }
+                );
+        }
         else
-            utilidades.buscarIdUsuario(user).then(
-                callback,
-                function(err) {
-                    utilidades.printError(err, res);
-                }
-            );
+            callback(null);
     }
-	else
-		callback(null);
+    catch (err) {
+        utilidades.printError(err, res);
+    }
 };
 
 /**
@@ -274,56 +283,61 @@ exports.crearSucursal = function(req, res) {
  *		}
  */
 exports.modificarSucursal = function(req, res) {
-	var branch = seguridad.decodeBase64(req.params.val);
-	
-	var callback = function(data) {
-		var sql = '', mensaje = '', resultado = '';
-		
-		if (connection) {
-			sql =
-				'SET @resultado = ""; ' +
-				'CALL datatabs_main.sp_modificarSucursal(?, ?, ?, ?, ?, ?, @resultado); ' +
-				'SELECT @resultado;';
-			
-			connection.db.query(
-				sql,
-				[
-					data[1],
-					data[0],
-                    typeof req.body.nombre    !== undefined || req.body.nombre    != null ? req.body.nombre    : null,
-					typeof req.body.direccion !== undefined || req.body.direccion != null ? req.body.direccion : null,
-					typeof req.body.ciudad    !== undefined || req.body.ciudad    != null ? req.body.ciudad    : null,
-					typeof req.body.activo    !== undefined || req.body.activo    != null ? req.body.activo    : null
-				],
-				function(err, result) {
-					if (err)
-                        utilidades.printError(err, res);
-                    else {
-                        mensaje   = result[3][0]['@resultado'];
-                        resultado = result[1][0]['res'];
-                                            
-                        res.contentType('application/json');
-                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-                        res.end();
+	try {
+        var branch = seguridad.decodeBase64(req.params.val);
+        
+        var callback = function(data) {
+            var sql = '', mensaje = '', resultado = '';
+            
+            if (connection) {
+                sql =
+                    'SET @resultado = ""; ' +
+                    'CALL datatabs_main.sp_modificarSucursal(?, ?, ?, ?, ?, ?, @resultado); ' +
+                    'SELECT @resultado;';
+                
+                connection.db.query(
+                    sql,
+                    [
+                        data[1],
+                        data[0],
+                        typeof req.body.nombre    !== undefined || req.body.nombre    != null ? req.body.nombre    : null,
+                        typeof req.body.direccion !== undefined || req.body.direccion != null ? req.body.direccion : null,
+                        typeof req.body.ciudad    !== undefined || req.body.ciudad    != null ? req.body.ciudad    : null,
+                        typeof req.body.activo    !== undefined || req.body.activo    != null ? req.body.activo    : null
+                    ],
+                    function(err, result) {
+                        if (err)
+                            utilidades.printError(err, res);
+                        else {
+                            mensaje   = result[3][0]['@resultado'];
+                            resultado = result[1][0]['res'];
+                                                
+                            res.contentType('application/json');
+                            res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                            res.end();
+                        }
                     }
-				}
-			);
-		}
-    };
-	
-	if (typeof req.body.param !== undefined || req.body.param != null) {
-		if ((/^\d+$/g).test(seguridad.decodeBase64(req.body.param)))
-			callback([branch, seguridad.decodeBase64(req.body.param)]);
-		else
-			Q.all([branch, utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
-				callback,
-				function(err) {
-					utilidades.printError(err, res);
-				}
-			);
-	}
-	else
-		callback([branch, null]);
+                );
+            }
+        };
+        
+        if (typeof req.body.param !== undefined || req.body.param != null) {
+            if ((/^\d+$/g).test(seguridad.decodeBase64(req.body.param)))
+                callback([branch, seguridad.decodeBase64(req.body.param)]);
+            else
+                Q.all([branch, utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
+                    callback,
+                    function(err) {
+                        utilidades.printError(err, res);
+                    }
+                );
+        }
+        else
+            callback([branch, null]);
+    }
+    catch (err) {
+        utilidades.printError(err, res);
+    }
 };
 
 //exports.eliminarSucursal = function(req, res) {

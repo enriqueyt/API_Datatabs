@@ -21,39 +21,44 @@ var connection = require('../config/db'),
  *      }
  */
 exports.crearAdmin = function(req, res) {
-    var admin = {
-        usuario_n : 'admin',
-        usuario_p : 'qwerty256'
-    };
-    var sql = '', mensaje = '', resultado = '';
-	
-    if (connection) {
-        sql =
-            'SET @resultado = ""; ' +
-            'CALL datatabs_main.sp_crearUsuarioAdmin(?, ?, ?, @resultado); ' +
-            'SELECT @resultado;';
+    try {
+        var admin = {
+            usuario_n : 'admin',
+            usuario_p : 'qwerty256'
+        };
+        var sql = '', mensaje = '', resultado = '';
+        
+        if (connection) {
+            sql =
+                'SET @resultado = ""; ' +
+                'CALL datatabs_main.sp_crearUsuarioAdmin(?, ?, ?, @resultado); ' +
+                'SELECT @resultado;';
 
-        connection.db.query(
-            sql,
-            //[
-			//  seguridad.AES(seguidad.SHA512(admin.usuario_n), usuario_p),
-			//  seguridad.SHA512(admin.usuario_n),
-			//  seguridad.AES(seguidad.SHA512(admin.usuario_p), usuario_p)
-			//],
-            [admin.usuario_n, admin.usuario_n, admin.usuario_p],
-            function(err, result) {
-                if (err)
-                    utilidades.printError(err, res);
-                else {
-                    mensaje   = result[3][0]['@resultado'];
-                    resultado = result[1][0]['res'];
-                    
-                    res.contentType('application/json');
-                    res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-                    res.end();
+            connection.db.query(
+                sql,
+                //[
+                //  seguridad.AES(seguidad.SHA512(admin.usuario_n), usuario_p),
+                //  seguridad.SHA512(admin.usuario_n),
+                //  seguridad.AES(seguidad.SHA512(admin.usuario_p), usuario_p)
+                //],
+                [admin.usuario_n, admin.usuario_n, admin.usuario_p],
+                function(err, result) {
+                    if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+                        
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.end();
+                    }
                 }
-            }
-        );
+            );
+        }
+    }
+    catch (err) {
+        utilidades.printError(err, res);
     }
 };
 
@@ -78,31 +83,36 @@ exports.crearAdmin = function(req, res) {
  *      }
  */
 exports.existeUsuario = function(req, res) {
-    //var username = seguridad.SHA512(req.params.val);
-    var username = req.params.val;
-	var sql = '';
-		
-    if (connection) {
-        sql =
-            'SELECT * ' +
-            'FROM ' +
-                'datatabs_main.tb_usuario AS U ' +
-            'WHERE ' +
-                'U.usuario_ = ? OR U.usuarioCorreo_ = ?;';
-                
-        connection.db.query(
-            sql,
-            [username, username],
-            function(err, result) {
-                if (err)
-                    utilidades.printError(err, res);
-                else {
-                    res.contentType('application/json');
-                    res.write(JSON.stringify({ msg : result.length > 0 ? true : false }));
-                    res.end();
+    try {
+        //var username = seguridad.SHA512(req.params.val);
+        var username = req.params.val;
+        var sql = '';
+            
+        if (connection) {
+            sql =
+                'SELECT * ' +
+                'FROM ' +
+                    'datatabs_main.tb_usuario AS U ' +
+                'WHERE ' +
+                    'U.usuario_ = ? OR U.usuarioCorreo_ = ?;';
+                    
+            connection.db.query(
+                sql,
+                [username, username],
+                function(err, result) {
+                    if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : result.length > 0 ? true : false }));
+                        res.end();
+                    }
                 }
-            }
-        );
+            );
+        }
+    }
+    catch (err) {
+        utilidades.printError(err, res);
     }
 };
 
@@ -127,31 +137,36 @@ exports.existeUsuario = function(req, res) {
  *      }
  */
 exports.existeCorreo = function(req, res) {
-    //var mail = seguridad.SHA512(req.params.val);
-    var mail = req.params.val;
-    var sql = '';
-		
-    if (connection) {
-        sql =
-            'SELECT * ' +
-            'FROM ' +
-                'datatabs_main.tb_usuario AS U ' +
-            'WHERE ' +
-                'U.usuarioCorreo_ = ?;';
-		
-        connection.db.query(
-            sql,
-            [mail],
-            function(err, result) {
-                if (err)
-                    utilidades.printError(err, res);
-                else {
-                    res.contentType('application/json');
-                    res.write(JSON.stringify( { msg : result.length > 0 ? true : false }));
-                    res.end();
+    try {
+        //var mail = seguridad.SHA512(req.params.val);
+        var mail = req.params.val;
+        var sql = '';
+            
+        if (connection) {
+            sql =
+                'SELECT * ' +
+                'FROM ' +
+                    'datatabs_main.tb_usuario AS U ' +
+                'WHERE ' +
+                    'U.usuarioCorreo_ = ?;';
+            
+            connection.db.query(
+                sql,
+                [mail],
+                function(err, result) {
+                    if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        res.contentType('application/json');
+                        res.write(JSON.stringify( { msg : result.length > 0 ? true : false }));
+                        res.end();
+                    }
                 }
-            }
-        );
+            );
+        }
+    }
+    catch (err) {
+        utilidades.printError(err, res);
     }
 };
 
@@ -184,69 +199,74 @@ exports.existeCorreo = function(req, res) {
  *      }
  */
 exports.crearUsuario = function(req, res) {
-    var user = null;
+    try {
+        var user = null;
 
-    var callback = function(id) {
-        var sql = '', mensaje = '', resultado = '';
+        var callback = function(id) {
+            var sql = '', mensaje = '', resultado = '';
+            
+            if (connection) {
+                sql =
+                    'SET @resultado = ""; ' +
+                    'CALL datatabs_main.sp_crearUsuario(?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
+                    'SELECT @resultado;';
+                
+                connection.db.query(
+                    sql,
+                    //[
+                    //	id,
+                    //	seguridad.encodeAES(seguridad.SHA512(req.body.usuario_n), req.body.usuario_p),
+                    //	seguridad.SHA512(req.body.usuario_n),
+                    //	typeof req.body.usuario_m !== undefined || req.body.usuario_m != null ? seguridad.encodeAES(seguridad.SHA512(req.body.usuario_m), req.body.usuario_p) : null,
+                    //	typeof req.body.usuario_m !== undefined || req.body.usuario_m != null ? seguridad.SHA512(req.body.usuario_m) : null,
+                    //	seguridad.encodeAES(seguridad.SHA512(req.body.usuario_p), req.body.usuario_p),
+                    //	typeof req.body.activo !== undefined || req.body.activo != null ? req.body.activo : null,
+                    //	req.body.perfil
+                    //],
+                    [
+                        id,
+                        req.body.usuario_n,
+                        req.body.usuario_n,
+                        typeof req.body.usuario_m !== undefined || req.body.usuario_m != null ? req.body.usuario_m : null,
+                        typeof req.body.usuario_m !== undefined || req.body.usuario_m != null ? req.body.usuario_m : null,
+                        req.body.usuario_p,
+                        typeof req.body.activo !== undefined || req.body.activo != null ? req.body.activo : null,
+                        req.body.perfil
+                    ],
+                    function(err, result) {
+                        if (err)
+                            utilidades.printError(err, res);
+                        else {
+                            mensaje   = result[3][0]['@resultado'];
+                            resultado = result[1][0]['res'];
         
-        if (connection) {
-			sql =
-				'SET @resultado = ""; ' +
-				'CALL datatabs_main.sp_crearUsuario(?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
-				'SELECT @resultado;';
-			
-            connection.db.query(
-                sql,
-                //[
-                //	id,
-                //	seguridad.encodeAES(seguridad.SHA512(req.body.usuario_n), req.body.usuario_p),
-                //	seguridad.SHA512(req.body.usuario_n),
-                //	typeof req.body.usuario_m !== undefined || req.body.usuario_m != null ? seguridad.encodeAES(seguridad.SHA512(req.body.usuario_m), req.body.usuario_p) : null,
-                //	typeof req.body.usuario_m !== undefined || req.body.usuario_m != null ? seguridad.SHA512(req.body.usuario_m) : null,
-                //	seguridad.encodeAES(seguridad.SHA512(req.body.usuario_p), req.body.usuario_p),
-                //	typeof req.body.activo !== undefined || req.body.activo != null ? req.body.activo : null,
-                //	req.body.perfil
-                //],
-                [
-                    id,
-                    req.body.usuario_n,
-                    req.body.usuario_n,
-                    typeof req.body.usuario_m !== undefined || req.body.usuario_m != null ? req.body.usuario_m : null,
-                    typeof req.body.usuario_m !== undefined || req.body.usuario_m != null ? req.body.usuario_m : null,
-                    req.body.usuario_p,
-                    typeof req.body.activo !== undefined || req.body.activo != null ? req.body.activo : null,
-                    req.body.perfil
-                ],
-                function(err, result) {
-                    if (err)
-                        utilidades.printError(err, res);
-                    else {
-                        mensaje   = result[3][0]['@resultado'];
-                        resultado = result[1][0]['res'];
-    
-                        res.contentType('application/json');
-                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-                        res.end();
+                            res.contentType('application/json');
+                            res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                            res.end();
+                        }
                     }
+                );
+            }
+        };
+
+        if (typeof req.body.param !== undefined || req.body.param != null) {
+            user = seguridad.decodeBase64(req.body.param);
+            if ((/^\d+$/g).test(user))
+                callback(user);
+            else
+                utilidades.buscarIdUsuario(user).then(
+                    callback,
+                function(err) {
+                    utilidades.printError(err, res);
                 }
             );
         }
-    };
-
-    if (typeof req.body.param !== undefined || req.body.param != null) {
-        user = seguridad.decodeBase64(req.body.param);
-        if ((/^\d+$/g).test(user))
-            callback(user);
         else
-            utilidades.buscarIdUsuario(user).then(
-                callback,
-            function(err) {
-                utilidades.printError(err, res);
-            }
-        );
+            callback(null);
     }
-    else
-        callback(null);
+    catch (err) {
+        utilidades.printError(err, res);
+    }
 };
 
 /**
@@ -277,61 +297,66 @@ exports.crearUsuario = function(req, res) {
  *      }
  */
 exports.modificarUsuario = function(req, res) {
-    var user = seguridad.decodeBase64(req.params.val);
+    try {
+        var user = seguridad.decodeBase64(req.params.val);
 
-    var callback = function(id) {
-        var sql = '', mensaje = '', resultado = '';
+        var callback = function(id) {
+            var sql = '', mensaje = '', resultado = '';
 
-        if (connection) {
-            sql =
-                'SET @resultado = ""; ' +
-                'CALL datatabs_main.sp_modificarUsuario(?, ?, ?, ?, ?, ?, NULL, NULL, @resultado); ' +
-                'SELECT @resultado;';
+            if (connection) {
+                sql =
+                    'SET @resultado = ""; ' +
+                    'CALL datatabs_main.sp_modificarUsuario(?, ?, ?, ?, ?, ?, NULL, NULL, @resultado); ' +
+                    'SELECT @resultado;';
 
-            connection.db.query(
-                sql,
-                //[
-                //  id,
-                //  id,
-                //  seguridad.AES(seguridad.SHA512(req.body.usuario_n), req.body.usuario_p),
-                //  seguridad.SHA512(req.body.usuario_n),
-                //  typeof req.body.usuario_m !== undefined || req.body.usuario_m != null ? seguridad.AES(seguridad.SHA512(req.body.usuario_m), req.body.usuario_p) : null,
-                //  typeof req.body.usuario_m !== undefined || req.body.usuario_m != null ? seguridad.SHA512(req.body.usuario_m) : null
-                //],
-                [
-                    id,
-                    id,
-                    req.body.usuario_n,
-                    req.body.usuario_n,
-                    typeof req.body.usuario_m !== undefined || req.body.usuario_m != null ? req.body.usuario_m : null,
-                    typeof req.body.usuario_m !== undefined || req.body.usuario_m != null ? req.body.usuario_m : null,
-                ],
-                function(err, result) {
-                    if (err)
-                        utilidades.printError(err, res);
-                    else {
-                        mensaje   = result[3][0]['@resultado'];
-                        resultado = result[1][0]['res'];
+                connection.db.query(
+                    sql,
+                    //[
+                    //  id,
+                    //  id,
+                    //  seguridad.AES(seguridad.SHA512(req.body.usuario_n), req.body.usuario_p),
+                    //  seguridad.SHA512(req.body.usuario_n),
+                    //  typeof req.body.usuario_m !== undefined || req.body.usuario_m != null ? seguridad.AES(seguridad.SHA512(req.body.usuario_m), req.body.usuario_p) : null,
+                    //  typeof req.body.usuario_m !== undefined || req.body.usuario_m != null ? seguridad.SHA512(req.body.usuario_m) : null
+                    //],
+                    [
+                        id,
+                        id,
+                        req.body.usuario_n,
+                        req.body.usuario_n,
+                        typeof req.body.usuario_m !== undefined || req.body.usuario_m != null ? req.body.usuario_m : null,
+                        typeof req.body.usuario_m !== undefined || req.body.usuario_m != null ? req.body.usuario_m : null,
+                    ],
+                    function(err, result) {
+                        if (err)
+                            utilidades.printError(err, res);
+                        else {
+                            mensaje   = result[3][0]['@resultado'];
+                            resultado = result[1][0]['res'];
 
-                        res.contentType('application/json');
-                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-                        res.end();
+                            res.contentType('application/json');
+                            res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                            res.end();
+                        }
                     }
+                );
+            }
+        };
+
+        if ((/^\d+$/g).test(user))
+            callback(user);
+        else
+            utilidades.buscarIdUsuario(user).then(
+                callback,
+                function(err) {
+                    utilidades.printError(err, res);
                 }
             );
-        }
-    };
-
-    if ((/^\d+$/g).test(user))
-        callback(user);
-    else
-        utilidades.buscarIdUsuario(user).then(
-            callback,
-            function(err) {
-                utilidades.printError(err, res);
-            }
-        );
-    };
+    }
+    catch (err) {
+        utilidades.printError(err, res);
+    }
+};
 
 /**
  *  HttpPut
@@ -360,97 +385,102 @@ exports.modificarUsuario = function(req, res) {
  *      }
  */
 exports.modificarContrasena = function(req, res) {
-    var user = seguridad.decodeBase64(req.params.val);
+    try {
+        var user = seguridad.decodeBase64(req.params.val);
 
-    var callback_1 = function(id) {
-        var deferred = Q.defer();
-        var sql = '';
+        var callback_1 = function(id) {
+            var deferred = Q.defer();
+            var sql = '';
 
-        if (connection) {
-            sql =
-                'SELECT ' +
-                    '? AS id, U.usuario AS usuario, U.usuarioCorreo AS usuarioCorreo ' +
-                'FROM ' +
-                    'datatabs_main.tb_usuario AS U ' +
-                'WHERE ' +
-                    'U.id_usuario = ?;';
+            if (connection) {
+                sql =
+                    'SELECT ' +
+                        '? AS id, U.usuario AS usuario, U.usuarioCorreo AS usuarioCorreo ' +
+                    'FROM ' +
+                        'datatabs_main.tb_usuario AS U ' +
+                    'WHERE ' +
+                        'U.id_usuario = ?;';
 
-            connection.db.query(
-                sql,
-                [id],
-                function(err, result) {
-                    if (err)
-                        deferred.reject(err);
-                    else {
-                        if (result.length <= 0)
-                            utilidades.printError('ERROR - ! - Error buscando datos', res);				
-                        else                   
-                            deferred.resolve(result[0]);
+                connection.db.query(
+                    sql,
+                    [id],
+                    function(err, result) {
+                        if (err)
+                            deferred.reject(err);
+                        else {
+                            if (result.length <= 0)
+                                utilidades.printError('ERROR - ! - Error buscando datos', res);				
+                            else                   
+                                deferred.resolve(result[0]);
+                        }
                     }
+                );
+            }
+
+            return deferred.promise;
+        };
+
+        var callback_2 = function(data) {
+            var sql = '', mensaje = '', resultado = '';
+
+            if (connection) {
+                sql =
+                    'SET @resultado = ""; ' +
+                    'CALL datatabs_main.sp_modificarUsuario(?, ?, ?, NULL, ?, NULL, ?, NULL, @resultado); ' +
+                    'SELECT @resultado;';
+
+                connection.db.query(
+                    sql,
+                    //[
+                    //  data.id,
+                    //  data.id,
+                    //  seguridad.encodeAES(seguridad.decodeAES(data.usuario, req.body.usuario_p), req.body.usuario_np),
+                    //  data.usuarioCorreo != null ? seguridad.encodeAES(seguridad.decodeAES(data.usuarioCorreo, req.body.usuario_p), req.body.usuario_np) : null,
+                    //  seguridad.encodeAES(seguridad.SHA512(req.body.usuario_np), req.body.usuario_np)
+                    //],
+                    [
+                        data.id,
+                        data.id,
+                        data.usuario,
+                        data.usuarioCorreo != null ? data.usuarioCorreo : null,
+                        req.body.usuario_np
+                    ],
+                    function(err, result) {
+                        if (err)
+                            utilidades.printError(err, res);
+                        else {
+                            mensaje   = result[3][0]['@resultado'];
+                            resultado = result[1][0]['res'];
+
+                            res.contentType('application/json');
+                            res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                            res.end();
+                        }
+                    }
+                );
+            }
+        };
+
+        if ((/^\d+$/g).test(user))
+            callback_1(user).then(
+                callback_2,
+                function(err) {
+                    utilidades.printError(err, res);
                 }
             );
-        }
-
-        return deferred.promise;
-    };
-
-    var callback_2 = function(data) {
-        var sql = '', mensaje = '', resultado = '';
-
-        if (connection) {
-            sql =
-                'SET @resultado = ""; ' +
-                'CALL datatabs_main.sp_modificarUsuario(?, ?, ?, NULL, ?, NULL, ?, NULL, @resultado); ' +
-                'SELECT @resultado;';
-
-            connection.db.query(
-                sql,
-                //[
-                //  data.id,
-                //  data.id,
-                //  seguridad.encodeAES(seguridad.decodeAES(data.usuario, req.body.usuario_p), req.body.usuario_np),
-                //  data.usuarioCorreo != null ? seguridad.encodeAES(seguridad.decodeAES(data.usuarioCorreo, req.body.usuario_p), req.body.usuario_np) : null,
-                //  seguridad.encodeAES(seguridad.SHA512(req.body.usuario_np), req.body.usuario_np)
-                //],
-                [
-                    data.id,
-                    data.id,
-                    data.usuario,
-                    data.usuarioCorreo != null ? data.usuarioCorreo : null,
-                    req.body.usuario_np
-                ],
-                function(err, result) {
-                    if (err)
-                        utilidades.printError(err, res);
-                    else {
-                        mensaje   = result[3][0]['@resultado'];
-                        resultado = result[1][0]['res'];
-
-                        res.contentType('application/json');
-                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-                        res.end();
-                    }
+        else 
+            utilidades.buscarIdUsuario(user).then(
+                callback_1
+            ).then(
+                callback_2,
+                function(err) {
+                    utilidades.printError(err, res);
                 }
             );
-        }
-    };
-
-    if ((/^\d+$/g).test(user))
-        callback_1(user).then(
-            callback_2,
-            function(err) {
-                utilidades.printError(err, res);
-            }
-        );
-    else 
-        utilidades.buscarIdUsuario(user).then(
-            callback_1
-        ).then(
-            callback_2,
-            function(err) {
-                utilidades.printError(err, res);
-            }
-        );
+    }
+    catch (err) {
+        utilidades.printError(err, res);
+    }
 };
 
 exports.cambiarEstadoUsuario = function(req, res) {

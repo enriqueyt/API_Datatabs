@@ -4,7 +4,13 @@ var connection = require('../config/db'),
 	seguridad  = require('../utils/seguridad');
     
 exports.buscarConsumidor = function(req, res) {
-	var client = typeof req.params.val !== undefined || req.params.val != null ? seguridad.decodeBase64(req.params.val) : null;
+    try {
+        var client = typeof req.params.val !== undefined || req.params.val != null ? seguridad.decodeBase64(req.params.val) : null;
+        
+    }
+    catch (err) {
+        utilidades.printError(err, res);
+    }
 };
 
 /**
@@ -41,61 +47,66 @@ exports.buscarConsumidor = function(req, res) {
  *		}
  */
 exports.crearConsumidor = function(req, res) {
-	var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
-	
-	var callback = function(id) {
-		var sql = '', mensaje = '', resultado = '';
-	
-		if (connection) {
-			sql =
-				'SET @resultado = ""; ' +
-				'CALL datatabs_main.sp_crearConsumidor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
-				'SELECT @resultado;';
-			
-			connection.db.query(
-				sql,
-				[
-					id,
-					typeof req.body.nombre          !== undefined || req.body.nombre          != null ? req.body.nombre          : null,
-					typeof req.body.apellido        !== undefined || req.body.apellido        != null ? req.body.apellido        : null,
-                    req.body.tlfCelular,                                                                                         
-                    typeof req.body.correo          !== undefined || req.body.correo          != null ? req.body.correo          : null,
-                    typeof req.body.twitter         !== undefined || req.body.twitter         != null ? req.body.twitter         : null,
-                    typeof req.body.facebook        !== undefined || req.body.facebook        != null ? req.body.facebook        : null,
-                    typeof req.body.fechaNacimiento !== undefined || req.body.fechaNacimiento != null ? req.body.fechaNacimiento : null,
-                    req.body.tipoConsumidor,
-                    typeof req.body.sexo            !== undefined || req.body.sexo            != null ? req.body.sexo            : null,
-                    typeof req.body.ciudad          !== undefined || req.body.ciudad          != null ? req.body.ciudad          : null,
-				],
-				function(err, result) {
-					if (err)
-                        utilidades.printError(err, res);
-                    else {
-                        mensaje   = result[3][0]['@resultado'];
-                        resultado = result[1][0]['res'];
+	try {
+        var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
+        
+        var callback = function(id) {
+            var sql = '', mensaje = '', resultado = '';
+        
+            if (connection) {
+                sql =
+                    'SET @resultado = ""; ' +
+                    'CALL datatabs_main.sp_crearConsumidor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
+                    'SELECT @resultado;';
                 
-                        res.contentType('application/json');
-                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-                        res.end();
+                connection.db.query(
+                    sql,
+                    [
+                        id,
+                        typeof req.body.nombre          !== undefined || req.body.nombre          != null ? req.body.nombre          : null,
+                        typeof req.body.apellido        !== undefined || req.body.apellido        != null ? req.body.apellido        : null,
+                        req.body.tlfCelular,                                                                                         
+                        typeof req.body.correo          !== undefined || req.body.correo          != null ? req.body.correo          : null,
+                        typeof req.body.twitter         !== undefined || req.body.twitter         != null ? req.body.twitter         : null,
+                        typeof req.body.facebook        !== undefined || req.body.facebook        != null ? req.body.facebook        : null,
+                        typeof req.body.fechaNacimiento !== undefined || req.body.fechaNacimiento != null ? req.body.fechaNacimiento : null,
+                        req.body.tipoConsumidor,
+                        typeof req.body.sexo            !== undefined || req.body.sexo            != null ? req.body.sexo            : null,
+                        typeof req.body.ciudad          !== undefined || req.body.ciudad          != null ? req.body.ciudad          : null,
+                    ],
+                    function(err, result) {
+                        if (err)
+                            utilidades.printError(err, res);
+                        else {
+                            mensaje   = result[3][0]['@resultado'];
+                            resultado = result[1][0]['res'];
+                    
+                            res.contentType('application/json');
+                            res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                            res.end();
+                        }
                     }
-				}
-			);
-		}
-	};
-    
-    if (user != null) {
-        if ((/^\d+$/g).test(user))
-            callback(user);
+                );
+            }
+        };
+        
+        if (user != null) {
+            if ((/^\d+$/g).test(user))
+                callback(user);
+            else
+                utilidades.buscarIdUsuario(user).then(
+                    callback,
+                    function(err) {
+                        utilidades.printError(err, res);
+                    }
+                );
+        }
         else
-            utilidades.buscarIdUsuario(user).then(
-                callback,
-                function(err) {
-                    utilidades.printError(err, res);
-                }
-            );
+            callback(null);
     }
-	else
-		callback(null);
+    catch (err) {
+        utilidades.printError(err, res);
+    }
 };
 
 /**
@@ -134,62 +145,67 @@ exports.crearConsumidor = function(req, res) {
  *		}
  */
 exports.modificarConsumidor = function(req, res) {
-	var client = seguridad.decodeBase64(req.params.val);
-	
-	var callback = function(data) {
-		var sql = '', mensaje = '', resultado = '';
-		
-		if (connection) {
-			sql =
-				'SET @resultado = ""; ' +
-				'CALL datatabs_main.sp_modificarConsumidor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
-				'SELECT @resultado;';
-			
-			connection.db.query(
-				sql,
-				[
-					data[1],
-					data[0],
-                    typeof req.body.nombre          !== undefined || req.body.nombre          != null ? req.body.nombre          : null,
-                    typeof req.body.apellido        !== undefined || req.body.apellido        != null ? req.body.apellido        : null,
-                    typeof req.body.tlfCelular      !== undefined || req.body.tlfCelular      != null ? req.body.tlfCelular      : null,
-                    typeof req.body.correo          !== undefined || req.body.correo          != null ? req.body.correo          : null,
-                    typeof req.body.twitter         !== undefined || req.body.twitter         != null ? req.body.twitter         : null,
-                    typeof req.body.facebook        !== undefined || req.body.facebook        != null ? req.body.facebook        : null,
-                    typeof req.body.fechaNacimiento !== undefined || req.body.fechaNacimiento != null ? req.body.fechaNacimiento : null,
-                    typeof req.body.tipoConsumidor  !== undefined || req.body.tipoConsumidor  != null ? req.body.tipoConsumidor  : null,
-                    typeof req.body.sexo            !== undefined || req.body.sexo            != null ? req.body.sexo            : null,
-                    typeof req.body.ciudad          !== undefined || req.body.ciudad          != null ? req.body.ciudad          : null
-				],
-				function(err, result) {
-					if (err)
-                        utilidades.printError(err, res);
-                    else {
-                        mensaje   = result[3][0]['@resultado'];
-                        resultado = result[1][0]['res'];
-                                            
-                        res.contentType('application/json');
-                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-                        res.end();
+	try {
+        var client = seguridad.decodeBase64(req.params.val);
+        
+        var callback = function(data) {
+            var sql = '', mensaje = '', resultado = '';
+            
+            if (connection) {
+                sql =
+                    'SET @resultado = ""; ' +
+                    'CALL datatabs_main.sp_modificarConsumidor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
+                    'SELECT @resultado;';
+                
+                connection.db.query(
+                    sql,
+                    [
+                        data[1],
+                        data[0],
+                        typeof req.body.nombre          !== undefined || req.body.nombre          != null ? req.body.nombre          : null,
+                        typeof req.body.apellido        !== undefined || req.body.apellido        != null ? req.body.apellido        : null,
+                        typeof req.body.tlfCelular      !== undefined || req.body.tlfCelular      != null ? req.body.tlfCelular      : null,
+                        typeof req.body.correo          !== undefined || req.body.correo          != null ? req.body.correo          : null,
+                        typeof req.body.twitter         !== undefined || req.body.twitter         != null ? req.body.twitter         : null,
+                        typeof req.body.facebook        !== undefined || req.body.facebook        != null ? req.body.facebook        : null,
+                        typeof req.body.fechaNacimiento !== undefined || req.body.fechaNacimiento != null ? req.body.fechaNacimiento : null,
+                        typeof req.body.tipoConsumidor  !== undefined || req.body.tipoConsumidor  != null ? req.body.tipoConsumidor  : null,
+                        typeof req.body.sexo            !== undefined || req.body.sexo            != null ? req.body.sexo            : null,
+                        typeof req.body.ciudad          !== undefined || req.body.ciudad          != null ? req.body.ciudad          : null
+                    ],
+                    function(err, result) {
+                        if (err)
+                            utilidades.printError(err, res);
+                        else {
+                            mensaje   = result[3][0]['@resultado'];
+                            resultado = result[1][0]['res'];
+                                                
+                            res.contentType('application/json');
+                            res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                            res.end();
+                        }
                     }
-				}
-			);
-		}
-    };
-	
-	if (typeof req.body.param !== undefined || req.body.param != null) {
-		if ((/^\d+$/g).test(seguridad.decodeBase64(req.body.param)))
-			callback([client, seguridad.decodeBase64(req.body.param)]);
-		else
-			Q.all([client, utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
-				callback,
-				function(err) {
-					utilidades.printError(err, res);
-				}
-			);
-	}
-	else
-		callback([client, null]);
+                );
+            }
+        };
+        
+        if (typeof req.body.param !== undefined || req.body.param != null) {
+            if ((/^\d+$/g).test(seguridad.decodeBase64(req.body.param)))
+                callback([client, seguridad.decodeBase64(req.body.param)]);
+            else
+                Q.all([client, utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
+                    callback,
+                    function(err) {
+                        utilidades.printError(err, res);
+                    }
+                );
+        }
+        else
+            callback([client, null]);
+    }
+    catch (err) {
+        utilidades.printError(err, res);
+    }
 };
 
 /**
@@ -226,58 +242,63 @@ exports.modificarConsumidor = function(req, res) {
  *		}
  */
 exports.validarConsumidor = function(req, res) {
-	var contact = seguridad.decodeBase64(req.params.val);
-	var device  = seguridad.decodeBase64(req.body.dispositivo);
-	
-	var callback = function(id) {
-		var sql = '', mensaje = '', resultado = '';console.log(contact + ' ' +
-					seguridad.decodeBase64(req.body.evento) + ' ' +
-					seguridad.decodeBase64(req.body.nodo) + ' ' +
-					id)
-		
-		if (connection) {
-			sql =
-				'SET @resultado = ""; ' +
-				'CALL datatabs_main.sp_validarConsumidor(?, ?, ?, ?, @resultado); ' +
-				'SELECT @resultado;';
-			
-			connection.db.query(
-				sql,
-				[
-					contact,
-					seguridad.decodeBase64(req.body.evento),
-					seguridad.decodeBase64(req.body.nodo),
-					id
-				],
-				function(err, result) {
-					if (err)
-                        utilidades.printError(err, res);
-                    else {
-                        mensaje   = result[3][0]['@resultado'];
-                        resultado = result[1][0];
-						
-						if ((/ERROR/g).test(mensaje))
-							utilidades.printError(mensaje, res);
-						else {              
-							res.contentType('application/json');
-							res.write(JSON.stringify(resultado));
-							res.end();
-						}
+    try {
+        var contact = seguridad.decodeBase64(req.params.val);
+        var device  = seguridad.decodeBase64(req.body.dispositivo);
+        
+        var callback = function(id) {
+            var sql = '', mensaje = '', resultado = '';console.log(contact + ' ' +
+                        seguridad.decodeBase64(req.body.evento) + ' ' +
+                        seguridad.decodeBase64(req.body.nodo) + ' ' +
+                        id)
+            
+            if (connection) {
+                sql =
+                    'SET @resultado = ""; ' +
+                    'CALL datatabs_main.sp_validarConsumidor(?, ?, ?, ?, @resultado); ' +
+                    'SELECT @resultado;';
+                
+                connection.db.query(
+                    sql,
+                    [
+                        contact,
+                        seguridad.decodeBase64(req.body.evento),
+                        seguridad.decodeBase64(req.body.nodo),
+                        id
+                    ],
+                    function(err, result) {
+                        if (err)
+                            utilidades.printError(err, res);
+                        else {
+                            mensaje   = result[3][0]['@resultado'];
+                            resultado = result[1][0];
+                            
+                            if ((/ERROR/g).test(mensaje))
+                                utilidades.printError(mensaje, res);
+                            else {              
+                                res.contentType('application/json');
+                                res.write(JSON.stringify(resultado));
+                                res.end();
+                            }
+                        }
                     }
-				}
-			);
-		}
-    };
-	
-	if ((/^\d+$/g).test(device))
-        callback(device);
-	else
-        utilidades.buscarIdDispositivo(device).then(
-			callback,
-			function(err) {
-				utilidades.printError(err, res);
-			}
-		);
+                );
+            }
+        };
+        
+        if ((/^\d+$/g).test(device))
+            callback(device);
+        else
+            utilidades.buscarIdDispositivo(device).then(
+                callback,
+                function(err) {
+                    utilidades.printError(err, res);
+                }
+            );
+    }
+    catch (err) {
+        utilidades.printError(err, res);
+    }
 };
 
 //exports.eliminarConsumidor = function(req, res) {

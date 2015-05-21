@@ -146,13 +146,15 @@ app.put   ('/distribuidor/:val' , distribuidor.modificarDistribuidor);
 /******************************************** EMPRESA ********************************************/
 /*************************************************************************************************/
 /* HttpGet */
-app.get   ('/empresa/:val?', empresa.buscarEmpresa   );
+app.get   ('/empresa/:distributor/:offset/:val?'        , empresa.buscarEmpresa );
+app.get   ('/empresa/:distributor/next/:offset/:val'    , empresa.buscarEmpresa );
+app.get   ('/empresa/:distributor/previous/:offset/:val', empresa.buscarEmpresa );
 /* [HttpPost] */
-app.post  ('/empresa'      , empresa.crearEmpresa    );
+app.post  ('/empresa'                                   , empresa.crearEmpresa    );
 /* [HttpPut] */
-app.put   ('/empresa/:val' , empresa.modificarEmpresa);
+app.put   ('/empresa/:val'                              , empresa.modificarEmpresa);
 /* [HttpDelete] */
-//app.delete('/empresa/:id'  , empresa.eliminarEmpresa );
+//app.delete('/empresa/:id'                               , empresa.eliminarEmpresa );
 
 
 /*************************************************************************************************/

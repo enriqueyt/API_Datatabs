@@ -29,64 +29,69 @@ var connection = require('../config/db'),
  *		}
  */
 exports.autenticar = function(req, res) {
-    var sql = '', mensaje = '', resultado = '';
-    
-    if (connection) {
-		sql =
-			'SET @resultado = ""; ' +
-            'CALL datatabs_main.sp_autenticarUsuario(?, ?, @resultado); ' +
-            'SELECT @resultado;';
-			
-        connection.db.query(
-            sql,
-			//[
-			//	seguridad.encodeAES(seguridad.SHA512(req.body.usuario_n), req.body.usuario_p),
-			//	seguridad.encodeAES(seguridad.SHA512(req.body.usuario_p), req.body.usuario_p)
-			//],
-            [req.body.usuario_n, req.body.usuario_p],
-            function(err, result) {
-                if (err)
-                    utilidades.printError(err, res);
-                else {
-                    mensaje   = result[3][0]['@resultado'];
-                    resultado = result[1][0]['res'];
-
-                    if ((/ERROR/g).test(mensaje))
-                        utilidades.printError(mensaje, res);
+    try {
+        var sql = '', mensaje = '', resultado = '';
+        
+        if (connection) {
+            sql =
+                'SET @resultado = ""; ' +
+                'CALL datatabs_main.sp_autenticarUsuario(?, ?, @resultado); ' +
+                'SELECT @resultado;';
+                
+            connection.db.query(
+                sql,
+                //[
+                //	seguridad.encodeAES(seguridad.SHA512(req.body.usuario_n), req.body.usuario_p),
+                //	seguridad.encodeAES(seguridad.SHA512(req.body.usuario_p), req.body.usuario_p)
+                //],
+                [req.body.usuario_n, req.body.usuario_p],
+                function(err, result) {
+                    if (err)
+                        utilidades.printError(err, res);
                     else {
-                        (
-                            function(id) {
-                                sql = 
-                                    'SELECT ' +
-                                        'S.sesion AS sesion, ' +
-                                        'DATE_FORMAT(S.fechaInicio, "%Y-%m-%d %H:%i:%s") AS fechaI, ' +
-                                        'DATE_FORMAT(S.fechaUltimaOp, "%Y-%m-%d %H:%i:%s") AS fechaUO ' +
-                                    'FROM ' +
-                                        'datatabs_main.tb_sesion AS S ' +
-                                    'WHERE ' +
-                                        'S.id_sesion = ?;';
-                            
-                                connection.db.query(
-                                    sql,
-                                    [id],
-                                    function(err, result) {
-                                        if (err)
-                                            utilidades.printError(err, res);
-                                        else {
-                                            result[0].sesion = seguridad.encodeBase64(result[0].sesion);								
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
 
-                                            res.contentType('application/json');
-                                            res.write(JSON.stringify(result[0]));
-                                            res.end();
+                        if ((/ERROR/g).test(mensaje))
+                            utilidades.printError(mensaje, res);
+                        else {
+                            (
+                                function(id) {
+                                    sql = 
+                                        'SELECT ' +
+                                            'S.sesion AS sesion, ' +
+                                            'DATE_FORMAT(S.fechaInicio, "%Y-%m-%d %H:%i:%s") AS fechaI, ' +
+                                            'DATE_FORMAT(S.fechaUltimaOp, "%Y-%m-%d %H:%i:%s") AS fechaUO ' +
+                                        'FROM ' +
+                                            'datatabs_main.tb_sesion AS S ' +
+                                        'WHERE ' +
+                                            'S.id_sesion = ?;';
+                                
+                                    connection.db.query(
+                                        sql,
+                                        [id],
+                                        function(err, result) {
+                                            if (err)
+                                                utilidades.printError(err, res);
+                                            else {
+                                                result[0].sesion = seguridad.encodeBase64(result[0].sesion);								
+
+                                                res.contentType('application/json');
+                                                res.write(JSON.stringify(result[0]));
+                                                res.end();
+                                            }
                                         }
-                                    }
-                                );       
-                            }
-                        )(resultado);
+                                    );       
+                                }
+                            )(resultado);
+                        }
                     }
                 }
-            }
-        );
+            );
+        }
+    }
+    catch (err) {
+        utilidades.printError(err, res);
     }
 };
 
@@ -116,70 +121,75 @@ exports.autenticar = function(req, res) {
  *		}
  */
 exports.reautenticar = function(req, res) {
-    var callback = function(id) {
-        var sql = '', mensaje = '', resultado = '';
+    try {
+        var callback = function(id) {
+            var sql = '', mensaje = '', resultado = '';
 
-        if (connection) {
-            sql =
-                'SET @resultado = ""; ' +
-                'CALL datatabs_main.sp_reautenticarUsuario(?, @resultado); ' +
-                'SELECT @resultado;';
-        
-            connection.db.query(
-                sql,
-                [id],
-                function(err, result) {
-                    if (err)
-                        utilidades.printError(err, res);
-                    else {
-                        mensaje   = result[3][0]['@resultado'];
-                        resultado = result[1][0]['res'];
-                        
-                        if ((/ERROR/g).test(mensaje))
-                            utilidades.printError(mensaje, res);
+            if (connection) {
+                sql =
+                    'SET @resultado = ""; ' +
+                    'CALL datatabs_main.sp_reautenticarUsuario(?, @resultado); ' +
+                    'SELECT @resultado;';
+            
+                connection.db.query(
+                    sql,
+                    [id],
+                    function(err, result) {
+                        if (err)
+                            utilidades.printError(err, res);
                         else {
-                            (
-                                function(id) {
-                                    sql =
-                                        'SELECT ' +
-                                            'S.sesion AS sesion, ' +
-                                            'DATE_FORMAT(S.fechaInicio, "%Y-%m-%d %H:%i:%s") AS fechaI, ' +
-                                            'DATE_FORMAT(S.fechaUltimaOp, "%Y-%m-%d %H:%i:%s") AS fechaUO ' +
-                                        'FROM ' +
-                                            'datatabs_main.tb_sesion AS S ' +
-                                        'WHERE ' +
-                                            'S.id_sesion = ?;';
-                                            
-                                    connection.db.query(
-                                        sql,
-                                        [id],
-                                        function(err, result) {
-                                            if (err)
-                                                utilidades.printError(err, res);
-                                            else {
-                                                result[0].sesion = seguridad.encodeBase64(result[0].sesion);
+                            mensaje   = result[3][0]['@resultado'];
+                            resultado = result[1][0]['res'];
+                            
+                            if ((/ERROR/g).test(mensaje))
+                                utilidades.printError(mensaje, res);
+                            else {
+                                (
+                                    function(id) {
+                                        sql =
+                                            'SELECT ' +
+                                                'S.sesion AS sesion, ' +
+                                                'DATE_FORMAT(S.fechaInicio, "%Y-%m-%d %H:%i:%s") AS fechaI, ' +
+                                                'DATE_FORMAT(S.fechaUltimaOp, "%Y-%m-%d %H:%i:%s") AS fechaUO ' +
+                                            'FROM ' +
+                                                'datatabs_main.tb_sesion AS S ' +
+                                            'WHERE ' +
+                                                'S.id_sesion = ?;';
                                                 
-                                                res.contentType('application/json');
-                                                res.write(JSON.stringify(result[0]));
-                                                res.end();
+                                        connection.db.query(
+                                            sql,
+                                            [id],
+                                            function(err, result) {
+                                                if (err)
+                                                    utilidades.printError(err, res);
+                                                else {
+                                                    result[0].sesion = seguridad.encodeBase64(result[0].sesion);
+                                                    
+                                                    res.contentType('application/json');
+                                                    res.write(JSON.stringify(result[0]));
+                                                    res.end();
+                                                }
                                             }
-                                        }
-                                    );       
-                                }
-                            )(resultado);
+                                        );       
+                                    }
+                                )(resultado);
+                            }
                         }
                     }
-                }
-            );
-        }
-    };
-    
-    utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param)).then(
-        callback,
-        function(err) {
-            utilidades.printError(err, res);
-        }
-    );        
+                );
+            }
+        };
+        
+        utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param)).then(
+            callback,
+            function(err) {
+                utilidades.printError(err, res);
+            }
+        );
+    }
+    catch (err) {
+        utilidades.printError(err, res);
+    }
 };
 
 /**
@@ -206,38 +216,43 @@ exports.reautenticar = function(req, res) {
  *		}
  */
 exports.desautenticar = function(req, res) {
-	var callback = function(id) {
-        var sql = '', mensaje = '', resultado = '';
-		
-		if (connection) {
-			sql =
-				'SET @resultado = ""; ' +
-				'CALL datatabs_main.sp_desautenticarUsuario(?, @resultado); ' +
-				'SELECT @resultado;';
-		
-			connection.db.query(
-				sql,
-				[id],
-				function(err, result) {
-					if (err)
-                        utilidades.printError(err, res);
-                    else {
-                        mensaje   = result[3][0]['@resultado'];
-                        resultado = result[1][0]['res'];
-                        
-                        res.contentType('application/json');
-                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-                        res.end();
+	try {
+        var callback = function(id) {
+            var sql = '', mensaje = '', resultado = '';
+            
+            if (connection) {
+                sql =
+                    'SET @resultado = ""; ' +
+                    'CALL datatabs_main.sp_desautenticarUsuario(?, @resultado); ' +
+                    'SELECT @resultado;';
+            
+                connection.db.query(
+                    sql,
+                    [id],
+                    function(err, result) {
+                        if (err)
+                            utilidades.printError(err, res);
+                        else {
+                            mensaje   = result[3][0]['@resultado'];
+                            resultado = result[1][0]['res'];
+                            
+                            res.contentType('application/json');
+                            res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                            res.end();
+                        }
                     }
-				}
-			);
-		}
-    };
-    
-    utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param)).then(
-        callback,
-        function(err) {
-            utilidades.printError(err, res);
-        }
-    );
+                );
+            }
+        };
+        
+        utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param)).then(
+            callback,
+            function(err) {
+                utilidades.printError(err, res);
+            }
+        );
+    }
+    catch (err) {
+        utilidades.printError(err, res);
+    }
 };

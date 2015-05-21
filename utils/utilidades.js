@@ -2,7 +2,6 @@ var connection = require('../config/db'),
     Q          = require('q');
 
 exports.printError = function(err, res) {
-    //throw err;
     res.contentType('application/json');
     res.write(JSON.stringify({ msg : err }));
     res.end();

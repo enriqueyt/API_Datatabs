@@ -33,30 +33,35 @@ exports.buscarDispositivo = function(req, res) {
  *      }
  */
 exports.existeDispositivo = function(req, res) {
-	var device = seguridad.decodeBase64(req.params.val);
-    var sql = '';
-    
-    if (connection) {
-        sql =
-            'SELECT * ' +
-            'FROM ' +
-                'datatabs_main.tb_dispositivo AS D ' +
-            'WHERE ' +
-                'D.identificacion = ?;';
-                
-        connection.db.query(
-            sql,
-            [device],
-            function(err, result) {
-                if (err)
-                    utilidades.printError(err, res);
-                else {
-                    res.contentType('application/json');
-                    res.write(JSON.stringify({ msg : result.length > 0 ? true : false }));
-                    res.end();
+    try {
+        var device = seguridad.decodeBase64(req.params.val);
+        var sql = '';
+        
+        if (connection) {
+            sql =
+                'SELECT * ' +
+                'FROM ' +
+                    'datatabs_main.tb_dispositivo AS D ' +
+                'WHERE ' +
+                    'D.identificacion = ?;';
+                    
+            connection.db.query(
+                sql,
+                [device],
+                function(err, result) {
+                    if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : result.length > 0 ? true : false }));
+                        res.end();
+                    }
                 }
-            }
-        );
+            );
+        }
+    }
+    catch (err) {
+        utilidades.printError(err, res);
     }
 };
 
@@ -93,69 +98,74 @@ exports.existeDispositivo = function(req, res) {
  *		}
  */
 exports.buscarEventos = function(req, res) {
-	var device = seguridad.decodeBase64(req.params.val);
-        
-    var callback = function(id) {
-		var sql = '';
-		
-		if (connection) {
-			sql =
-				'SELECT ' +
-                    'Evento.id_evento, ' +
-                    'Evento.evento, ' +
-                    'Evento.descripcion, ' +
-                    'Evento.fechaInicio, ' +
-                    'Evento.fechaFin, ' +
-                    'Evento.flujo, ' +
-                    'Imagen.imagen, ' +
-                    'Empresa.id_empresa, ' +
-                    'Empresa.nombre AS empresa ' +
-                'FROM ' +
-                    'datatabs_main.tb_evento AS Evento ' +
-                    'INNER JOIN ' +
-                    'datatabs_main.tb_evento_dispositivo AS EventoDisp ' +
-                    'ON Evento.id_evento = EventoDisp.id_evento ' +
-                    'INNER JOIN ' +
-                    'datatabs_main.tb_empresa AS Empresa ' +
-                    'ON Evento.id_empresa = Empresa.id_empresa ' +
-                    'LEFT OUTER JOIN ' +
-                    'datatabs_main.tb_imagen AS Imagen ' +
-                    'ON Evento.id_imagen = Imagen.id_imagen ' +
-                'WHERE ' +
-                    'EventoDisp.id_dispositivo = ? AND ' +
-                    '(Evento.fechaFin >= NOW() OR Evento.fechaFin IS NULL) AND ' +
-                    'Evento.activo = 1;';
-			
-			connection.db.query(
-				sql,
-				[id],
-				function(err, result) {
-					if (err)
-                        utilidades.printError(err, res);
-                    else {
-                        for (i = 0; i < result.length; i++) {
-                            result[i].id_evento  = seguridad.encodeBase64(result[i].id_evento);
-                            result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
+    try {
+        var device = seguridad.decodeBase64(req.params.val);
+            
+        var callback = function(id) {
+            var sql = '';
+            
+            if (connection) {
+                sql =
+                    'SELECT ' +
+                        'Evento.id_evento, ' +
+                        'Evento.evento, ' +
+                        'Evento.descripcion, ' +
+                        'Evento.fechaInicio, ' +
+                        'Evento.fechaFin, ' +
+                        'Evento.flujo, ' +
+                        'Imagen.imagen, ' +
+                        'Empresa.id_empresa, ' +
+                        'Empresa.nombre AS empresa ' +
+                    'FROM ' +
+                        'datatabs_main.tb_evento AS Evento ' +
+                        'INNER JOIN ' +
+                        'datatabs_main.tb_evento_dispositivo AS EventoDisp ' +
+                        'ON Evento.id_evento = EventoDisp.id_evento ' +
+                        'INNER JOIN ' +
+                        'datatabs_main.tb_empresa AS Empresa ' +
+                        'ON Evento.id_empresa = Empresa.id_empresa ' +
+                        'LEFT OUTER JOIN ' +
+                        'datatabs_main.tb_imagen AS Imagen ' +
+                        'ON Evento.id_imagen = Imagen.id_imagen ' +
+                    'WHERE ' +
+                        'EventoDisp.id_dispositivo = ? AND ' +
+                        '(Evento.fechaFin >= NOW() OR Evento.fechaFin IS NULL) AND ' +
+                        'Evento.activo = 1;';
+                
+                connection.db.query(
+                    sql,
+                    [id],
+                    function(err, result) {
+                        if (err)
+                            utilidades.printError(err, res);
+                        else {
+                            for (i = 0; i < result.length; i++) {
+                                result[i].id_evento  = seguridad.encodeBase64(result[i].id_evento);
+                                result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
+                            }
+                            
+                            res.contentType('application/json');
+                            res.write(JSON.stringify(result));
+                            res.end();
                         }
-                        
-                        res.contentType('application/json');
-                        res.write(JSON.stringify(result));
-                        res.end();
                     }
-				}
-			);
-		}
-    };
+                );
+            }
+        };
 
-	if ((/^\d+$/g).test(device))
-        callback(device);
-	else
-        utilidades.buscarIdDispositivo(device).then(
-			callback,
-			function(err) {
-				utilidades.printError(err, res);
-			}
-		);
+        if ((/^\d+$/g).test(device))
+            callback(device);
+        else
+            utilidades.buscarIdDispositivo(device).then(
+                callback,
+                function(err) {
+                    utilidades.printError(err, res);
+                }
+            );
+    }
+    catch (err) {
+        utilidades.printError(err, res);
+    }
 };
     
 /**
@@ -190,59 +200,64 @@ exports.buscarEventos = function(req, res) {
  *		}
  */
 exports.crearDispositivo = function(req, res) {
-	var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
-	
-	var callback = function(id) {
-		var sql = '', mensaje = '', resultado = '';
-	
-		if (connection) {
-			sql =
-				'SET @resultado = ""; ' +
-				'CALL datatabs_main.sp_crearDispositivo(?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
-				'SELECT @resultado;';
-			
-			connection.db.query(
-				sql,
-				[
-					id,
-					req.body.identificador,
-					req.body.nombre,
-					req.body.marca,
-					req.body.modelo,                                                                                                
-					req.body.serial,
-                    typeof req.body.sistemaOperativo !== undefined || req.body.sistemaOperativo != null ? req.body.sistemaOperativo : null,
-					typeof req.body.version          !== undefined || req.body.version          != null ? req.body.version          : null,
-					req.body.tipoDispositivo
-				],
-				function(err, result) {
-					if (err)
-                        utilidades.printError(err, res);
-                    else {
-                        mensaje   = result[3][0]['@resultado'];
-                        resultado = result[1][0]['res'];
+	try {
+        var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
+        
+        var callback = function(id) {
+            var sql = '', mensaje = '', resultado = '';
+        
+            if (connection) {
+                sql =
+                    'SET @resultado = ""; ' +
+                    'CALL datatabs_main.sp_crearDispositivo(?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
+                    'SELECT @resultado;';
                 
-                        res.contentType('application/json');
-                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-                        res.end();
+                connection.db.query(
+                    sql,
+                    [
+                        id,
+                        req.body.identificador,
+                        req.body.nombre,
+                        req.body.marca,
+                        req.body.modelo,                                                                                                
+                        req.body.serial,
+                        typeof req.body.sistemaOperativo !== undefined || req.body.sistemaOperativo != null ? req.body.sistemaOperativo : null,
+                        typeof req.body.version          !== undefined || req.body.version          != null ? req.body.version          : null,
+                        req.body.tipoDispositivo
+                    ],
+                    function(err, result) {
+                        if (err)
+                            utilidades.printError(err, res);
+                        else {
+                            mensaje   = result[3][0]['@resultado'];
+                            resultado = result[1][0]['res'];
+                    
+                            res.contentType('application/json');
+                            res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                            res.end();
+                        }
                     }
-				}
-			);
-		}
-	};
-    
-    if (user != null) {
-        if ((/^\d+$/g).test(user))
-            callback(user);
+                );
+            }
+        };
+        
+        if (user != null) {
+            if ((/^\d+$/g).test(user))
+                callback(user);
+            else
+                utilidades.buscarIdUsuario(user).then(
+                    callback,
+                    function(err) {
+                        utilidades.printError(err, res);
+                    }
+                );
+        }
         else
-            utilidades.buscarIdUsuario(user).then(
-                callback,
-                function(err) {
-                    utilidades.printError(err, res);
-                }
-            );
+            callback(null);
     }
-	else
-		callback(null);
+    catch (err) {
+        utilidades.printError(err, res);
+    }
 };
 
 /**
@@ -279,87 +294,92 @@ exports.crearDispositivo = function(req, res) {
  *		}
  */
 exports.modificarDispositivo = function(req, res) {
-	var device = seguridad.decodeBase64(req.params.val);
-	
-	var callback = function(data) {
-		var sql = '', mensaje = '', resultado = '';
-		
-		if (connection) {
-			sql =
-				'SET @resultado = ""; ' +
-				'CALL datatabs_main.sp_modificarDispositivo(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
-				'SELECT @resultado;';
-			
-			connection.db.query(
-				sql,
-				[
-					data[1],
-					data[0],
-                    typeof req.body.identificador    !== undefined || req.body.identificador    != null ? req.body.identificador    : null,
-					typeof req.body.nombre           !== undefined || req.body.nombre           != null ? req.body.nombre           : null,
-					typeof req.body.marca            !== undefined || req.body.marca            != null ? req.body.marca            : null,
-					typeof req.body.modelo           !== undefined || req.body.modelo           != null ? req.body.modelo           : null,
-					typeof req.body.serial           !== undefined || req.body.serial           != null ? req.body.serial           : null,
-                    typeof req.body.sistemaOperativo !== undefined || req.body.sistemaOperativo != null ? req.body.sistemaOperativo : null,
-					typeof req.body.version          !== undefined || req.body.version          != null ? req.body.version          : null,
-                    typeof req.body.activo           !== undefined || req.body.activo           != null ? req.body.activo           : null
-				],
-				function(err, result) {
-					if (err)
-                        utilidades.printError(err, res);
-                    else {
-                        mensaje   = result[3][0]['@resultado'];
-                        resultado = result[1][0]['res'];
-                                            
-                        res.contentType('application/json');
-                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-                        res.end();
+	try {
+        var device = seguridad.decodeBase64(req.params.val);
+        
+        var callback = function(data) {
+            var sql = '', mensaje = '', resultado = '';
+            
+            if (connection) {
+                sql =
+                    'SET @resultado = ""; ' +
+                    'CALL datatabs_main.sp_modificarDispositivo(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
+                    'SELECT @resultado;';
+                
+                connection.db.query(
+                    sql,
+                    [
+                        data[1],
+                        data[0],
+                        typeof req.body.identificador    !== undefined || req.body.identificador    != null ? req.body.identificador    : null,
+                        typeof req.body.nombre           !== undefined || req.body.nombre           != null ? req.body.nombre           : null,
+                        typeof req.body.marca            !== undefined || req.body.marca            != null ? req.body.marca            : null,
+                        typeof req.body.modelo           !== undefined || req.body.modelo           != null ? req.body.modelo           : null,
+                        typeof req.body.serial           !== undefined || req.body.serial           != null ? req.body.serial           : null,
+                        typeof req.body.sistemaOperativo !== undefined || req.body.sistemaOperativo != null ? req.body.sistemaOperativo : null,
+                        typeof req.body.version          !== undefined || req.body.version          != null ? req.body.version          : null,
+                        typeof req.body.activo           !== undefined || req.body.activo           != null ? req.body.activo           : null
+                    ],
+                    function(err, result) {
+                        if (err)
+                            utilidades.printError(err, res);
+                        else {
+                            mensaje   = result[3][0]['@resultado'];
+                            resultado = result[1][0]['res'];
+                                                
+                            res.contentType('application/json');
+                            res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                            res.end();
+                        }
                     }
-				}
-			);
-		}
-    };
-	
-	if (typeof req.body.param !== undefined || req.body.param != null) {
-		if ((/^\d+$/g).test(seguridad.decodeBase64(req.body.param))) {
-			if ((/^\d+$/g).test(device))
-				callback([device, seguridad.decodeBase64(req.body.param)]);
-			else
-				Q.all([utilidades.buscarIdDispositivo, seguridad.decodeBase64(req.body.param)]).then(
-					callback,
-					function(err) {
-						utilidades.printError(err, res);
-					}
-				);
-		}
-		else {
-			if ((/^\d+$/g).test(device))
-				Q.all([device, utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
-					callback,
-					function(err) {
-						utilidades.printError(err, res);
-					}
-				);
-			else
-				Q.all([utilidades.buscarIdDispositivo(device), utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
-					callback,
-					function(err) {
-						utilidades.printError(err, res);
-					}
-				);
-		}
-	}
-	else {
-		if ((/^\d+$/g).test(device))
-			callback([device, null]);
-		else
-			Q.all([utilidades.buscarIdDispositivo(device), null]).then(
-				callback,
-				function(err) {
-					utilidades.printError(err, res);
-				}
-			);
-	}
+                );
+            }
+        };
+        
+        if (typeof req.body.param !== undefined || req.body.param != null) {
+            if ((/^\d+$/g).test(seguridad.decodeBase64(req.body.param))) {
+                if ((/^\d+$/g).test(device))
+                    callback([device, seguridad.decodeBase64(req.body.param)]);
+                else
+                    Q.all([utilidades.buscarIdDispositivo, seguridad.decodeBase64(req.body.param)]).then(
+                        callback,
+                        function(err) {
+                            utilidades.printError(err, res);
+                        }
+                    );
+            }
+            else {
+                if ((/^\d+$/g).test(device))
+                    Q.all([device, utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
+                        callback,
+                        function(err) {
+                            utilidades.printError(err, res);
+                        }
+                    );
+                else
+                    Q.all([utilidades.buscarIdDispositivo(device), utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
+                        callback,
+                        function(err) {
+                            utilidades.printError(err, res);
+                        }
+                    );
+            }
+        }
+        else {
+            if ((/^\d+$/g).test(device))
+                callback([device, null]);
+            else
+                Q.all([utilidades.buscarIdDispositivo(device), null]).then(
+                    callback,
+                    function(err) {
+                        utilidades.printError(err, res);
+                    }
+                );
+        }
+    }
+    catch (err) {
+        utilidades.printError(err, res);
+    }
 };
 
 /**
@@ -389,80 +409,85 @@ exports.modificarDispositivo = function(req, res) {
  *		}
  */
 exports.asociarDispositivoSucursal = function(req, res) {
-	var device = seguridad.decodeBase64(req.params.val);
-	
-	var callback = function(data) {
-		var sql = '', mensaje = '', resultado = '';
-		
-		if (connection) {
-			sql =
-				'SET @resultado = ""; ' +
-				'CALL datatabs_main.sp_asociarDispositivoSucursal(?, ?, ?, @resultado); ' +
-				'SELECT @resultado;';
-			
-			connection.db.query(
-				sql,
-				[
-					data[1],
-					data[0],
-                    req.body.sucursal
-				],
-				function(err, result) {
-					if (err)
-                        utilidades.printError(err, res);
-                    else {
-                        mensaje   = result[3][0]['@resultado'];
-                        resultado = result[1][0]['res'];
-                                            
-                        res.contentType('application/json');
-                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-                        res.end();
+	try {
+        var device = seguridad.decodeBase64(req.params.val);
+        
+        var callback = function(data) {
+            var sql = '', mensaje = '', resultado = '';
+            
+            if (connection) {
+                sql =
+                    'SET @resultado = ""; ' +
+                    'CALL datatabs_main.sp_asociarDispositivoSucursal(?, ?, ?, @resultado); ' +
+                    'SELECT @resultado;';
+                
+                connection.db.query(
+                    sql,
+                    [
+                        data[1],
+                        data[0],
+                        req.body.sucursal
+                    ],
+                    function(err, result) {
+                        if (err)
+                            utilidades.printError(err, res);
+                        else {
+                            mensaje   = result[3][0]['@resultado'];
+                            resultado = result[1][0]['res'];
+                                                
+                            res.contentType('application/json');
+                            res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                            res.end();
+                        }
                     }
-				}
-			);
-		}
-    };
-	
-	if (typeof req.body.param !== undefined || req.body.param != null) {
-		if ((/^\d+$/g).test(seguridad.decodeBase64(req.body.param))) {
-			if ((/^\d+$/g).test(device))
-				callback([device, seguridad.decodeBase64(req.body.param)]);
-			else
-				Q.all([utilidades.buscarIdDispositivo(device), seguridad.decodeBase64(req.body.param)]).then(
-					callback,
-					function(err) {
-						utilidades.printError(err, res);
-					}
-				);
-		}
-		else {
-			if ((/^\d+$/g).test(device))
-				Q.all([device, utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
-					callback,
-					function(err) {
-						utilidades.printError(err, res);
-					}
-				);
-			else
-				Q.all([utilidades.buscarIdDispositivo(device), utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
-					callback,
-					function(err) {
-						utilidades.printError(err, res);
-					}
-				);
-		}
-	}
-	else {
-		if ((/^\d+$/g).test(device))
-			callback([device, null]);
-		else
-			Q.all([utilidades.buscarIdDispositivo(device), null]).then(
-				callback,
-				function(err) {
-					utilidades.printError(err, res);
-				}
-			);
-	}
+                );
+            }
+        };
+        
+        if (typeof req.body.param !== undefined || req.body.param != null) {
+            if ((/^\d+$/g).test(seguridad.decodeBase64(req.body.param))) {
+                if ((/^\d+$/g).test(device))
+                    callback([device, seguridad.decodeBase64(req.body.param)]);
+                else
+                    Q.all([utilidades.buscarIdDispositivo(device), seguridad.decodeBase64(req.body.param)]).then(
+                        callback,
+                        function(err) {
+                            utilidades.printError(err, res);
+                        }
+                    );
+            }
+            else {
+                if ((/^\d+$/g).test(device))
+                    Q.all([device, utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
+                        callback,
+                        function(err) {
+                            utilidades.printError(err, res);
+                        }
+                    );
+                else
+                    Q.all([utilidades.buscarIdDispositivo(device), utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
+                        callback,
+                        function(err) {
+                            utilidades.printError(err, res);
+                        }
+                    );
+            }
+        }
+        else {
+            if ((/^\d+$/g).test(device))
+                callback([device, null]);
+            else
+                Q.all([utilidades.buscarIdDispositivo(device), null]).then(
+                    callback,
+                    function(err) {
+                        utilidades.printError(err, res);
+                    }
+                );
+        }
+    }
+    catch (err) {
+        utilidades.printError(err, res);
+    }
 };
 
 /**
@@ -492,80 +517,85 @@ exports.asociarDispositivoSucursal = function(req, res) {
  *		}
  */
 exports.asociarEventoDispositivo = function(req, res) {
-	var device = seguridad.decodeBase64(req.params.val);
-	
-	var callback = function(data) {
-		var sql = '', mensaje = '', resultado = '';
-		
-		if (connection) {
-			sql =
-				'SET @resultado = ""; ' +
-				'CALL datatabs_main.sp_asociarEventoDispositivo(?, ?, ?, @resultado); ' +
-				'SELECT @resultado;';
-			
-			connection.db.query(
-				sql,
-				[
-					data[1],
-                    req.body.evento,
-                    data[0]
-				],
-				function(err, result) {
-					if (err)
-                        utilidades.printError(err, res);
-                    else {
-                        mensaje   = result[3][0]['@resultado'];
-                        resultado = result[1][0]['res'];
-                                            
-                        res.contentType('application/json');
-                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-                        res.end();
+	try {
+        var device = seguridad.decodeBase64(req.params.val);
+        
+        var callback = function(data) {
+            var sql = '', mensaje = '', resultado = '';
+            
+            if (connection) {
+                sql =
+                    'SET @resultado = ""; ' +
+                    'CALL datatabs_main.sp_asociarEventoDispositivo(?, ?, ?, @resultado); ' +
+                    'SELECT @resultado;';
+                
+                connection.db.query(
+                    sql,
+                    [
+                        data[1],
+                        req.body.evento,
+                        data[0]
+                    ],
+                    function(err, result) {
+                        if (err)
+                            utilidades.printError(err, res);
+                        else {
+                            mensaje   = result[3][0]['@resultado'];
+                            resultado = result[1][0]['res'];
+                                                
+                            res.contentType('application/json');
+                            res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                            res.end();
+                        }
                     }
-				}
-			);
-		}
-    };
-	
-	if (typeof req.body.param !== undefined || req.body.param != null) {
-		if ((/^\d+$/g).test(seguridad.decodeBase64(req.body.param))) {
-			if ((/^\d+$/g).test(device))
-				callback([device, seguridad.decodeBase64(req.body.param)]);
-			else
-				Q.all([utilidades.buscarIdDispositivo(device), seguridad.decodeBase64(req.body.param)]).then(
-					callback,
-					function(err) {
-						utilidades.printError(err, res);
-					}
-				);
-		}
-		else {
-			if ((/^\d+$/g).test(device))
-				Q.all([device, utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
-					callback,
-					function(err) {
-						utilidades.printError(err, res);
-					}
-				);
-			else
-				Q.all([utilidades.buscarIdDispositivo(device), utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
-					callback,
-					function(err) {
-						utilidades.printError(err, res);
-					}
-				);
-		}
-	}
-	else {
-		if ((/^\d+$/g).test(device))
-			callback([device, null]);
-		else
-			Q.all([utilidades.buscarIdDispositivo(device), null]).then(
-				callback,
-				function(err) {
-					utilidades.printError(err, res);
-				}
-			);
-	}
+                );
+            }
+        };
+        
+        if (typeof req.body.param !== undefined || req.body.param != null) {
+            if ((/^\d+$/g).test(seguridad.decodeBase64(req.body.param))) {
+                if ((/^\d+$/g).test(device))
+                    callback([device, seguridad.decodeBase64(req.body.param)]);
+                else
+                    Q.all([utilidades.buscarIdDispositivo(device), seguridad.decodeBase64(req.body.param)]).then(
+                        callback,
+                        function(err) {
+                            utilidades.printError(err, res);
+                        }
+                    );
+            }
+            else {
+                if ((/^\d+$/g).test(device))
+                    Q.all([device, utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
+                        callback,
+                        function(err) {
+                            utilidades.printError(err, res);
+                        }
+                    );
+                else
+                    Q.all([utilidades.buscarIdDispositivo(device), utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
+                        callback,
+                        function(err) {
+                            utilidades.printError(err, res);
+                        }
+                    );
+            }
+        }
+        else {
+            if ((/^\d+$/g).test(device))
+                callback([device, null]);
+            else
+                Q.all([utilidades.buscarIdDispositivo(device), null]).then(
+                    callback,
+                    function(err) {
+                        utilidades.printError(err, res);
+                    }
+                );
+        }
+    }
+    catch (err) {
+        utilidades.printError(err, res);
+    }
 };
 
 /**
@@ -589,45 +619,50 @@ exports.asociarEventoDispositivo = function(req, res) {
  *		}
  */
 exports.validarDispositivo = function(req, res) {
-	var device = seguridad.decodeBase64(req.params.val);
-	
-	var callback = function(id) {
-		var sql = '', mensaje = '', resultado = '';
-	
-		if (connection) {
-			sql =
-				'SET @resultado = ""; ' +
-				'CALL datatabs_main.sp_validarDispositivo(?, @resultado); ' +
-				'SELECT @resultado;';
-			
-			connection.db.query(
-				sql,
-				[id],
-				function(err, result) {
-					if (err)
-                        utilidades.printError(err, res);
-                    else {
-                        mensaje   = result[3][0]['@resultado'];
-                        resultado = result[1][0]['res'];
+	try {
+        var device = seguridad.decodeBase64(req.params.val);
+        
+        var callback = function(id) {
+            var sql = '', mensaje = '', resultado = '';
+        
+            if (connection) {
+                sql =
+                    'SET @resultado = ""; ' +
+                    'CALL datatabs_main.sp_validarDispositivo(?, @resultado); ' +
+                    'SELECT @resultado;';
                 
-                        res.contentType('application/json');
-                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-                        res.end();
+                connection.db.query(
+                    sql,
+                    [id],
+                    function(err, result) {
+                        if (err)
+                            utilidades.printError(err, res);
+                        else {
+                            mensaje   = result[3][0]['@resultado'];
+                            resultado = result[1][0]['res'];
+                    
+                            res.contentType('application/json');
+                            res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                            res.end();
+                        }
                     }
-				}
-			);
-		}	
-	};
-	
-	if ((/^\d+$/g).test(device))
-        callback(device);
-    else
-        utilidades.buscarIdDispositivo(device).then(
-            callback,
-            function(err) {
-                utilidades.printError(err, res);
-            }
-        );
+                );
+            }	
+        };
+        
+        if ((/^\d+$/g).test(device))
+            callback(device);
+        else
+            utilidades.buscarIdDispositivo(device).then(
+                callback,
+                function(err) {
+                    utilidades.printError(err, res);
+                }
+            );
+    }
+    catch (err) {
+        utilidades.printError(err, res);
+    }
 };
 
 //exports.eliminarDispositivo = function(req, res) {
