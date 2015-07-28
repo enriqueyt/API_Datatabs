@@ -70,6 +70,7 @@ exports.crearRespuesta = function(req, res){
         };
         
         if (typeof req.body.param !== 'undefined' || req.body.param != null) {
+            
             if ((/^\d+$/g).test(seguridad.decodeBase64(req.body.param)))
                 callback(seguridad.decodeBase64(req.body.param));
             else
