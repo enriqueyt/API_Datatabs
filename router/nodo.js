@@ -36,7 +36,7 @@ exports.crearRespuesta = function(req, res){
         
         var callback = function(id) {
             var sql = '', mensaje = '', resultado = '';
-            console.log(id);
+            
             if (connection) {
                 sql =
                     'SET @resultado = ""; ' +
@@ -47,10 +47,10 @@ exports.crearRespuesta = function(req, res){
                     sql,
                     [
                         id,
-                        typeof req.body.pregunta    !== 'undefined' || req.body.pregunta    != null ? req.body.pregunta      : null,
-                        typeof req.body.consumidor  !== 'undefined' || req.body.consumidor  != null ? req.body.consumidor : null,
-                        typeof req.body.respuesta   !== 'undefined' || req.body.respuesta   != null ? req.body.respuesta : null,
-                        typeof req.body.puntuacion  !== 'undefined' || req.body.puntuacion  != null ? req.body.puntuacion    : null
+                        typeof req.body.pregunta    !== 'undefined' || req.body.pregunta    != null ? req.body.pregunta     : null,
+                        typeof req.body.consumidor  !== 'undefined' || req.body.consumidor  != null ? req.body.consumidor   : null,
+                        typeof req.body.respuesta   !== 'undefined' || req.body.respuesta   != null ? req.body.respuesta    : null,
+                        typeof req.body.puntuacion  !== 'undefined' || req.body.puntuacion  != null ? req.body.puntuacion   : null
                     ],
                     function(err, result) {
                         
