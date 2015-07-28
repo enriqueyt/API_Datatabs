@@ -4,6 +4,7 @@ var connection = require('../config/db'),
 	seguridad  = require('../utils/seguridad');
 
 exports.buscarUsuarioD = function(req, res) {
+
     try {
         var userD = typeof req.params.val !== 'undefined' || req.params.val != null ? seguridad.decodeBase64(req.params.val) : null;
         
@@ -11,6 +12,7 @@ exports.buscarUsuarioD = function(req, res) {
     catch (err) {
         utilidades.printError(err, res);
     }
+
 };
    
 /**
@@ -134,6 +136,7 @@ exports.buscarInfoUsuarioD = function(req, res) {
  *		}
  */
 exports.crearUsuarioD = function(req, res) {
+
 	try {
         var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
         
@@ -238,6 +241,7 @@ exports.crearUsuarioD = function(req, res) {
  *		}
  */
 exports.modificarUsuarioD = function(req, res) {
+<<<<<<< HEAD
 	try {
         var userD = seguridad.decodeBase64(req.params.val);
         
@@ -302,6 +306,67 @@ exports.modificarUsuarioD = function(req, res) {
     catch (err) {
         utilidades.printError(err, res);
     }
+=======
+	var userD = seguridad.decodeBase64(req.params.val);
+	
+	var callback = function(data) {
+		var sql = '', mensaje = '', resultado = '';
+		
+		if (connection) {
+			sql =
+				'SET @resultado = ""; ' +
+				'CALL datatabs_main.sp_modificarUsuarioD(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, @resultado); ' +
+				'SELECT @resultado;';
+			
+			connection.db.query(
+				sql,
+				[
+					data[1],
+					data[0],
+					typeof req.body.documento   !== undefined || req.body.documento   != null ? req.body.documento   : null,
+					typeof req.body.nombre      !== undefined || req.body.nombre      != null ? req.body.nombre      : null,
+					typeof req.body.apellido    !== undefined || req.body.apellido    != null ? req.body.apellido    : null,
+					typeof req.body.correo      !== undefined || req.body.correo      != null ? req.body.correo      : null,                                                                                                
+					typeof req.body.tlfCasa     !== undefined || req.body.tlfCasa     != null ? req.body.tlfCasa     : null,
+                    typeof req.body.tlfOficina  !== undefined || req.body.tlfOficina  != null ? req.body.tlfOficina  : null,
+					typeof req.body.tlfCelular  !== undefined || req.body.tlfCelular  != null ? req.body.tlfCelular  : null,
+                    typeof req.body.sexo        !== undefined || req.body.sexo        != null ? req.body.sexo        : null,                                                                            
+                    typeof req.body.ciudad      !== undefined || req.body.ciudad      != null ? req.body.ciudad      : null,  
+                    typeof req.body.idioma      !== undefined || req.body.idioma      != null ? req.body.idioma      : null,
+                    typeof req.body.tipoUsuario !== undefined || req.body.tipoUsuario != null ? req.body.tipoUsuario : null,                                                                     
+                    typeof req.body.tipoUsuario !== undefined && req.body.tipoUsuario > 1 && (typeof req.body.sede !== undefined || req.body.sede != null) ? seguridad.decodeBase64(req.body.sede) : null,
+                    typeof req.body.activo      !== undefined || req.body.activo      != null ? req.body.activo      : null
+				],
+				function(err, result) {
+					if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+                                            
+                        res.contentType('application/json');
+                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                        res.end();
+                    }
+				}
+			);
+		}
+    };
+		
+	if (typeof req.body.param !== undefined || req.body.param != null) {
+		if ((/^\d+$/g).test(seguridad.decodeBase64(req.body.param)))
+			callback([userD, seguridad.decodeBase64(req.body.param)]);
+		else
+			Q.all([userD, utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
+				callback,
+				function(err) {
+					utilidades.printError(err, res);
+				}
+			);
+	}
+	else
+		callback([userD, null]);
+>>>>>>> 3ecba24042a949acbf770d60d2edce7285dcf89c
 };
 
 //exports.eliminarUsuarioD = function(req, res) {

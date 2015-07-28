@@ -4,6 +4,7 @@ var connection = require('../config/db'),
 	seguridad  = require('../utils/seguridad');
     
 exports.buscarConsumidor = function(req, res) {
+
     try {
         var client = typeof req.params.val !== 'undefined' || req.params.val != null ? seguridad.decodeBase64(req.params.val) : null;
     }
@@ -46,6 +47,7 @@ exports.buscarConsumidor = function(req, res) {
  *		}
  */
 exports.crearConsumidor = function(req, res) {
+
 	try {
         var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
         
@@ -144,6 +146,7 @@ exports.crearConsumidor = function(req, res) {
  *		}
  */
 exports.modificarConsumidor = function(req, res) {
+
 	try {
         var client = seguridad.decodeBase64(req.params.val);
         
@@ -241,6 +244,7 @@ exports.modificarConsumidor = function(req, res) {
  *		}
  */
 exports.validarConsumidor = function(req, res) {
+
     try {
         var contact = seguridad.decodeBase64(req.params.val);
         var device  = seguridad.decodeBase64(req.body.dispositivo);

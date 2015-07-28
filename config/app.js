@@ -16,6 +16,7 @@ var env               = 'dev',
     sucursal          = require('../router/sucursal'),
     consumidor        = require('../router/consumidor');
     nodo              = require('../router/nodo');
+
     
 var app = express();
 
@@ -36,12 +37,10 @@ app.use(function(req, res, next) {
 	next();
 });
 
-
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-
 
 /*************************************************************************************************/
 /******************************************** SESION *********************************************/
@@ -118,7 +117,6 @@ app.put   ('/evento/sucursal/:val'                         , evento.asociarEvent
 /* [HttpDelete] */                                         
 //app.delete('/evento/:id'                                   , evento.eliminarEvento       );
 
-
 /*************************************************************************************************/
 /************************************** SUPERDISTRIBUIDOR ****************************************/
 /*************************************************************************************************/
@@ -187,7 +185,6 @@ app.put   ('/consumidor/:val'        , consumidor.modificarConsumidor);
 app.put   ('/consumidor/validar/:val', consumidor.validarConsumidor  );
 /* [HttpDelete] */
 //app.delete('/consumidor/:id'  , consumidor.eliminarConsumidor );
-
 
 /*************************************************************************************************/
 /******************************************* NODO ******************************************/

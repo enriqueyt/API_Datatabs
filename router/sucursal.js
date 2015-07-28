@@ -197,6 +197,7 @@ exports.buscarSucursal = function(req, res) {
  *		}
  */
 exports.crearSucursal = function(req, res) {
+
 	try {
         var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
         
@@ -283,6 +284,7 @@ exports.crearSucursal = function(req, res) {
  *		}
  */
 exports.modificarSucursal = function(req, res) {
+
 	try {
         var branch = seguridad.decodeBase64(req.params.val);
         

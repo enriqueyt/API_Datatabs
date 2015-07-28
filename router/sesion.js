@@ -29,6 +29,7 @@ var connection = require('../config/db'),
  *		}
  */
 exports.autenticar = function(req, res) {
+    
     try {
         var sql = '', mensaje = '', resultado = '';
         
@@ -51,7 +52,6 @@ exports.autenticar = function(req, res) {
                     else {
                         mensaje   = result[3][0]['@resultado'];
                         resultado = result[1][0]['res'];
-
                         if ((/ERROR/g).test(mensaje))
                             utilidades.printError(mensaje, res);
                         else {
@@ -66,7 +66,7 @@ exports.autenticar = function(req, res) {
                                             'datatabs_main.tb_sesion AS S ' +
                                         'WHERE ' +
                                             'S.id_sesion = ?;';
-                                
+
                                     connection.db.query(
                                         sql,
                                         [id],
@@ -216,6 +216,7 @@ exports.reautenticar = function(req, res) {
  *		}
  */
 exports.desautenticar = function(req, res) {
+
 	try {
         var callback = function(id) {
             var sql = '', mensaje = '', resultado = '';

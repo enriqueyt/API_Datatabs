@@ -20,6 +20,7 @@ exports.decodeBase64 = function(base64String) {
     catch (err) {
         throw "ERROR - utils/utilidades.js _ decodeBase64 method";
     }
+
 };
 
 /* AES coding */

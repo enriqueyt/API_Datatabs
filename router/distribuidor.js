@@ -4,6 +4,7 @@ var connection = require('../config/db'),
 	seguridad  = require('../utils/seguridad');
     
 exports.buscarDistribuidor = function(req, res) {
+
     try {
         var dist = typeof req.params.val !== 'undefined' || req.params.val != null ? seguridad.decodeBase64(req.params.val) : null;
     
@@ -11,6 +12,7 @@ exports.buscarDistribuidor = function(req, res) {
     catch (err) {
         utilidades.printError(err, res);
     }
+
 };
     
 /**
@@ -46,6 +48,7 @@ exports.buscarDistribuidor = function(req, res) {
  *		}
  */
 exports.crearDistribuidor = function(req, res) {
+
 	try {
         var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
         
@@ -142,6 +145,7 @@ exports.crearDistribuidor = function(req, res) {
  *		}
  */
 exports.modificarDistribuidor = function(req, res) {
+
 	try {
         var dist = seguridad.decodeBase64(req.params.val);
         

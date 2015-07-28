@@ -4,6 +4,7 @@ var connection = require('../config/db'),
 	seguridad  = require('../utils/seguridad');
     
 exports.buscarEmpresa = function(req, res) {
+
     try {
         var distributor = parseInt(seguridad.decodeBase64(req.params.distributor));
         var offset      = typeof req.params.offset !== 'undefined' || req.params.offset != null ? parseInt(req.params.offset)                      : 10;
@@ -207,6 +208,7 @@ exports.buscarEmpresa = function(req, res) {
  *		}
  */
 exports.crearEmpresa = function(req, res) {
+
 	try {
         var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
         
@@ -303,6 +305,7 @@ exports.crearEmpresa = function(req, res) {
  *		}
  */
 exports.modificarEmpresa = function(req, res) {
+
 	try {
         var comp = seguridad.decodeBase64(req.params.val);
         

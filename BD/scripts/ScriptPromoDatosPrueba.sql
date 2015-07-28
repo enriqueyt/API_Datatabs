@@ -652,7 +652,11 @@ INSERT INTO `tb_evento_sucursal` (`id_evento`,`id_sucursal`) VALUES ("9","1");
 
 
 INSERT INTO `tb_dispositivo` (`nombre`,`identificacion`,`marca`,`modelo`,`serial`,`id_tipodispositivo`,`id_sucursal`)
+<<<<<<< HEAD
 VALUES ("TEST","203ee2f6-f5df-456a-9649-def3fb73535d","Samsung","TEST","TEST","1","1");
+=======
+VALUES ("TEST","123456789124587","Samsung","TEST","TEST","1","1");
+>>>>>>> 3ecba24042a949acbf770d60d2edce7285dcf89c
 
 INSERT INTO `tb_evento_dispositivo` (`id_evento`,`id_dispositivo`)
 VALUES ("1","1");

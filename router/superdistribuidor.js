@@ -4,6 +4,7 @@ var connection = require('../config/db'),
 	seguridad  = require('../utils/seguridad');
 
 exports.buscarSuperDistribuidor = function(req, res) {
+
     try {
         var superDist = typeof req.params.val !== 'undefined' || req.params.val != null ? seguridad.decodeBase64(req.params.val) : null;
         
@@ -45,6 +46,7 @@ exports.buscarSuperDistribuidor = function(req, res) {
  *		}
  */
 exports.crearSuperDistribuidor = function(req, res) {
+
 	try {
         var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
         

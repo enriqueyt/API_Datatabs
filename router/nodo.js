@@ -4,6 +4,7 @@ var connection = require('../config/db'),
 	seguridad  = require('../utils/seguridad');
     
 exports.buscarNodo = function(req, res) {
+
     try {
     
     }

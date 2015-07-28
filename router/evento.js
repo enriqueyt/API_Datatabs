@@ -38,6 +38,7 @@ var connection = require('../config/db'),
  *		}
  */
 exports.buscarEvento = function(req, res) {
+
 	try {
         var company = parseInt(seguridad.decodeBase64(req.params.company));
         var office  = parseInt(seguridad.decodeBase64(req.params.office));
@@ -362,6 +363,7 @@ exports.buscarEvento = function(req, res) {
  *		}
  */
 exports.crearEvento = function(req, res) {
+
 	try {
         var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
         
@@ -449,6 +451,7 @@ exports.crearEvento = function(req, res) {
  *		}
  */
 exports.modificarEvento = function(req, res) {
+
 	try {
         var event = seguridad.decodeBase64(req.params.val);
         
@@ -534,6 +537,7 @@ exports.modificarEvento = function(req, res) {
  *		}
  */
 exports.asociarEventoSucursal = function(req, res) {
+
 	try {
         var event = seguridad.decodeBase64(req.params.val);
         
