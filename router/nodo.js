@@ -40,7 +40,7 @@ exports.crearRespuesta = function(req, res){
             if (connection) {
                 sql =
                     'SET @resultado = ""; ' +
-                    'CALL datatabs_main.sp_crearRespuesta(?, ?, ?, ?, ?, @resultado); ' +
+                    'CALL datatabs_main.sp_crearRespuesta(?, ?, ?, ?, ?, ?, @resultado); ' +
                     'SELECT @resultado;';
                 
                 connection.db.query(
@@ -49,6 +49,7 @@ exports.crearRespuesta = function(req, res){
                         id,
                         typeof req.body.pregunta    !== 'undefined' || req.body.pregunta    != null ? req.body.pregunta     : null,
                         typeof req.body.consumidor  !== 'undefined' || req.body.consumidor  != null ? req.body.consumidor   : null,
+                        typeof req.body.modo        !== 'undefined' || req.body.modo        != null ? req.body.modo         : null,
                         typeof req.body.respuesta   !== 'undefined' || req.body.respuesta   != null ? req.body.respuesta    : null,
                         typeof req.body.puntuacion  !== 'undefined' || req.body.puntuacion  != null ? req.body.puntuacion   : null
                     ],
@@ -70,7 +71,7 @@ exports.crearRespuesta = function(req, res){
         };
         
         if (typeof req.body.param !== 'undefined' || req.body.param != null) {
-            
+
             if ((/^\d+$/g).test(seguridad.decodeBase64(req.body.param)))
                 callback(seguridad.decodeBase64(req.body.param));
             else

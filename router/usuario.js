@@ -298,7 +298,7 @@ exports.crearUsuario = function(req, res) {
  *      }
  */
 exports.modificarUsuario = function(req, res) {
-<<<<<<< HEAD
+
     try {
         var user = seguridad.decodeBase64(req.params.val);
 
@@ -359,63 +359,6 @@ exports.modificarUsuario = function(req, res) {
         utilidades.printError(err, res);
     }
 };
-=======
-    var user = seguridad.decodeBase64(req.params.val);
-
-    var callback = function(id) {
-        var sql = '', mensaje = '', resultado = '';
-
-        if (connection) {
-            sql =
-                'SET @resultado = ""; ' +
-                'CALL datatabs_main.sp_modificarUsuario(?, ?, ?, ?, ?, ?, NULL, NULL, @resultado); ' +
-                'SELECT @resultado;';
-
-            connection.db.query(
-                sql,
-                //[
-                //  id,
-                //  id,
-                //  seguridad.AES(seguridad.SHA512(req.body.usuario_n), req.body.usuario_p),
-                //  seguridad.SHA512(req.body.usuario_n),
-                //  typeof req.body.usuario_m !== undefined || req.body.usuario_m != null ? seguridad.AES(seguridad.SHA512(req.body.usuario_m), req.body.usuario_p) : null,
-                //  typeof req.body.usuario_m !== undefined || req.body.usuario_m != null ? seguridad.SHA512(req.body.usuario_m) : null
-                //],
-                [
-                    id,
-                    id,
-                    req.body.usuario_n,
-                    req.body.usuario_n,
-                    typeof req.body.usuario_m !== undefined || req.body.usuario_m != null ? req.body.usuario_m : null,
-                    typeof req.body.usuario_m !== undefined || req.body.usuario_m != null ? req.body.usuario_m : null,
-                ],
-                function(err, result) {
-                    if (err)
-                        utilidades.printError(err, res);
-                    else {
-                        mensaje   = result[3][0]['@resultado'];
-                        resultado = result[1][0]['res'];
-
-                        res.contentType('application/json');
-                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-                        res.end();
-                    }
-                }
-            );
-        }
-    };
-
-    if ((/^\d+$/g).test(user))
-        callback(user);
-    else
-        utilidades.buscarIdUsuario(user).then(
-            callback,
-            function(err) {
-                utilidades.printError(err, res);
-            }
-        );
-    };
->>>>>>> 3ecba24042a949acbf770d60d2edce7285dcf89c
 
 /**
  *  HttpPut
@@ -444,7 +387,7 @@ exports.modificarUsuario = function(req, res) {
  *      }
  */
 exports.modificarContrasena = function(req, res) {
-<<<<<<< HEAD
+
     try {
         var user = seguridad.decodeBase64(req.params.val);
 
@@ -541,99 +484,7 @@ exports.modificarContrasena = function(req, res) {
     catch (err) {
         utilidades.printError(err, res);
     }
-=======
-    var user = seguridad.decodeBase64(req.params.val);
 
-    var callback_1 = function(id) {
-        var deferred = Q.defer();
-        var sql = '';
-
-        if (connection) {
-            sql =
-                'SELECT ' +
-                    '? AS id, U.usuario AS usuario, U.usuarioCorreo AS usuarioCorreo ' +
-                'FROM ' +
-                    'datatabs_main.tb_usuario AS U ' +
-                'WHERE ' +
-                    'U.id_usuario = ?;';
-
-            connection.db.query(
-                sql,
-                [id],
-                function(err, result) {
-                    if (err)
-                        deferred.reject(err);
-                    else {
-                        if (result.length <= 0)
-                            utilidades.printError('ERROR - ! - Error buscando datos', res);				
-                        else                   
-                            deferred.resolve(result[0]);
-                    }
-                }
-            );
-        }
-
-        return deferred.promise;
-    };
-
-    var callback_2 = function(data) {
-        var sql = '', mensaje = '', resultado = '';
-
-        if (connection) {
-            sql =
-                'SET @resultado = ""; ' +
-                'CALL datatabs_main.sp_modificarUsuario(?, ?, ?, NULL, ?, NULL, ?, NULL, @resultado); ' +
-                'SELECT @resultado;';
-
-            connection.db.query(
-                sql,
-                //[
-                //  data.id,
-                //  data.id,
-                //  seguridad.encodeAES(seguridad.decodeAES(data.usuario, req.body.usuario_p), req.body.usuario_np),
-                //  data.usuarioCorreo != null ? seguridad.encodeAES(seguridad.decodeAES(data.usuarioCorreo, req.body.usuario_p), req.body.usuario_np) : null,
-                //  seguridad.encodeAES(seguridad.SHA512(req.body.usuario_np), req.body.usuario_np)
-                //],
-                [
-                    data.id,
-                    data.id,
-                    data.usuario,
-                    data.usuarioCorreo != null ? data.usuarioCorreo : null,
-                    req.body.usuario_np
-                ],
-                function(err, result) {
-                    if (err)
-                        utilidades.printError(err, res);
-                    else {
-                        mensaje   = result[3][0]['@resultado'];
-                        resultado = result[1][0]['res'];
-
-                        res.contentType('application/json');
-                        res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-                        res.end();
-                    }
-                }
-            );
-        }
-    };
-
-    if ((/^\d+$/g).test(user))
-        callback_1(user).then(
-            callback_2,
-            function(err) {
-                utilidades.printError(err, res);
-            }
-        );
-    else 
-        utilidades.buscarIdUsuario(user).then(
-            callback_1
-        ).then(
-            callback_2,
-            function(err) {
-                utilidades.printError(err, res);
-            }
-        );
->>>>>>> 3ecba24042a949acbf770d60d2edce7285dcf89c
 };
 
 exports.cambiarEstadoUsuario = function(req, res) {
