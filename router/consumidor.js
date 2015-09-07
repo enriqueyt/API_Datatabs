@@ -158,7 +158,6 @@ exports.modificarConsumidor = function(req, res) {
                     'SET @resultado = ""; ' +
                     'CALL datatabs_main.sp_modificarConsumidor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
                     'SELECT @resultado;';
-                
                 connection.db.query(
                     sql,
                     [
@@ -176,12 +175,14 @@ exports.modificarConsumidor = function(req, res) {
                         typeof req.body.ciudad          !== 'undefined' || req.body.ciudad          != null ? req.body.ciudad          : null
                     ],
                     function(err, result) {
+                        console.log(err)
+                        console.log(result)
                         if (err)
                             utilidades.printError(err, res);
                         else {
                             mensaje   = result[3][0]['@resultado'];
                             resultado = result[1][0]['res'];
-                                                
+
                             res.contentType('application/json');
                             res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
                             res.end();
@@ -191,7 +192,8 @@ exports.modificarConsumidor = function(req, res) {
             }
         };
         
-        if (typeof req.body.param !== undefined || req.body.param != null) {
+        if (typeof req.body.param !== 'undefined' || req.body.param != null) {
+
             if ((/^\d+$/g).test(seguridad.decodeBase64(req.body.param)))
                 callback([client, seguridad.decodeBase64(req.body.param)]);
             else
@@ -202,8 +204,22 @@ exports.modificarConsumidor = function(req, res) {
                     }
                 );
         }
-        else
-            callback([client, null]);
+        else{
+            
+            if((/^\d{10}$|\d{11}$/).test(client)){
+                Q.all([utilidades.buscarIdClientePorCelular(client), null]).then(
+                    callback,
+                    function(err) {
+                        utilidades.printError(err, res);
+                    }
+                );
+            }
+            else{
+                callback([client, null]);
+            }
+        }
+            
+        
     }
     catch (err) {
         utilidades.printError(err, res);
@@ -248,14 +264,11 @@ exports.validarConsumidor = function(req, res) {
     try {
         var contact = seguridad.decodeBase64(req.params.val);
         var device  = seguridad.decodeBase64(req.body.dispositivo);
-        
+
+        console.log(req.body.foto)
         var callback = function(id) {
             var sql = '', mensaje = '', resultado = '';
-                    console.log(contact + ' ' +
-                        seguridad.decodeBase64(req.body.evento) + ' ' +
-                        seguridad.decodeBase64(req.body.nodo) + ' ' +
-                        id)
-            
+
             if (connection) {
                 sql =
                     'SET @resultado = ""; ' +

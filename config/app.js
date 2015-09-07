@@ -91,6 +91,7 @@ app.put   ('/usuariod/:val'     , usuariod.modificarUsuarioD );
 app.get   ('/dispositivo/:val?'           , dispositivo.buscarDispositivo         );
 app.get   ('/dispositivo/dispositivo/:val', dispositivo.existeDispositivo         );
 app.get   ('/dispositivo/evento/:val?'    , dispositivo.buscarEventos             );
+app.get   ('/dispositivo/dispositivo/evento/:val', dispositivo.buscarDispositivosPorEventos );
 /* [HttpPost] */                                                                
 app.post  ('/dispositivo'                 , dispositivo.crearDispositivo          );
 /* [HttpPut] */                           

@@ -33,8 +33,10 @@ exports.modificarNodo = function(req, res) {
 
 exports.crearRespuesta = function(req, res){
   try {
+
+        var parametros, aux;
         
-        var callback = function(id) {
+        var callback = function(id, obj) {
             var sql = '', mensaje = '', resultado = '';
             
             if (connection) {
@@ -45,14 +47,19 @@ exports.crearRespuesta = function(req, res){
                 
                 connection.db.query(
                     sql,
-                    [
-                        id,
-                        typeof req.body.pregunta    !== 'undefined' || req.body.pregunta    != null ? req.body.pregunta     : null,
-                        typeof req.body.consumidor  !== 'undefined' || req.body.consumidor  != null ? req.body.consumidor   : null,
-                        typeof req.body.modo        !== 'undefined' || req.body.modo        != null ? req.body.modo         : null,
-                        typeof req.body.respuesta   !== 'undefined' || req.body.respuesta   != null ? req.body.respuesta    : null,
-                        typeof req.body.puntuacion  !== 'undefined' || req.body.puntuacion  != null ? req.body.puntuacion   : null
-                    ],
+                    (obj != undefined
+                        ?
+                         obj
+                        :
+                        [
+                            id,
+                            typeof req.body.pregunta    !== 'undefined' || req.body.pregunta    != null ? req.body.pregunta     : null,
+                            typeof req.body.consumidor  !== 'undefined' || req.body.consumidor  != null ? req.body.consumidor   : null,
+                            typeof req.body.modo        !== 'undefined' || req.body.modo        != null ? req.body.modo         : null,
+                            typeof req.body.respuesta   !== 'undefined' || req.body.respuesta   != null ? req.body.respuesta    : null,
+                            typeof req.body.puntuacion  !== 'undefined' || req.body.puntuacion  != null ? req.body.puntuacion   : null
+                        ]
+                    ),
                     function(err, result) {
                         
                         if (err)
@@ -60,16 +67,14 @@ exports.crearRespuesta = function(req, res){
                         else {
                             mensaje   = result[3][0]['@resultado'];
                             resultado = result[1][0]['res'];
+                            res.json(({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
 
-                            res.contentType('application/json');
-                            res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-                            res.end();
                         }
                     }
                 );
             }
         };
-        
+
         if (typeof req.body.param !== 'undefined' || req.body.param != null) {
 
             if ((/^\d+$/g).test(seguridad.decodeBase64(req.body.param)))
@@ -83,7 +88,25 @@ exports.crearRespuesta = function(req, res){
                 );
         }
         else{
-            callback(0);
+            if(typeof req.body.respuesta == 'object'){
+                aux = req.body.respuesta;
+                for(var i in aux){
+                        
+                    parametros = [
+                        0,
+                        typeof req.body.pregunta    !== 'undefined' || req.body.pregunta    != null ? req.body.pregunta     : null,
+                        typeof req.body.consumidor  !== 'undefined' || req.body.consumidor  != null ? req.body.consumidor   : null,
+                        typeof req.body.modo        !== 'undefined' || req.body.modo        != null ? req.body.modo         : null,
+                        aux[i],
+                        typeof req.body.puntuacion  !== 'undefined' || req.body.puntuacion  != null ? req.body.puntuacion   : null                        
+                    ]
+
+                    callback(0, parametros); 
+                }
+            }
+            else{
+                callback(0);    
+            }
         }
     }
     catch (err) {

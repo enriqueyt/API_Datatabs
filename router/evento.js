@@ -56,7 +56,7 @@ exports.buscarEvento = function(req, res) {
                         'E.descripcion, ' +
                         'E.fechaInicio, ' +
                         'E.fechaFin, ' +
-                        'E.flujo, ' +
+                        //'E.flujo, ' +
                         (
                             company != 0
                             ?
@@ -141,7 +141,7 @@ exports.buscarEvento = function(req, res) {
                         'E.descripcion, ' +
                         'E.fechaInicio, ' +
                         'E.fechaFin, ' +
-                        'E.flujo, ' +
+                        //'E.flujo, ' +
                         (
                             company != 0
                             ?
@@ -226,7 +226,7 @@ exports.buscarEvento = function(req, res) {
                         'E.descripcion, ' +
                         'E.fechaInicio, ' +
                         'E.fechaFin, ' +
-                        'E.flujo, ' +
+                        //'E.flujo, ' +
                         (
                             company != 0
                             ?
