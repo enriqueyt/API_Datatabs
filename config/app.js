@@ -195,8 +195,6 @@ app.post('/nodo/respuesta/:val?', nodo.crearRespuesta);
 
 app.post('/nodo/visita', nodo.visitaNodo);
 
-app.post('/nodo/test', nodo.test);
-
 app.get('/nodo/validarformulario/:modo/:id', nodo.validarFormulario);
 
 exports.app    = app;
