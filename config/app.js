@@ -91,6 +91,7 @@ app.put   ('/usuariod/:val'     , usuariod.modificarUsuarioD );
 app.get   ('/dispositivo/:val?'           , dispositivo.buscarDispositivo         );
 app.get   ('/dispositivo/dispositivo/:val', dispositivo.existeDispositivo         );
 app.get   ('/dispositivo/evento/:val?'    , dispositivo.buscarEventos             );
+app.get   ('/dispositivo/dispositivo/evento/:val', dispositivo.buscarDispositivosPorEventos );
 /* [HttpPost] */                                                                
 app.post  ('/dispositivo'                 , dispositivo.crearDispositivo          );
 /* [HttpPut] */                           
@@ -191,6 +192,12 @@ app.put   ('/consumidor/validar/:val', consumidor.validarConsumidor  );
 /*************************************************************************************************/
 /* [HttpPost] */ 
 app.post('/nodo/respuesta/:val?', nodo.crearRespuesta);
+
+app.post('/nodo/visita', nodo.visitaNodo);
+
+app.post('/nodo/test', nodo.test);
+
+app.get('/nodo/validarformulario/:modo/:id', nodo.validarFormulario);
 
 exports.app    = app;
 exports.http   = http;

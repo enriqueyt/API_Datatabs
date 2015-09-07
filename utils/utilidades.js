@@ -127,3 +127,40 @@ exports.buscarIdDispositivo = function(identificador) {
     
     return deferred.promise;
 };
+
+exports.buscarIdClientePorCelular = function(celular){
+    'use strict';
+
+    var deferred = Q.defer();
+    var sql = '';
+
+    if(connection){
+
+        sql = 
+            'SELECT '+
+                'IFNULL(consumidor.id_consumidor, -1) AS consumidor '+
+            'FROM '+
+                'datatabs_main.tb_consumidor as consumidor '+
+            'WHERE '+
+                'consumidor.celular = ?;';
+
+        connection.db.query(
+            sql,
+            [celular],
+            function(err, result){
+                if(err){
+                    deferred.reject(err);
+                }
+                else{
+                    if(result.length == 0)
+                        deferred.reject('ERROR - Consumidor no existe');
+                    else
+                        deferred.reject(result[0].consumidor);
+                }
+            }
+        );
+    }
+
+    return deferred.promise;
+
+};

@@ -672,6 +672,63 @@ exports.validarDispositivo = function(req, res) {
     }
 };
 
-//exports.eliminarDispositivo = function(req, res) {
+/**
+ *  HttpGet
+ *
+ *  find all device by id_events key.
+ *
+ *  
+ *  @return
+ *      A JSON string:
+ *      [{
+ *          "evento" : "all items",
+ *          "dispositivo" : "id_dispositivo"
+ *      }]
+ *
+ *  @error
+ *      A JSON string:
+ *      {
+ *          "msg" : "Error description"
+ *      }
+ */
+exports.buscarDispositivosPorEventos = function(req, res) {
 
-//};
+    try{
+
+        var id_evento = seguridad.decodeBase64(req.params.val),
+            sql = '';
+
+        sql = 
+            'select ' +
+                'd.id_dispositivo as id_dispositivo, ' +
+                'd.identificacion as identificacion, ' +
+                'e.flujo as flujo ' +
+            'from ' +
+                'datatabs_main.tb_evento e ' +
+                'join datatabs_main.tb_evento_dispositivo ed on e.id_evento = ed.id_evento ' +
+                'join datatabs_main.tb_dispositivo d on ed.id_dispositivo = d.id_dispositivo ' +
+            'where ' +
+                'e.flujo is not null and ' +
+                'e.id_evento = ?;';
+
+        if(connection){
+
+            connection.db.query(
+                sql,
+                [id_evento],
+                function(err, result) {
+                    if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        res.json(result);
+                        res.end();
+                    }
+                }
+            );
+
+        }
+
+    }catch(err){
+        utilidades.printError(err, res);
+    } 
+};

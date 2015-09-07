@@ -1,7 +1,8 @@
 var connection = require('../config/db'),
     Q          = require('q'),
     utilidades = require('../utils/utilidades'),
-	seguridad  = require('../utils/seguridad');
+	seguridad  = require('../utils/seguridad'),
+    nodo       = require('../router/nodo'); 
     
 exports.buscarConsumidor = function(req, res) {
 
@@ -152,7 +153,7 @@ exports.modificarConsumidor = function(req, res) {
         
         var callback = function(data) {
             var sql = '', mensaje = '', resultado = '';
-            
+            console.log(req.body);
             if (connection) {
                 sql =
                     'SET @resultado = ""; ' +
@@ -181,7 +182,9 @@ exports.modificarConsumidor = function(req, res) {
                         else {
                             mensaje   = result[3][0]['@resultado'];
                             resultado = result[1][0]['res'];
-                                                
+                                
+                            if(typeof req.body.modo != 'undefined') nodo.visitaNodo(req, res);
+
                             res.contentType('application/json');
                             res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
                             res.end();
@@ -190,8 +193,9 @@ exports.modificarConsumidor = function(req, res) {
                 );
             }
         };
-        
-        if (typeof req.body.param !== undefined || req.body.param != null) {
+
+        if (typeof req.body.param !== 'undefined' || req.body.param != null) {
+
             if ((/^\d+$/g).test(seguridad.decodeBase64(req.body.param)))
                 callback([client, seguridad.decodeBase64(req.body.param)]);
             else
@@ -202,8 +206,16 @@ exports.modificarConsumidor = function(req, res) {
                     }
                 );
         }
-        else
+        else{
+            if (typeof req.body.nro !== 'undefined'){
+                if((/^\d{9}|\d{10}$/g).test(seguridad.decodeBase64(req.body.nro))){
+                    client = utilidades.buscarIdClientePorCelular(seguridad.decodeBase64(req.body.nro));
+                }
+            }
             callback([client, null]);
+            
+        }
+        
     }
     catch (err) {
         utilidades.printError(err, res);
@@ -248,13 +260,10 @@ exports.validarConsumidor = function(req, res) {
     try {
         var contact = seguridad.decodeBase64(req.params.val);
         var device  = seguridad.decodeBase64(req.body.dispositivo);
-        
+        console.log(device)
         var callback = function(id) {
             var sql = '', mensaje = '', resultado = '';
-                    console.log(contact + ' ' +
-                        seguridad.decodeBase64(req.body.evento) + ' ' +
-                        seguridad.decodeBase64(req.body.nodo) + ' ' +
-                        id)
+            console.log((req.body.foto));
             
             if (connection) {
                 sql =
@@ -264,6 +273,7 @@ exports.validarConsumidor = function(req, res) {
                 
                 connection.db.query(
                     sql,
+
                     [
                         contact,
                         seguridad.decodeBase64(req.body.evento),
@@ -279,7 +289,8 @@ exports.validarConsumidor = function(req, res) {
                             
                             if ((/ERROR/g).test(mensaje))
                                 utilidades.printError(mensaje, res);
-                            else {              
+                            else {   
+
                                 res.contentType('application/json');
                                 res.write(JSON.stringify(resultado));
                                 res.end();
