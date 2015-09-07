@@ -153,12 +153,12 @@ exports.buscarIdClientePorCelular = function(celular){
                     deferred.reject(err);
                 }
                 else{
-                    
+
                     if(result.length == 0)
                         deferred.reject('ERROR - Consumidor no existe');
-                    else{
-                        deferred.resolve(result[0].consumidor.toString());
-                    }
+                    else
+                        deferred.reject(result[0].consumidor);
+
                 }
             }
         );

@@ -1,7 +1,8 @@
 var connection = require('../config/db'),
     Q          = require('q'),
     utilidades = require('../utils/utilidades'),
-	seguridad  = require('../utils/seguridad');
+	seguridad  = require('../utils/seguridad')
+    nodo       = require('../router/nodo');
     
 exports.buscarNodo = function(req, res) {
 
@@ -15,7 +16,7 @@ exports.buscarNodo = function(req, res) {
     
 exports.crearNodo = function(req, res) {
 	try {
-    
+        
     }
     catch (err) {
         utilidades.printError(err, res);
@@ -31,6 +32,10 @@ exports.modificarNodo = function(req, res) {
     }
 };
 
+/**
+*
+*
+*/
 exports.crearRespuesta = function(req, res){
   try {
 
@@ -69,6 +74,13 @@ exports.crearRespuesta = function(req, res){
                             resultado = result[1][0]['res'];
                             res.json(({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
 
+                            if(!(/ERROR/g).test(mensaje)) vn(req, res);
+                               
+
+                            res.contentType('application/json');
+                            res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
+                            res.end();
+
                         }
                     }
                 );
@@ -91,7 +103,7 @@ exports.crearRespuesta = function(req, res){
             if(typeof req.body.respuesta == 'object'){
                 aux = req.body.respuesta;
                 for(var i in aux){
-                        
+
                     parametros = [
                         0,
                         typeof req.body.pregunta    !== 'undefined' || req.body.pregunta    != null ? req.body.pregunta     : null,
@@ -114,6 +126,91 @@ exports.crearRespuesta = function(req, res){
     }
 };
 
-//exports.eliminarNodo = function(req, res) {
+/**
+*
+*
+*/
+exports.validarFormulario = function(req, res){
 
-//};
+    var sql = '', resultado = '';
+
+    try{
+
+        var id = seguridad.decodeBase64(req.params.id);
+                
+        if (connection) {
+            sql =
+                'select '+ 
+                    'ifnull(c.nombres,0) as nombre '+
+                'from '+
+                    'datatabs_main.tb_consumidor as c '+
+                'where '+ (req.params.modo == 0 ? 'c.celular = ?;' : 'c.id_consumidor = ?;');
+            
+            connection.db.query(
+                sql,
+                [id],
+                function(err, result) {
+                    
+                    if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        res.contentType('application/json');
+                        res.json(result)
+                        res.end();
+                    }
+                }
+            );
+        }
+
+    }
+    catch(err){
+        utilidades.printError(err, res);
+    }
+};
+
+/**
+*
+*
+*/
+exports.visitaNodo = function(req, res) {
+    vn(req, res);
+};
+
+var vn = function(req, res){
+
+    var sql = '', resultado = '', params = [];
+
+    try{
+
+        params = [
+            seguridad.decodeBase64(req.body.consumidor),
+            seguridad.decodeBase64(req.body.id_nodo),
+            seguridad.decodeBase64(req.body.id_visitaEvento)
+        ];
+          
+        if(connection){
+
+            sql =
+                'SET @resultado = ""; ' +
+                'CALL datatabs_main.sp_guardarVisitaNodo(?, ?, ?, @resultado); ' +
+                'SELECT @resultado;';
+
+            connection.db.query(sql, params, function(err, result){
+                if (err)
+                    utilidades.printError(err, res);
+                else {
+                    mensaje   = result[3][0]['@resultado'];
+                    resultado = result[1][0]['res'];
+
+                    res.json({msg:mensaje, resultado: resultado});
+                    res.end();
+                }
+            });
+        }
+
+    }
+    catch(err){
+        utilidades.printError(err, res);
+    }
+}
+
