@@ -108,11 +108,12 @@ exports.buscarIdDispositivo = function(identificador) {
 				'datatabs_main.tb_dispositivo AS D ' +
 			'WHERE ' +
 				'D.identificacion = ?;';
-		
+		    
         connection.db.query(
             sql,
             [identificador],
             function(err, result) {
+
                 if (err)
                     deferred.reject(err);
                 else {
@@ -164,3 +165,44 @@ exports.buscarIdClientePorCelular = function(celular){
     return deferred.promise;
 
 };
+
+exports.buscarEmpresaXdispositivo = function(id){
+    'use strict';
+
+    var deferred = Q.defer();
+    var sql = '';
+
+    if(connection){
+
+        sql = 
+            'select '+
+                ' e.id_empresa as id_empresa '+
+            ' from '+
+                ' datatabs_main.tb_dispositivo d '+
+            ' join '+
+                ' datatabs_main.tb_sucursal s on d.id_sucursal = s.id_sucursal '+
+            ' join '+
+                ' datatabs_main.tb_empresa e on s.id_empresa = e.id_empresa '+
+            ' where '+
+                ' d.id_dispositivo = ?;';
+
+        connection.db.query(
+            sql,
+            [id],
+            function(err, result){
+                console.log(result)
+                if(err){
+                    deferred.reject(err);
+                }
+                else{
+                    if(result.length == 0)
+                        deferred.reject('ERROR - Consumidor no empresa asociada al dispositivo');
+                    else
+                        deferred.reject(result[0].id_empresa);
+                }
+            }
+        );
+    }
+
+    return deferred.promise;
+}

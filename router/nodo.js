@@ -3,7 +3,12 @@ var connection = require('../config/db'),
     utilidades = require('../utils/utilidades'),
 	seguridad  = require('../utils/seguridad')
     nodo       = require('../router/nodo');
-    
+  
+/**
+*
+*
+*
+*/
 exports.buscarNodo = function(req, res) {
 
     try {
@@ -14,6 +19,11 @@ exports.buscarNodo = function(req, res) {
     }
 };
     
+/**
+*
+*
+*
+*/
 exports.crearNodo = function(req, res) {
 	try {
         
@@ -23,6 +33,11 @@ exports.crearNodo = function(req, res) {
     }
 };
 
+/**
+*
+*
+*
+*/
 exports.modificarNodo = function(req, res) {
     try {
     
@@ -33,6 +48,7 @@ exports.modificarNodo = function(req, res) {
 };
 
 /**
+*
 *
 *
 */
@@ -127,6 +143,7 @@ exports.crearRespuesta = function(req, res){
 /**
 *
 *
+*
 */
 exports.validarFormulario = function(req, res){
 
@@ -169,17 +186,23 @@ exports.validarFormulario = function(req, res){
 /**
 *
 *
+*
 */
 exports.visitaNodo = function(req, res) {
     vn(req, res);
 };
 
+/**
+*   
+*
+*
+*/
 var vn = function(req, res){
 
     var sql = '', resultado = '', params = [];
 
     try{
-
+        console.log('guardando la visita idNodo: ' + seguridad.decodeBase64(req.body.id_nodo) + ' id_nodo: ' + seguridad.decodeBase64(req.body.id_nodo));
         params = [
             seguridad.decodeBase64(req.body.consumidor),
             seguridad.decodeBase64(req.body.id_nodo),

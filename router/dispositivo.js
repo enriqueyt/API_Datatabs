@@ -65,7 +65,6 @@ exports.existeDispositivo = function(req, res) {
     }
 };
 
-
 /**
  *	HttpGet
  *
@@ -103,7 +102,7 @@ exports.buscarEventos = function(req, res) {
         var device = seguridad.decodeBase64(req.params.val);
             
         var callback = function(id) {
-            var sql = '';
+            var sql = '', id_empresa = 0;
             
             if (connection) {
                 sql =
@@ -119,10 +118,10 @@ exports.buscarEventos = function(req, res) {
                         'Empresa.nombre AS empresa ' +
                     'FROM ' +
                         'datatabs_main.tb_evento AS Evento ' +
-                        'INNER JOIN ' +
+                        'LEFT JOIN ' +
                         'datatabs_main.tb_evento_dispositivo AS EventoDisp ' +
                         'ON Evento.id_evento = EventoDisp.id_evento ' +
-                        'INNER JOIN ' +
+                        'LEFT JOIN ' +
                         'datatabs_main.tb_empresa AS Empresa ' +
                         'ON Evento.id_empresa = Empresa.id_empresa ' +
                         'LEFT OUTER JOIN ' +
@@ -137,17 +136,37 @@ exports.buscarEventos = function(req, res) {
                     sql,
                     [id],
                     function(err, result) {
+                        'use stict';
+
                         if (err)
                             utilidades.printError(err, res);
                         else {
-                            for (i = 0; i < result.length; i++) {
-                                result[i].id_evento  = seguridad.encodeBase64(result[i].id_evento);
-                                result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
+
+                            if(result.length == 0 ) {
+    
+                                connection.db.query(
+                                    'select ' +
+                                        's.id_empresa ' +
+                                    'from ' +
+                                        'datatabs_main.tb_dispositivo as d ' +
+                                         'join datatabs_main.tb_sucursal as s on d.id_sucursal = s.id_sucursal ' +
+                                    'where ' +
+                                        'd.id_dispositivo = ?', [id],
+                                        function(err, resultado){
+                                            res.json({id_empresa: seguridad.encodeBase64(resultado[0].id_empresa), eventos: []});
+                                        }
+                                )
                             }
-                            
-                            res.contentType('application/json');
-                            res.write(JSON.stringify(result));
-                            res.end();
+                            else{
+            
+                                for (i = 0; i < result.length; i++) {
+                                    result[i].id_evento  = seguridad.encodeBase64(result[i].id_evento);
+                                    result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
+                                } 
+                                res.json({id_empresa:0, eventos: result}); 
+                                
+                            }         
+
                         }
                     }
                 );
