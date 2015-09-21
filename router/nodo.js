@@ -204,9 +204,9 @@ var vn = function(req, res){
     try{
         console.log('guardando la visita idNodo: ' + seguridad.decodeBase64(req.body.id_nodo) + ' id_nodo: ' + seguridad.decodeBase64(req.body.id_nodo));
         params = [
-            seguridad.decodeBase64(req.body.consumidor),
-            seguridad.decodeBase64(req.body.id_nodo),
-            seguridad.decodeBase64(req.body.id_visitaEvento)
+            seguridad.decodeBase64(req.body.idConsumidor),
+            seguridad.decodeBase64(req.body.idNodo),
+            seguridad.decodeBase64(req.body.idVisitaEvento)
         ];
           
         if(connection){
