@@ -1,8 +1,9 @@
 var connection = require('../config/db'),
     Q          = require('q'),
     utilidades = require('../utils/utilidades'),
-    seguridad  = require('../utils/seguridad'),
-    nodo       = require('../router/nodo'); 
+	seguridad  = require('../utils/seguridad'),
+    nodo       = require('../router/nodo'),
+    request    = require('request'); 
     
 exports.buscarConsumidor = function(req, res) {
 
@@ -260,7 +261,7 @@ exports.validarConsumidor = function(req, res) {
     try {
         var contact = seguridad.decodeBase64(req.params.val);
         var device  = seguridad.decodeBase64(req.body.dispositivo);
-        console.log(device)
+      
         var callback = function(id) {
             var sql = '', mensaje = '', resultado = '';
             console.log((req.body.foto));
@@ -290,6 +291,15 @@ exports.validarConsumidor = function(req, res) {
                             if ((/ERROR/g).test(mensaje))
                                 utilidades.printError(mensaje, res);
                             else {   
+
+                                request({
+                                    uri: 'http://localhost:6968/actualizar_lista_clientes',
+                                    method: 'GET',
+                                }, function(error, response, body) {
+                                    console.log(error);
+                                    console.log(response);
+                                    console.log(body);         
+                                });
 
                                 res.contentType('application/json');
                                 res.write(JSON.stringify(resultado));
