@@ -3,7 +3,12 @@ var connection = require('../config/db'),
     utilidades = require('../utils/utilidades'),
 	seguridad  = require('../utils/seguridad')
     nodo       = require('../router/nodo');
-    
+  
+/**
+*
+*
+*
+*/
 exports.buscarNodo = function(req, res) {
 
     try {
@@ -14,6 +19,11 @@ exports.buscarNodo = function(req, res) {
     }
 };
     
+/**
+*
+*
+*
+*/
 exports.crearNodo = function(req, res) {
 	try {
         
@@ -23,6 +33,11 @@ exports.crearNodo = function(req, res) {
     }
 };
 
+/**
+*
+*
+*
+*/
 exports.modificarNodo = function(req, res) {
     try {
     
@@ -33,6 +48,7 @@ exports.modificarNodo = function(req, res) {
 };
 
 /**
+*
 *
 *
 */
@@ -72,10 +88,8 @@ exports.crearRespuesta = function(req, res){
                         else {
                             mensaje   = result[3][0]['@resultado'];
                             resultado = result[1][0]['res'];
-                            res.json(({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
-
-                            if(!(/ERROR/g).test(mensaje)) vn(req, res);
-                               
+                            
+                            //if(!(/ERROR/g).test(mensaje)) vn(req, res);
 
                             res.contentType('application/json');
                             res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
@@ -129,6 +143,7 @@ exports.crearRespuesta = function(req, res){
 /**
 *
 *
+*
 */
 exports.validarFormulario = function(req, res){
 
@@ -171,21 +186,27 @@ exports.validarFormulario = function(req, res){
 /**
 *
 *
+*
 */
 exports.visitaNodo = function(req, res) {
     vn(req, res);
 };
 
+/**
+*   
+*
+*
+*/
 var vn = function(req, res){
 
     var sql = '', resultado = '', params = [];
 
     try{
-
+            
         params = [
-            seguridad.decodeBase64(req.body.consumidor),
-            seguridad.decodeBase64(req.body.id_nodo),
-            seguridad.decodeBase64(req.body.id_visitaEvento)
+            seguridad.decodeBase64(req.body.idConsumidor),
+            seguridad.decodeBase64(req.body.idNodo),
+            seguridad.decodeBase64(req.body.idVisitaEvento)
         ];
           
         if(connection){
@@ -201,7 +222,7 @@ var vn = function(req, res){
                 else {
                     mensaje   = result[3][0]['@resultado'];
                     resultado = result[1][0]['res'];
-
+                    console.log(({msg:mensaje, resultado: resultado}))
                     res.json({msg:mensaje, resultado: resultado});
                     res.end();
                 }

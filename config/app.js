@@ -38,8 +38,9 @@ app.use(function(req, res, next) {
 });
 
 //app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+app.use(bodyParser({limit: '50mb'}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 /*************************************************************************************************/

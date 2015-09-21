@@ -1,10 +1,10 @@
 var connection = require('../config/db'),
     Q          = require('q'),
     utilidades = require('../utils/utilidades'),
-	seguridad  = require('../utils/seguridad');
+    seguridad  = require('../utils/seguridad');
 
 exports.buscarDispositivo = function(req, res) {
-	var user    = typeof req.params.val     !== 'undefined' || req.params.val     != null ? seguridad.decodeBase64(req.params.val)     : null,
+    var user    = typeof req.params.val     !== 'undefined' || req.params.val     != null ? seguridad.decodeBase64(req.params.val)     : null,
         device  = typeof req.params.device  !== 'undefined' || req.params.device  != null ? seguridad.decodeBase64(req.params.device)  : null,
         company = typeof req.params.company !== 'undefined' || req.params.company != null ? seguridad.decodeBase64(req.params.company) : null,
         office  = typeof req.params.office  !== 'undefined' || req.params.office  != null ? seguridad.decodeBase64(req.params.office)  : null;
@@ -19,7 +19,7 @@ exports.buscarDispositivo = function(req, res) {
  *
  *  @param
  *      A request url parameter (a device identifier).
- *	
+ *  
  *  @return
  *      A JSON string:
  *      {
@@ -65,18 +65,17 @@ exports.existeDispositivo = function(req, res) {
     }
 };
 
-
 /**
- *	HttpGet
+ *  HttpGet
  *
  *  Gets active device's events.
  *
- *	@param
- *		A request url parameter (an IMEI's device or id in Base64 related to the device that we want to get their events).
- *	
- *	@return
- *		A JSON string:
- *		[
+ *  @param
+ *      A request url parameter (an IMEI's device or id in Base64 related to the device that we want to get their events).
+ *  
+ *  @return
+ *      A JSON string:
+ *      [
  *          {
  *              "id_evento"   : "Base64EncodeString(1)",        A string in Base64 that represents the identifier related to an event.
  *              "evento"      : "XXXXX",                        A string that represents the event's name.
@@ -91,11 +90,11 @@ exports.existeDispositivo = function(req, res) {
  *          ...
  *      ]
  *
- *	@error
- *		A JSON string:
- *		{
- *			"msg" : "Error description"
- *		}
+ *  @error
+ *      A JSON string:
+ *      {
+ *          "msg" : "Error description"
+ *      }
  */
 exports.buscarEventos = function(req, res) {
 
@@ -103,7 +102,7 @@ exports.buscarEventos = function(req, res) {
         var device = seguridad.decodeBase64(req.params.val);
             
         var callback = function(id) {
-            var sql = '';
+            var sql = '', id_empresa = 0;
             
             if (connection) {
                 sql =
@@ -119,10 +118,10 @@ exports.buscarEventos = function(req, res) {
                         'Empresa.nombre AS empresa ' +
                     'FROM ' +
                         'datatabs_main.tb_evento AS Evento ' +
-                        'INNER JOIN ' +
+                        'LEFT JOIN ' +
                         'datatabs_main.tb_evento_dispositivo AS EventoDisp ' +
                         'ON Evento.id_evento = EventoDisp.id_evento ' +
-                        'INNER JOIN ' +
+                        'LEFT JOIN ' +
                         'datatabs_main.tb_empresa AS Empresa ' +
                         'ON Evento.id_empresa = Empresa.id_empresa ' +
                         'LEFT OUTER JOIN ' +
@@ -137,9 +136,12 @@ exports.buscarEventos = function(req, res) {
                     sql,
                     [id],
                     function(err, result) {
+                        'use stict';
+
                         if (err)
                             utilidades.printError(err, res);
                         else {
+
                            if(result.length == 0 ) {
     
                                 connection.db.query(
@@ -164,7 +166,7 @@ exports.buscarEventos = function(req, res) {
                                 res.json({id_empresa:0, eventos: result}); 
                                 
                             }         
-                                    
+                            
                         }
                     }
                 );
@@ -187,14 +189,14 @@ exports.buscarEventos = function(req, res) {
 };
     
 /**
- *	HttpPost
+ *  HttpPost
  *
  *  Creates a device.
  *
- *	@param
- *		A JSON request body:
- *		{
- *			"param"            : "Base64EncodeString(xxxxy0z1-0000-zzz0-xyxy-10yy0xxy|1)",  A string in Base64 that represents an user session or id related to the user that creates the request.
+ *  @param
+ *      A JSON request body:
+ *      {
+ *          "param"            : "Base64EncodeString(xxxxy0z1-0000-zzz0-xyxy-10yy0xxy|1)",  A string in Base64 that represents an user session or id related to the user that creates the request.
  *          "identificador"    : "XXXXX",                                                   A string that represents the identifier (e.g. IMEI) related to the device which we want to create.
  *          "nombre"           : "XXXXX",                                                   A string that represents the name related to the device which we want to create.
  *          "marca"            : "XXXXX",                                                   A string that represents the brand related to the device which we want to create.
@@ -203,23 +205,23 @@ exports.buscarEventos = function(req, res) {
  *          "sistemaOperativo" : "XXXXX",                                                   A string that represents the operative system related to the device which we want to create. This field can be optional.
  *          "version"          : "XXXXX",                                                   A string that represents the operative system version related to the device which we want to create. This field can be optional.
  *          "tipoDispositivo"  : 0                                                          An integer identifier that represents the device type related to the device which we want to create.
- *		}
- *	
- *	@return
- *		A JSON string:
- *		{
- *			"msg" : "OK - Base64EncodeString(device id)"
- *		}
+ *      }
+ *  
+ *  @return
+ *      A JSON string:
+ *      {
+ *          "msg" : "OK - Base64EncodeString(device id)"
+ *      }
  *
- *	@error
- *		A JSON string:
- *		{
- *			"msg" : "Error description"
- *		}
+ *  @error
+ *      A JSON string:
+ *      {
+ *          "msg" : "Error description"
+ *      }
  */
 exports.crearDispositivo = function(req, res) {
 
-	try {
+    try {
         var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
         
         var callback = function(id) {
@@ -282,16 +284,16 @@ exports.crearDispositivo = function(req, res) {
 };
 
 /**
- *	HttpPut
+ *  HttpPut
  *
  *  Updates a device.
  *
- *	@param
- *		A request url parameter (an IMEI's device or id in Base64 related to the device that we want to update).
- *	@param
- *		A JSON request body (Fields to update should be set with a value):
- *		{
- *		    "param"            : "Base64EncodeString(xxxxy0z1-0000-zzz0-xyxy-10yy0xxy|1)",  A string in Base64 that represents an user session or id related to the user that creates the request.
+ *  @param
+ *      A request url parameter (an IMEI's device or id in Base64 related to the device that we want to update).
+ *  @param
+ *      A JSON request body (Fields to update should be set with a value):
+ *      {
+ *          "param"            : "Base64EncodeString(xxxxy0z1-0000-zzz0-xyxy-10yy0xxy|1)",  A string in Base64 that represents an user session or id related to the user that creates the request.
  *          "identificador"    : "XXXXX",                                                   A string that represents the identifier (e.g. IMEI) related to the device which we want to create.
  *          "nombre"           : "XXXXX",                                                   A string that represents the name related to the device which we want to create.
  *          "marca"            : "XXXXX",                                                   A string that represents the brand related to the device which we want to create.
@@ -300,23 +302,23 @@ exports.crearDispositivo = function(req, res) {
  *          "sistemaOperativo" : "XXXXX",                                                   A string that represents the operative system related to the device which we want to create.
  *          "version"          : "XXXXX",                                                   A string that represents the operative system version related to the device which we want to create.
  *          "activo"           : 0                                                          An integer that represents the status (1 for active and 0 for inactive) related to the device which we want to create.
- *		}
- *	
- *	@return
- *		A JSON string:
- *		{
- *			"msg" : "OK - Base64EncodeString(device id)"
- *		}
+ *      }
+ *  
+ *  @return
+ *      A JSON string:
+ *      {
+ *          "msg" : "OK - Base64EncodeString(device id)"
+ *      }
  *
- *	@error
- *		A JSON string:
- *		{
- *			"msg" : "Error description"
- *		}
+ *  @error
+ *      A JSON string:
+ *      {
+ *          "msg" : "Error description"
+ *      }
  */
 exports.modificarDispositivo = function(req, res) {
 
-	try {
+    try {
         var device = seguridad.decodeBase64(req.params.val);
         
         var callback = function(data) {
@@ -405,34 +407,34 @@ exports.modificarDispositivo = function(req, res) {
 };
 
 /**
- *	HttpPut
+ *  HttpPut
  *
  *  Creates a relation between a device and a branch office.
  *
- *	@param
- *		A request url parameter (an IMEI's device or id in Base64 related to the device that we want to associate to branch office).
- *	@param
- *		A JSON request body (fields to update should be set with a value):
- *		{
- *		    "param"    : "Base64EncodeString(xxxxy0z1-0000-zzz0-xyxy-10yy0xxy|1)",  A string in Base64 that represents an user session or id related to the user that creates the request.
+ *  @param
+ *      A request url parameter (an IMEI's device or id in Base64 related to the device that we want to associate to branch office).
+ *  @param
+ *      A JSON request body (fields to update should be set with a value):
+ *      {
+ *          "param"    : "Base64EncodeString(xxxxy0z1-0000-zzz0-xyxy-10yy0xxy|1)",  A string in Base64 that represents an user session or id related to the user that creates the request.
  *          "sucursal" : "XXXXX"                                                    An integer identifier that represents the branch office that we will associate to the device.
- *		}
- *	
- *	@return
- *		A JSON string:
- *		{
- *			"msg" : "OK - Base64EncodeString(relation id)"
- *		}
+ *      }
+ *  
+ *  @return
+ *      A JSON string:
+ *      {
+ *          "msg" : "OK - Base64EncodeString(relation id)"
+ *      }
  *
- *	@error
- *		A JSON string:
- *		{
- *			"msg" : "Error description"
- *		}
+ *  @error
+ *      A JSON string:
+ *      {
+ *          "msg" : "Error description"
+ *      }
  */
 exports.asociarDispositivoSucursal = function(req, res) {
 
-	try {
+    try {
         var device = seguridad.decodeBase64(req.params.val);
         
         var callback = function(data) {
@@ -514,34 +516,34 @@ exports.asociarDispositivoSucursal = function(req, res) {
 };
 
 /**
- *	HttpPut
+ *  HttpPut
  *
  *  Creates a relation between a device and an event.
  *
- *	@param
- *		A request url parameter (an IMEI's device or id in Base64 related to the device that we want to update).
- *	@param
- *		A JSON request body (fields to update should be set with a value):
- *		{
- *		    "param"       : "Base64EncodeString(xxxxy0z1-0000-zzz0-xyxy-10yy0xxy|1)",  A string in Base64 that represents an user session or id related to the user that creates the request.
+ *  @param
+ *      A request url parameter (an IMEI's device or id in Base64 related to the device that we want to update).
+ *  @param
+ *      A JSON request body (fields to update should be set with a value):
+ *      {
+ *          "param"       : "Base64EncodeString(xxxxy0z1-0000-zzz0-xyxy-10yy0xxy|1)",  A string in Base64 that represents an user session or id related to the user that creates the request.
  *          "evento"      : "XXXXX"                                                    An integer identifier that represents the event that we will associate to the device.
- *		}
- *	
- *	@return
- *		A JSON string:
- *		{
- *			"msg" : "OK - Base64EncodeString(relation id)"
- *		}
+ *      }
+ *  
+ *  @return
+ *      A JSON string:
+ *      {
+ *          "msg" : "OK - Base64EncodeString(relation id)"
+ *      }
  *
- *	@error
- *		A JSON string:
- *		{
- *			"msg" : "Error description"
- *		}
+ *  @error
+ *      A JSON string:
+ *      {
+ *          "msg" : "Error description"
+ *      }
  */
 exports.asociarEventoDispositivo = function(req, res) {
 
-	try {
+    try {
         var device = seguridad.decodeBase64(req.params.val);
        
         var callback = function(data) {
@@ -627,27 +629,27 @@ exports.asociarEventoDispositivo = function(req, res) {
 };
 
 /**
- *	HttpPut
+ *  HttpPut
  *
  *  Checks if a device stills on-line and updates its revision date.
  *
- *	@param
- *		A request url parameter (an IMEI's device or id in Base64 related to the device that we want to update).
- *	
- *	@return
- *		A JSON string:
- *		{
- *			"msg" : "OK - Base64EncodeString(device id)"
- *		}
+ *  @param
+ *      A request url parameter (an IMEI's device or id in Base64 related to the device that we want to update).
+ *  
+ *  @return
+ *      A JSON string:
+ *      {
+ *          "msg" : "OK - Base64EncodeString(device id)"
+ *      }
  *
- *	@error
- *		A JSON string:
- *		{
- *			"msg" : "Error description"
- *		}
+ *  @error
+ *      A JSON string:
+ *      {
+ *          "msg" : "Error description"
+ *      }
  */
 exports.validarDispositivo = function(req, res) {
-	try {
+    try {
         var device = seguridad.decodeBase64(req.params.val);
         
         var callback = function(id) {
@@ -675,7 +677,7 @@ exports.validarDispositivo = function(req, res) {
                         }
                     }
                 );
-            }	
+            }   
         };
         
         if ((/^\d+$/g).test(device))
@@ -693,27 +695,6 @@ exports.validarDispositivo = function(req, res) {
     }
 };
 
-<<<<<<< HEAD
-
-/**
- *  HttpGet
- *
- *  find all device by id_events key.
- *
- *  
- *  @return
- *      A JSON string:
- *      [{
- *          "evento" : "all items",
- *          "dispositivo" : "id_dispositivo"
- *      }]
- *
- *  @error
- *      A JSON string:
- *      {
- *          "msg" : "Error description"
- *      }
- */
 exports.buscarDispositivosPorEventos = function(req, res) {
 
     try{
@@ -734,47 +715,6 @@ exports.buscarDispositivosPorEventos = function(req, res) {
                 'e.flujo is not null and ' +
                 'e.id_evento = ?;';
 
-=======
-/**
- *  HttpGet
- *
- *  find all device by id_events key.
- *
- *  
- *  @return
- *      A JSON string:
- *      [{
- *          "evento" : "all items",
- *          "dispositivo" : "id_dispositivo"
- *      }]
- *
- *  @error
- *      A JSON string:
- *      {
- *          "msg" : "Error description"
- *      }
- */
-exports.buscarDispositivosPorEventos = function(req, res) {
-
-    try{
-
-        var id_evento = seguridad.decodeBase64(req.params.val),
-            sql = '';
-
-        sql = 
-            'select ' +
-                'd.id_dispositivo as id_dispositivo, ' +
-                'd.identificacion as identificacion, ' +
-                'e.flujo as flujo ' +
-            'from ' +
-                'datatabs_main.tb_evento e ' +
-                'join datatabs_main.tb_evento_dispositivo ed on e.id_evento = ed.id_evento ' +
-                'join datatabs_main.tb_dispositivo d on ed.id_dispositivo = d.id_dispositivo ' +
-            'where ' +
-                'e.flujo is not null and ' +
-                'e.id_evento = ?;';
-
->>>>>>> 10ef7f4502ff5d97bbaf8cf9d3451ccc6ec40844
         if(connection){
 
             connection.db.query(
