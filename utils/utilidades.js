@@ -1,5 +1,6 @@
 var connection = require('../config/db'),
-    Q          = require('q');
+    Q          = require('q'),
+   request = require('sync-request');
 
 exports.printError = function(err, res) {
     res.contentType('application/json');
@@ -156,7 +157,7 @@ exports.buscarIdClientePorCelular = function(celular){
                     if(result.length == 0)
                         deferred.reject('ERROR - Consumidor no existe');
                     else
-                        deferred.reject(result[0].consumidor);
+                        deferred.resolve(result[0].consumidor);
                 }
             }
         );
@@ -198,11 +199,52 @@ exports.buscarEmpresaXdispositivo = function(id){
                     if(result.length == 0)
                         deferred.reject('ERROR - Consumidor no empresa asociada al dispositivo');
                     else
-                        deferred.reject(result[0].id_empresa);
+                        deferred.resolve(result[0].id_empresa);
                 }
             }
         );
     }
 
     return deferred.promise;
+};
+
+exports.agregarImagenFlujo = function(flujos){
+    'use strict';
+    var f;
+
+    try{
+
+        var recorrerFlujo = function(flujo){
+            'use strict';
+
+            var data = '';            
+
+            for (var i = 0; i < flujo.length; i++) {
+
+                if(flujo[i].backgroundUrl.length > 0){
+                    var res = request('GET', flujo[i].backgroundUrl);
+                    flujo[i].backgroundImg = (data = "data:" + res.headers["content-type"] + ";base64," + new Buffer(res.body).toString('base64'));
+                }
+
+                if(flujo[i].children.length > 0){
+                    flujo = recorrerFlujo(flujo[i].children);
+                }
+              
+            };
+
+            return flujo;
+            
+        };
+            
+        if( flujos.children.length > 0 ){
+            f = flujos.children;
+            recorrerFlujo(f);
+        }
+
+    }catch(err){
+        console.log('error: ' + err)
+    }
+
+    return f;
+
 }
