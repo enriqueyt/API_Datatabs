@@ -103,7 +103,7 @@ exports.buscarEventos = function(req, res) {
             
         var callback = function(id) {
             var sql = '', id_empresa = 0;
-            
+
             if (connection) {
                 sql =
                     'SELECT ' +
@@ -129,7 +129,7 @@ exports.buscarEventos = function(req, res) {
                         'ON Evento.id_imagen = Imagen.id_imagen ' +
                     'WHERE ' +
                         'EventoDisp.id_dispositivo = ? AND ' +
-                        '(Evento.fechaFin >= NOW() OR Evento.fechaFin IS NULL) AND ' +
+                      
                         'Evento.activo = 1;';
                 
                 connection.db.query(
@@ -154,16 +154,21 @@ exports.buscarEventos = function(req, res) {
                                         'd.id_dispositivo = ?', [id],
                                         function(err, resultado){
                                             res.json({id_empresa: seguridad.encodeBase64(resultado[0].id_empresa), eventos: []});
+                                            res.end();
                                         }
                                 )
                             }
                             else{
+
             
                                 for (i = 0; i < result.length; i++) {
                                     result[i].id_evento  = seguridad.encodeBase64(result[i].id_evento);
                                     result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
+                                    result[i].flujo = utilidades.agregarImagenFlujo(JSON.parse(result[i].flujo));
                                 } 
+                                
                                 res.json({id_empresa:0, eventos: result}); 
+                                res.end();
                                 
                             }         
                             
