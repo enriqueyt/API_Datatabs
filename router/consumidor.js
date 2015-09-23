@@ -151,10 +151,11 @@ exports.modificarConsumidor = function(req, res) {
 
     try {
         var client = seguridad.decodeBase64(req.params.val);
-        
+         console.log(client)
         var callback = function(data) {
             var sql = '', mensaje = '', resultado = '';
             console.log(req.body);
+             console.log(data)
             if (connection) {
                 sql =
                     'SET @resultado = ""; ' +
@@ -183,7 +184,8 @@ exports.modificarConsumidor = function(req, res) {
                         else {
                             mensaje   = result[3][0]['@resultado'];
                             resultado = result[1][0]['res'];
-                                
+                            console.log(resultado)
+                            console.log(mensaje)
                             if(typeof req.body.modo != 'undefined') nodo.visitaNodo(req, res);
 
                             res.contentType('application/json');
@@ -208,12 +210,21 @@ exports.modificarConsumidor = function(req, res) {
                 );
         }
         else{
-            if (typeof req.body.nro !== 'undefined'){
-                if((/^\d{9}|\d{10}$/g).test(seguridad.decodeBase64(req.body.nro))){
-                    client = utilidades.buscarIdClientePorCelular(seguridad.decodeBase64(req.body.nro));
+
+            if (typeof req.body.tlfCelular != 'undefined'){
+                if((/^\d{9}|\d{10}$/g).test((req.body.tlfCelular))){
+                    console.log((/^\d{9}|\d{10}$/g).test((req.body.tlfCelular)));
+                    Q.all([utilidades.buscarIdClientePorCelular((req.body.tlfCelular))]).then(
+                        callback,
+                        function(err) {
+                            utilidades.printError(err, res);
+                        }
+                    );
+
                 }
             }
-            callback([client, null]);
+            else
+                callback([client, null]);
             
         }
         
