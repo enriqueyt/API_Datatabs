@@ -250,8 +250,6 @@ exports.agregarImagenFlujo = function(flujos){
     }
 
     return f;
-<<<<<<< HEAD
+
 };
-=======
-};
->>>>>>> 10f7a88c13c4a84c7b6e399278acb96ac22a7bf3
+
