@@ -164,7 +164,7 @@ exports.buscarEventos = function(req, res) {
                                 for (i = 0; i < result.length; i++) {
                                     result[i].id_evento  = seguridad.encodeBase64(result[i].id_evento);
                                     result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
-                                    result[i].flujo = utilidades.agregarImagenFlujo(JSON.parse(result[i].flujo));
+                                    result[i].flujo = JSON.stringify(utilidades.agregarImagenFlujo(JSON.parse(result[i].flujo)));
                                 } 
                                 
                                 res.json({id_empresa:0, eventos: result}); 

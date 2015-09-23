@@ -5,7 +5,7 @@ var connection = require('../config/db'),
     nodo       = require('../router/nodo');
   
 /**
-*
+* 
 *
 *
 */
@@ -169,6 +169,12 @@ exports.validarFormulario = function(req, res){
                     if (err)
                         utilidades.printError(err, res);
                     else {
+
+                        if(result.length == 0 || result[0].nombre == 0)
+                            result = true;
+                        else
+                            result = false;   
+
                         res.contentType('application/json');
                         res.json(result)
                         res.end();

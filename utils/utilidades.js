@@ -164,7 +164,6 @@ exports.buscarIdClientePorCelular = function(celular){
     }
 
     return deferred.promise;
-
 };
 
 exports.buscarEmpresaXdispositivo = function(id){
@@ -214,30 +213,35 @@ exports.agregarImagenFlujo = function(flujos){
 
     try{
 
-        var recorrerFlujo = function(flujo){
+        var recorrerFlujo = function(_flujo){
             'use strict';
 
-            var data = '';            
+            var data = '',flujo;            
+            if(_flujo.children.length > 0){
 
-            for (var i = 0; i < flujo.length; i++) {
+                flujo = _flujo.children;
 
-                if(flujo[i].backgroundUrl.length > 0){
-                    var res = request('GET', flujo[i].backgroundUrl);
-                    flujo[i].backgroundImg = (data = "data:" + res.headers["content-type"] + ";base64," + new Buffer(res.body).toString('base64'));
-                }
+                for (var i = 0; i < flujo.length; i++) {
 
-                if(flujo[i].children.length > 0){
-                    flujo = recorrerFlujo(flujo[i].children);
-                }
-              
-            };
+                    if(flujo[i].backgroundUrl.length > 0){
+                        var res = request('GET', flujo[i].backgroundUrl);
+                        console.log(flujo[i].backgroundUrl);
+                        console.log(res.headers["content-type"]);
+                        flujo[i].backgroundImg = ("data:" + res.headers["content-type"] + ";base64," + new Buffer(res.body).toString('base64'));
+                    }
 
-            return flujo;
-            
+                    if(flujo[i].children.length > 0){
+                        flujo = recorrerFlujo(flujo[i]);
+                    }
+                  
+                };
+
+                return flujo;
+            }
         };
             
         if( flujos.children.length > 0 ){
-            f = flujos.children;
+            f = flujos;
             recorrerFlujo(f);
         }
 
@@ -246,5 +250,4 @@ exports.agregarImagenFlujo = function(flujos){
     }
 
     return f;
-
-}
+};
