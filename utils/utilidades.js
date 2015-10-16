@@ -154,10 +154,12 @@ exports.buscarIdClientePorCelular = function(celular){
                     deferred.reject(err);
                 }
                 else{
+
                     if(result.length == 0)
                         deferred.reject('ERROR - Consumidor no existe');
                     else
                         deferred.resolve(result[0].consumidor);
+
                 }
             }
         );
@@ -225,8 +227,6 @@ exports.agregarImagenFlujo = function(flujos){
 
                     if(flujo[i].backgroundUrl.length > 0){
                         var res = request('GET', flujo[i].backgroundUrl);
-                        console.log(flujo[i].backgroundUrl);
-                        console.log(res.headers["content-type"]);
                         flujo[i].backgroundImg = ("data:" + res.headers["content-type"] + ";base64," + new Buffer(res.body).toString('base64'));
                     }
 
@@ -250,4 +250,6 @@ exports.agregarImagenFlujo = function(flujos){
     }
 
     return f;
+
 };
+

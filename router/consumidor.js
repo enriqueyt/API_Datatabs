@@ -16,14 +16,14 @@ exports.buscarConsumidor = function(req, res) {
 };
 
 /**
- *	HttpPost
+ *  HttpPost
  *
  *  Creates a client.
  *
- *	@param
- *		A JSON request body:
- *		{
- *			"param"           : "Base64EncodeString(xxxxy0z1-0000-zzz0-xyxy-10yy0xxy|1)",   A string in Base64 that represents an user session or id related to the user that creates the request.
+ *  @param
+ *      A JSON request body:
+ *      {
+ *          "param"           : "Base64EncodeString(xxxxy0z1-0000-zzz0-xyxy-10yy0xxy|1)",   A string in Base64 that represents an user session or id related to the user that creates the request.
  *          "nombre"          : "XXXXX",                                                    A string that represents the name related the client that we want to create. This field can be optional.
  *          "apellido"        : "XXXXX",                                                    A string that represents the last name related the client that we want to create. This field can be optional.
  *          "tlfCelular"      : "XXXXX",                                                    A string that represents the mobile telephone number related to the client that we want to create.
@@ -34,23 +34,23 @@ exports.buscarConsumidor = function(req, res) {
  *          "tipoConsumidor"  : 0,                                                          An integer identifier that represents the client type related to the client that we want to create.
  *          "sexo"            : 0,                                                          An integer identifier that represents the sex related to the client that we want to create. This field can be optional.
  *          "ciudad"          : 0                                                           An integer identifier that represents the city related to the client that we want to create. This field can be optional.
- *		}
- *	
- *	@return
- *		A JSON string:
- *		{
- *			"msg" : "OK - Base64EncodeString(client id)"
- *		}
+ *      }
+ *  
+ *  @return
+ *      A JSON string:
+ *      {
+ *          "msg" : "OK - Base64EncodeString(client id)"
+ *      }
  *
- *	@error
- *		A jSON string:
- *		{
- *			"msg" : "Error description"
- *		}
+ *  @error
+ *      A jSON string:
+ *      {
+ *          "msg" : "Error description"
+ *      }
  */
 exports.crearConsumidor = function(req, res) {
 
-	try {
+    try {
         var user = typeof req.body.param !== 'undefined' || req.body.param != null ? seguridad.decodeBase64(req.body.param) : null;
         
         var callback = function(id) {
@@ -113,16 +113,16 @@ exports.crearConsumidor = function(req, res) {
 };
 
 /**
- *	HttpPut
+ *  HttpPut
  *
  *  Updates a client.
  *
- *	@param
- *		A request url parameter (an id in Base64 related to the client that we want to update).
- *	@param
- *		A JSON request body (fields to update should be set with a value):
- *		{
- *			"param"           : "Base64EncodeString(xxxxy0z1-0000-zzz0-xyxy-10yy0xxy|1)",   A string in Base64 that represents an user session or id related to the user that creates the request.
+ *  @param
+ *      A request url parameter (an id in Base64 related to the client that we want to update).
+ *  @param
+ *      A JSON request body (fields to update should be set with a value):
+ *      {
+ *          "param"           : "Base64EncodeString(xxxxy0z1-0000-zzz0-xyxy-10yy0xxy|1)",   A string in Base64 that represents an user session or id related to the user that creates the request.
  *          "nombre"          : "XXXXX",                                                    A string that represents the name related the client that we want to create.
  *          "apellido"        : "XXXXX",                                                    A string that represents the last name related the client that we want to create.
  *          "tlfCelular"      : "XXXXX",                                                    A string that represents the mobile telephone number related to the client that we want to create.
@@ -133,28 +133,29 @@ exports.crearConsumidor = function(req, res) {
  *          "tipoConsumidor"  : 0,                                                          An integer identifier that represents the client type related to the client that we want to create.
  *          "sexo"            : 0,                                                          An integer identifier that represents the sex related to the client that we want to create.
  *          "ciudad"          : 0                                                           An integer identifier that represents the city related to the client that we want to create.
- *		}
- *	
- *	@return
- *		A JSON string:
- *		{
- *			"msg" : "OK - Base64EncodeString(client id)"
- *		}
+ *      }
+ *  
+ *  @return
+ *      A JSON string:
+ *      {
+ *          "msg" : "OK - Base64EncodeString(client id)"
+ *      }
  *
- *	@error
- *		A JSON string:
- *		{
- *			"msg" : "Error description"
- *		}
+ *  @error
+ *      A JSON string:
+ *      {
+ *          "msg" : "Error description"
+ *      }
  */
 exports.modificarConsumidor = function(req, res) {
 
-	try {
+    try {
         var client = seguridad.decodeBase64(req.params.val);
-        
+         console.log(client)
         var callback = function(data) {
             var sql = '', mensaje = '', resultado = '';
             console.log(req.body);
+             console.log(data)
             if (connection) {
                 sql =
                     'SET @resultado = ""; ' +
@@ -183,7 +184,8 @@ exports.modificarConsumidor = function(req, res) {
                         else {
                             mensaje   = result[3][0]['@resultado'];
                             resultado = result[1][0]['res'];
-                                
+                            console.log(resultado)
+                            console.log(mensaje)
                             if(typeof req.body.modo != 'undefined') nodo.visitaNodo(req, res);
 
                             res.contentType('application/json');
@@ -208,12 +210,21 @@ exports.modificarConsumidor = function(req, res) {
                 );
         }
         else{
-            if (typeof req.body.nro !== 'undefined'){
-                if((/^\d{9}|\d{10}$/g).test(seguridad.decodeBase64(req.body.nro))){
-                    client = utilidades.buscarIdClientePorCelular(seguridad.decodeBase64(req.body.nro));
+
+            if (typeof req.body.tlfCelular != 'undefined'){
+                if((/^\d{9}|\d{10}$/g).test((req.body.tlfCelular))){
+                    console.log((/^\d{9}|\d{10}$/g).test((req.body.tlfCelular)));
+                    Q.all([utilidades.buscarIdClientePorCelular((req.body.tlfCelular))]).then(
+                        callback,
+                        function(err) {
+                            utilidades.printError(err, res);
+                        }
+                    );
+
                 }
             }
-            callback([client, null]);
+            else
+                callback([client, null]);
             
         }
         
@@ -224,37 +235,37 @@ exports.modificarConsumidor = function(req, res) {
 };
 
 /**
- *	HttpPut
+ *  HttpPut
  *
  *  Validates a client.
  *
- *	@param
- *		A request url parameter (an contact number in Base64 related to the client that we want to validate).
- *	@param
- *		A JSON request body:
- *		{
- *			
+ *  @param
+ *      A request url parameter (an contact number in Base64 related to the client that we want to validate).
+ *  @param
+ *      A JSON request body:
+ *      {
+ *          
  *          "evento"      : "Base64EncodeString(1)",      An integer identifier in Base64 that represents the event which we want to validate.
  *          "nodo"        : "Base64EncodeString(1)",      An integer identifier in Base64 that represents the check-in node related to the event.
  *          "dispositivo" : "Base64EncodeString(XXXX|1)", An IMEI's device or integer identifier in Base64 that represents the device which is used to validate.
- *		}
- *	
- *	@return
- *		A JSON string:
- *		{
- *			"consumidor"             : "Base64EncodeString(client id)", An integer identifier in Base64 that represents the client who was validated.
+ *      }
+ *  
+ *  @return
+ *      A JSON string:
+ *      {
+ *          "consumidor"             : "Base64EncodeString(client id)", An integer identifier in Base64 that represents the client who was validated.
  *          "contadorGlobalEmpresa"  : 1,                               An integer that represents the total company visit counter.
- *		    "contadorGlobalSucursal" : 1,                               An integer that represents the total branch office visits counter.
- *		    "contadorActualSucursal" : 1,                               An integer that represents the actual branch office visits counter.
- *		    "contadorGlobalEvento"   : 1,                               An integer that represents the total event visits counter.
- *		    "contadorActualEvento"   : 1                                An integer that represents the actual event visits counter.
- *		}
+ *          "contadorGlobalSucursal" : 1,                               An integer that represents the total branch office visits counter.
+ *          "contadorActualSucursal" : 1,                               An integer that represents the actual branch office visits counter.
+ *          "contadorGlobalEvento"   : 1,                               An integer that represents the total event visits counter.
+ *          "contadorActualEvento"   : 1                                An integer that represents the actual event visits counter.
+ *      }
  *
- *	@error
- *		A JSON string:
- *		{
- *			"msg" : "Error description"
- *		}
+ *  @error
+ *      A JSON string:
+ *      {
+ *          "msg" : "Error description"
+ *      }
  */
 exports.validarConsumidor = function(req, res) {
 

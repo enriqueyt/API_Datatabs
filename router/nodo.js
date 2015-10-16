@@ -110,13 +110,13 @@ exports.crearRespuesta = function(req, res){
                         else {
                             mensaje   = result[3][0]['@resultado'];
                             resultado = result[1][0]['res'];
-
-                            if(!(/ERROR/g).test(mensaje)) vn(req, res);
-                                
+                            
+                            //if(!(/ERROR/g).test(mensaje)) vn(req, res);
 
                             res.contentType('application/json');
                             res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
                             res.end();
+
                         }
                     }
                 );
@@ -139,7 +139,7 @@ exports.crearRespuesta = function(req, res){
             if(typeof req.body.respuesta == 'object'){
                 aux = req.body.respuesta;
                 for(var i in aux){
-                    
+
                     parametros = [
                         0,
                         typeof req.body.pregunta    !== 'undefined' || req.body.pregunta    != null ? req.body.pregunta     : null,
@@ -204,7 +204,7 @@ exports.validarFormulario = function(req, res){
                     if (err)
                         utilidades.printError(err, res);
                     else {
-
+                        console.log(result)
                         if(result.length == 0 || result[0].nombre == 0)
                             result = true;
                         else
@@ -254,7 +254,7 @@ var vn = function(req, res){
     var sql = '', resultado = '', params = [];
 
     try{
-        console.log('guardando la visita idNodo: ' + seguridad.decodeBase64(req.body.id_nodo) + ' id_nodo: ' + seguridad.decodeBase64(req.body.id_nodo));
+            
         params = [
             seguridad.decodeBase64(req.body.idConsumidor),
             seguridad.decodeBase64(req.body.idNodo),
@@ -274,7 +274,7 @@ var vn = function(req, res){
                 else {
                     mensaje   = result[3][0]['@resultado'];
                     resultado = result[1][0]['res'];
-
+                    console.log(({msg:mensaje, resultado: resultado}))
                     res.json({msg:mensaje, resultado: resultado});
                     res.end();
                 }
