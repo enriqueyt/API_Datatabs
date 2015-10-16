@@ -169,7 +169,7 @@ exports.validarFormulario = function(req, res){
                     if (err)
                         utilidades.printError(err, res);
                     else {
-
+                        console.log(result)
                         if(result.length == 0 || result[0].nombre == 0)
                             result = true;
                         else
