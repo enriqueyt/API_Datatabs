@@ -48,10 +48,32 @@ exports.modificarNodo = function(req, res) {
 };
 
 /**
-*
-*
-*
-*/
+ *  HttpPost
+ *
+ * Storage one answer from form's node
+ *
+ *  @param 
+ *      A JSON request body:
+ *      {
+ *          "pregunta" : "int",
+ *          "consumidor" : "int"  
+ *          "modo" : "int",
+ *          "puntuacion" : "int",
+ *          "respuesta" : "string"
+ *      }
+ *  
+ *  @return
+ *      A JSON string:
+ *      {
+ *          "msg"  : "string"      
+ *      }
+ *
+ *  @error
+ *      A JSON string:
+ *      {
+ *          "msg" : "Error description"
+ *      }
+ */
 exports.crearRespuesta = function(req, res){
   try {
 
@@ -141,10 +163,23 @@ exports.crearRespuesta = function(req, res){
 };
 
 /**
-*
-*
-*
-*/
+ *  HttpGet
+ *
+ *  Validate if a client have data.
+ *
+ *  
+ *  @return
+ *      A JSON string:
+ *      {
+ *          "true/false" 
+ *      }
+ *
+ *  @error
+ *      A JSON string:
+ *      {
+ *          "msg" : "Error description"
+ *      }
+ */
 exports.validarFormulario = function(req, res){
 
     var sql = '', resultado = '';
@@ -190,19 +225,30 @@ exports.validarFormulario = function(req, res){
 };
 
 /**
-*
-*
-*
-*/
-exports.visitaNodo = function(req, res) {
-    vn(req, res);
-};
-
-/**
-*   
-*
-*
-*/
+ *  HttpPost
+ *
+ *
+ *  @param 
+ *      A JSON request body:
+ *      {
+ *          "idConsumidor" : "int",
+ *          "idNodo" : "int"  
+ *          "idVisitaEvento" : "int"
+ *      }
+ *  
+ *  @return
+ *      A JSON string:
+ *      {
+ *          "msg"  : "string",  
+ *          "resultado" : "List",        
+ *      }
+ *
+ *  @error
+ *      A JSON string:
+ *      {
+ *          "msg" : "Error description"
+ *      }
+ */
 var vn = function(req, res){
 
     var sql = '', resultado = '', params = [];
@@ -239,5 +285,10 @@ var vn = function(req, res){
     catch(err){
         utilidades.printError(err, res);
     }
-}
+};
+
+exports.visitaNodo = function(req, res) {
+
+    vn(req, res);
+};
 
