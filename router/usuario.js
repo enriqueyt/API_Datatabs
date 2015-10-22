@@ -24,10 +24,10 @@ exports.crearAdmin = function(req, res) {
     try {
         var admin = {
             usuario_n : 'admin',
-            usuario_p : 'qwerty256'
+            usuario_p : 'admin_datatabs'
         };
         var sql = '', mensaje = '', resultado = '';
-        
+         
         if (connection) {
             sql =
                 'SET @resultado = ""; ' +
@@ -41,7 +41,7 @@ exports.crearAdmin = function(req, res) {
                 //  seguridad.SHA512(admin.usuario_n),
                 //  seguridad.AES(seguidad.SHA512(admin.usuario_p), usuario_p)
                 //],
-                [admin.usuario_n, admin.usuario_n, admin.usuario_p],
+                [admin.usuario_n, admin.usuario_n, seguridad.MD5(admin.usuario_p)],
                 function(err, result) {
                     if (err)
                         utilidades.printError(err, res);
@@ -56,6 +56,19 @@ exports.crearAdmin = function(req, res) {
                 }
             );
         }
+    }
+    catch (err) {
+        utilidades.printError(err, res);
+    }
+};
+
+exports.pruebaEYT = function(req, res) {
+
+    try {
+        var username = seguridad.MD5(req.params.pass);
+        res.json(username);
+        res.end();
+
     }
     catch (err) {
         utilidades.printError(err, res);
@@ -116,6 +129,10 @@ exports.existeUsuario = function(req, res) {
         utilidades.printError(err, res);
     }
 };
+
+
+
+
 
 /**
  *  HttpGet
@@ -230,7 +247,7 @@ exports.crearUsuario = function(req, res) {
                         req.body.usuario_n,
                         typeof req.body.usuario_m !== 'undefined' || req.body.usuario_m != null ? req.body.usuario_m : null,
                         typeof req.body.usuario_m !== 'undefined' || req.body.usuario_m != null ? req.body.usuario_m : null,
-                        req.body.usuario_p,
+                        seguridad.MD5(req.body.usuario_p),
                         typeof req.body.activo !== 'undefined' || req.body.activo != null ? req.body.activo : null,
                         req.body.perfil
                     ],
@@ -446,7 +463,7 @@ exports.modificarContrasena = function(req, res) {
                         data.id,
                         data.usuario,
                         data.usuarioCorreo != null ? data.usuarioCorreo : null,
-                        req.body.usuario_np
+                        seguridad.MD5(req.body.usuario_np)
                     ],
                     function(err, result) {
                         if (err)

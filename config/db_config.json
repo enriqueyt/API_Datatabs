@@ -9,8 +9,8 @@
   "production" : {
     "driver"   : "mysql",
     "host"     : "localhost",
-    "user"     : "root",
+    "user"     : "datatabs_login",
     "database" : "datatabs_main",
-    "password" : ""
+    "password" : "jermsoft5"
   }
 }

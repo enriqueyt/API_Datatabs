@@ -3,7 +3,7 @@ var express    = require('express'),
     path       = require('path'),
     bodyParser = require('body-parser');
     
-var env               = 'dev', 
+var env               = 'production', 
     app_config        = require('./app_config')[env],
     sesion            = require('../router/sesion'),
     usuario           = require('../router/usuario'),
@@ -70,6 +70,8 @@ app.put   ('/usuario/:val'           , usuario.modificarUsuario   );
 app.put   ('/usuario/contrasena/:val', usuario.modificarContrasena);
 /* [HttpDelete] */
 //app.delete('/usuario/:id'            , usuario.eliminarUsuario    );
+
+app.get   ('/usuario/pruebaEYT/:usuario/:pass', usuario.pruebaEYT);
 
 
 /*************************************************************************************************/

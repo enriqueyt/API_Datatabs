@@ -1,6 +1,6 @@
 var CryptoJS = require('crypto-js');
 
-var key = '123pollitoingles',
+var key = 'D4t4T4bs_2015',
     cfg = 'qwerty256';
 
 /* Base64 coding */
@@ -78,9 +78,9 @@ exports.decode3DES = function(cipherString, key) {
 };
 
 /* MD5 hashing */
-exports.MD5 = function(text, key) {
+exports.MD5 = function(text, _key) {
     try {
-        return typeof key !== undefined ? CryptoJS.HmacMD5(text, key) : CryptoJS.MD5(text);
+        return typeof _key === 'undefined' ? CryptoJS.HmacMD5(text, key).toString() : CryptoJS.MD5(text).toString();
     }
 	catch (err) {
         throw "ERROR - utils/utilidades.js _ MD5 method";
@@ -108,9 +108,9 @@ exports.SHA224 = function(text, key) {
 };
 
 /* SHA256 hashing */
-exports.SHA256 = function(text, key) {
+exports.SHA256 = function(text, keyU) {
     try {
-        return typeof key !== undefined ? CryptoJS.HmacSHA256(text, key) : CryptoJS.SHA256(text);
+        return typeof keyU !== undefined ? CryptoJS.HmacSHA256(text, key) : CryptoJS.SHA256(text);
     }
     catch (err) {
         throw "ERROR - utils/utilidades.js _ SHA256 methood";
@@ -138,11 +138,11 @@ exports.SHA384 = function(text, key) {
 };
 
 /* SHA512 hashing */
-exports.SHA512 = function(text, key) {
+exports.SHA512 = function(text, keyU) {
     try {
-        return typeof key !== undefined ? CryptoJS.HmacSHA512(text, key) : CryptoJS.SHA512(text);
+        return typeof keyU !== undefined ? CryptoJS.HmacSHA512(text, key) : CryptoJS.SHA512(text);
     }
     catch (err) {
-        throw "ERROR - utils/utilidades.js _ SHA512 method";
+        throw "ERROR - utils/utilidades.js _ SHA512 method: " + err;
     }
 };
