@@ -6,7 +6,7 @@
 	},
 	"production" :
 	{
-		"port"    : 0,
+		"port"    : 6969,
 		"encrypt" : true,
 		"salt"    : "algo"
 	}
