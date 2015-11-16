@@ -140,9 +140,9 @@ exports.buscarEventos = function(req, res) {
                         if (err)
                             utilidades.printError(err, res);
                         else {
-
+                            console.log(result)
                            if(result.length == 0 ) {
-    
+        
                                 connection.db.query(
                                     'select ' +
                                         's.id_empresa ' +
@@ -152,8 +152,12 @@ exports.buscarEventos = function(req, res) {
                                     'where ' +
                                         'd.id_dispositivo = ?', [id],
                                         function(err, resultado){
-                                            console.log(resultado)
-                                            res.json({id_empresa: seguridad.encodeBase64(resultado[0].id_empresa), eventos: []});
+                                            
+                                            if(resultado.length > 0){
+                                                res.json({id_empresa: seguridad.encodeBase64(resultado[0].id_empresa), eventos: []});
+                                                res.end();
+                                            }
+                                            res.json([]);
                                             res.end();
                                         }
                                 )
