@@ -141,6 +141,7 @@ exports.buscarEventos = function(req, res) {
                             utilidades.printError(err, res);
                         else {
                             console.log(result)
+                            console.log(result.length)
                            if(result.length == 0 ) {
         
                                 connection.db.query(
