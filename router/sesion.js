@@ -45,7 +45,7 @@ exports.autenticar = function(req, res) {
                 //	seguridad.encodeAES(seguridad.SHA512(req.body.usuario_n), req.body.usuario_p),
                 //	seguridad.encodeAES(seguridad.SHA512(req.body.usuario_p), req.body.usuario_p)
                 //],
-                [req.body.usuario_n, req.body.usuario_p],
+                [req.body.usuario_n, seguridad.MD5(req.body.usuario_p)],
                 function(err, result) {
                     if (err)
                         utilidades.printError(err, res);
