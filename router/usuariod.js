@@ -47,7 +47,7 @@ exports.buscarInfoUsuarioD = function(req, res) {
         
         var callback = function(id) {
             var sql = '', mensaje = '', resultado = '';
-            
+            console.log(id)
             if (connection) {
                 sql =
                     'SET @resultado = ""; ' +
