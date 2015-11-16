@@ -129,7 +129,6 @@ exports.buscarEventos = function(req, res) {
                         'ON Evento.id_imagen = Imagen.id_imagen ' +
                     'WHERE ' +
                         'EventoDisp.id_dispositivo = ? AND ' +
-                      
                         'Evento.activo = 1;';
                 
                 connection.db.query(
@@ -148,11 +147,12 @@ exports.buscarEventos = function(req, res) {
                                     'select ' +
                                         's.id_empresa ' +
                                     'from ' +
-                                        'datatabs_main.tb_dispositivo as d ' +
-                                         'join datatabs_main.tb_sucursal as s on d.id_sucursal = s.id_sucursal ' +
+                                        'tb_dispositivo as d ' +
+                                        'join tb_sucursal as s on d.id_sucursal = s.id_sucursal ' +
                                     'where ' +
                                         'd.id_dispositivo = ?', [id],
                                         function(err, resultado){
+                                            console.log(resultado)
                                             res.json({id_empresa: seguridad.encodeBase64(resultado[0].id_empresa), eventos: []});
                                             res.end();
                                         }
