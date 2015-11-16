@@ -117,15 +117,15 @@ exports.buscarEventos = function(req, res) {
                         'Empresa.id_empresa, ' +
                         'Empresa.nombre AS empresa ' +
                     'FROM ' +
-                        'datatabs_main.tb_evento AS Evento ' +
+                        'tb_evento AS Evento ' +
                         'LEFT JOIN ' +
-                        'datatabs_main.tb_evento_dispositivo AS EventoDisp ' +
+                        'tb_evento_dispositivo AS EventoDisp ' +
                         'ON Evento.id_evento = EventoDisp.id_evento ' +
                         'LEFT JOIN ' +
-                        'datatabs_main.tb_empresa AS Empresa ' +
+                        'tb_empresa AS Empresa ' +
                         'ON Evento.id_empresa = Empresa.id_empresa ' +
                         'LEFT OUTER JOIN ' +
-                        'datatabs_main.tb_imagen AS Imagen ' +
+                        'tb_imagen AS Imagen ' +
                         'ON Evento.id_imagen = Imagen.id_imagen ' +
                     'WHERE ' +
                         'EventoDisp.id_dispositivo = ? AND ' +
