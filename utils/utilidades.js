@@ -29,7 +29,7 @@ exports.buscarIdPerfilUsuario = function(sesion) {
 				'datatabs_main.tb_usuario_perfil UP ' +
 				'ON S.id_usuario = UP.id_usuario ' +
 				'LEFT OUTER JOIN ' +
-				'datatabs_main.tb_usuario_usuarioD UUD ' +
+				'datatabs_main.tb_usuario_usuariod UUD ' +
 				'ON S.id_usuario = UUD.id_usuario ' +
 			'WHERE ' +
 				'S.sesion = ? AND S.activo = 1;';
