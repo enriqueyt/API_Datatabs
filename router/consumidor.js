@@ -278,7 +278,7 @@ exports.validarConsumidor = function(req, res) {
             console.log(seguridad.decodeBase64(req.body.nodo));
         var callback = function(id) {
             var sql = '', mensaje = '', resultado = '';
-            console.log(id);
+            console.log(id + ' queso');
             
             if (connection) {
                 sql =
