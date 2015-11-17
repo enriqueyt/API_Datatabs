@@ -272,8 +272,6 @@ exports.validarConsumidor = function(req, res) {
     try {
         var contact = seguridad.decodeBase64(req.params.val);
         var device  = seguridad.decodeBase64(req.body.dispositivo);
-         console.log(seguridad.decodeBase64(req.body.dispositivo));
-         console.log(contact)
         
         var callback = function(id) {
             var sql = '', mensaje = '', resultado = '';
@@ -294,13 +292,15 @@ exports.validarConsumidor = function(req, res) {
                         id
                     ],
                     function(err, result) {
+                         console.log(err)
+                        console.log(resultado)
                         if (err)
                             utilidades.printError(err, res);
                         else {
                             mensaje   = result[3][0]['@resultado'];
                             resultado = result[1][0];
                             console.log(mensaje)
-                            console.log(err)
+
                             if ((/ERROR/g).test(mensaje))
                                 utilidades.printError(mensaje, res);
                             else {   
