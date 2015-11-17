@@ -324,7 +324,7 @@ exports.validarConsumidor = function(req, res) {
                 );
             }
         };
-        onsole.log(device)
+        console.log(device)
         if ((/^\d+$/g).test(device))
             callback(device);
         else
