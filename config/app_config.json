@@ -6,7 +6,7 @@
 	},
 	"production" :
 	{
-		"port"    : 80,
+		"port"    : 443,
 		"encrypt" : true,
 		"salt"    : "algo"
 	}
