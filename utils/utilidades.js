@@ -100,7 +100,7 @@ exports.buscarIdUsuarioD = function(sesion, callback) {
 exports.buscarIdDispositivo = function(identificador) {
     var deferred = Q.defer();
     var sql = '';
-		
+		console.log(identificador)
     if (connection) {
 		sql =
 			'SELECT ' +
