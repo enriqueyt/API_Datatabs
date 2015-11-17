@@ -277,10 +277,7 @@ exports.validarConsumidor = function(req, res) {
         
         var callback = function(id) {
             var sql = '', mensaje = '', resultado = '';
-            console.log(id + ' queso');
-             console.log(seguridad.decodeBase64(req.body.evento));
-            console.log(seguridad.decodeBase64(req.body.nodo));
-            
+
             if (connection) {
                 sql =
                     'SET @resultado = ""; ' +
@@ -302,7 +299,8 @@ exports.validarConsumidor = function(req, res) {
                         else {
                             mensaje   = result[3][0]['@resultado'];
                             resultado = result[1][0];
-                            
+                            console.log(mensaje)
+                            console.log(err)
                             if ((/ERROR/g).test(mensaje))
                                 utilidades.printError(mensaje, res);
                             else {   
