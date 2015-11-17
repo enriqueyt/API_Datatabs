@@ -274,11 +274,12 @@ exports.validarConsumidor = function(req, res) {
         var device  = seguridad.decodeBase64(req.body.dispositivo);
          console.log(seguridad.decodeBase64(req.body.dispositivo));
          console.log(contact)
-         console.log(seguridad.decodeBase64(req.body.evento));
-            console.log(seguridad.decodeBase64(req.body.nodo));
+        
         var callback = function(id) {
             var sql = '', mensaje = '', resultado = '';
             console.log(id + ' queso');
+             console.log(seguridad.decodeBase64(req.body.evento));
+            console.log(seguridad.decodeBase64(req.body.nodo));
             
             if (connection) {
                 sql =
