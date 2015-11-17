@@ -304,7 +304,7 @@ exports.validarConsumidor = function(req, res) {
                             else {   
 
                                 request({
-                                    uri: 'http://localhost:6968/actualizar_lista_clientes',
+                                    uri: 'http://104.131.102.105:6968/actualizar_lista_clientes',
                                     method: 'GET',
                                 }, function(error, response, body) {
                                     console.log(error);
