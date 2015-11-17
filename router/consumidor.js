@@ -272,12 +272,12 @@ exports.validarConsumidor = function(req, res) {
     try {
         var contact = seguridad.decodeBase64(req.params.val);
         var device  = seguridad.decodeBase64(req.body.dispositivo);
-         console.log(eguridad.decodeBase64(req.body.dispositivo));
+         console.log(seguridad.decodeBase64(req.body.dispositivo));
          console.log(contact)
         var callback = function(id) {
             var sql = '', mensaje = '', resultado = '';
-            console.log(eguridad.decodeBase64(req.body.evento));
-            console.log(eguridad.decodeBase64(req.body.nodo));
+            console.log(seguridad.decodeBase64(req.body.evento));
+            console.log(seguridad.decodeBase64(req.body.nodo));
             
             if (connection) {
                 sql =
