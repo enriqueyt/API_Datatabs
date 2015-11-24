@@ -277,6 +277,7 @@ var vn = function(req, res){
                 else {
                     mensaje   = result[3][0]['@resultado'];
                     resultado = result[1][0]['res'];
+                    console.log(err);
                     console.log(({msg:mensaje, resultado: resultado}))
                     res.json({msg:mensaje, resultado: resultado});
                     res.end();
