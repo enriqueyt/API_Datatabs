@@ -272,12 +272,13 @@ var vn = function(req, res){
                 'SELECT @resultado;';
 
             connection.db.query(sql, params, function(err, result){
+                console.log(err);
+                console.log(result);
                 if (err)
                     utilidades.printError(err, res);
                 else {
                     mensaje   = result[3][0]['@resultado'];
                     resultado = result[1][0]['res'];
-                    console.log(err);
                     console.log(({msg:mensaje, resultado: resultado}))
                     res.json({msg:mensaje, resultado: resultado});
                     res.end();
