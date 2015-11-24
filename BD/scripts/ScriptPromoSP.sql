@@ -57,7 +57,7 @@ BEGIN
 			OPEN lang_cursor_2;
 			get_lang_2: LOOP
 				FETCH lang_cursor_2 INTO id;
-				IF fin = 1 THEN
+				IF fin = 1 THENe
 					LEAVE get_lang_2;
 				END IF;
 			

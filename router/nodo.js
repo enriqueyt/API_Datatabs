@@ -254,12 +254,15 @@ var vn = function(req, res){
     var sql = '', resultado = '', params = [];
 
     try{
-            
+        
         params = [
             seguridad.decodeBase64(req.body.idConsumidor),
             seguridad.decodeBase64(req.body.idNodo),
             seguridad.decodeBase64(req.body.idVisitaEvento)
         ];
+
+        console.log('parametros')
+        console.log(params)
           
         if(connection){
 
@@ -288,7 +291,6 @@ var vn = function(req, res){
 };
 
 exports.visitaNodo = function(req, res) {
-
     vn(req, res);
 };
 
