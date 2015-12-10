@@ -26,7 +26,6 @@ app.set('port', process.env.PORT || app_config.port);
 var rutas = require('../router/main')(app);
 
 app.set('views', path.join(__dirname, '../views'));
-//app.set('view engine', 'jade');
 app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
@@ -34,7 +33,7 @@ app.use(function(req, res, next) {
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT');
-    res.header('Cache-Control', 'no-cache');
+    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
 	next();
 });
 
