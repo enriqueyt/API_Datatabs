@@ -139,43 +139,37 @@ exports.buscarEventos = function(req, res) {
 
                         if (err)
                             utilidades.printError(err, res);
-                        else {
- 
-                           if(result.length == 0 ) {
-        
-                                connection.db.query(
-                                    'select ' +
-                                        's.id_empresa ' +
-                                    'from ' +
-                                        'tb_dispositivo as d ' +
-                                        'join tb_sucursal as s on d.id_sucursal = s.id_sucursal ' +
-                                    'where ' +
-                                        'd.id_dispositivo = ?', [id],
-                                        function(err, resultado){
-                                            
-                                            if(resultado.length > 0){
-                                                res.json({id_empresa: seguridad.encodeBase64(resultado[0].id_empresa), eventos: []});
-                                                res.end();
-                                            }
-                                            res.json([]);
+                        else {                          
+                            connection.db.query(
+                                'select ' +
+                                    's.id_empresa ' +
+                                'from ' +
+                                    'tb_dispositivo as d ' +
+                                    'join tb_sucursal as s on d.id_sucursal = s.id_sucursal ' +
+                                'where ' +
+                                    'd.id_dispositivo = ?', [id],
+                                    function(err, resultado){
+                                        
+                                        console.log(resultado)
+                                        if(resultado.length == 0){
+                                            res.json({id_empresa: seguridad.encodeBase64(resultado[0].id_empresa), eventos: []});
                                             res.end();
                                         }
-                                )
-                            }
-                            else{
-
-            
-                                for (i = 0; i < result.length; i++) {
-                                    result[i].id_evento  = seguridad.encodeBase64(result[i].id_evento);
-                                    result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
-                                    result[i].flujo = JSON.stringify(utilidades.agregarImagenFlujo(JSON.parse(result[i].flujo)));
-                                } 
-                                
-                                res.json({id_empresa:0, eventos: result}); 
-                                res.end();
-                                
-                            }         
-                            
+                                        else{
+                                            
+                                            for (i = 0; i < result.length; i++) {
+                                                result[i].id_evento  = seguridad.encodeBase64(result[i].id_evento);
+                                                result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
+                                                result[i].flujo = JSON.stringify(utilidades.agregarImagenFlujo(JSON.parse(result[i].flujo)));
+                                            }
+                                            
+                                            res.json({id_empresa:seguridad.encodeBase64(resultado[0].id_empresa), eventos: result}); 
+                                            res.end();
+                                            
+                                        }                                            
+                                        
+                                    }
+                            )
                         }
                     }
                 );
@@ -196,6 +190,7 @@ exports.buscarEventos = function(req, res) {
         utilidades.printError(err, res);
     }
 };
+  
     
 /**
  *  HttpPost
