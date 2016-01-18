@@ -1,8 +1,8 @@
 {
 	"dev" :
 	{
-		"port"    : 6969,
-		"encrypt" : false	
+		"port"    : 80,
+		"encrypt" : true	
 	},
 	"production" :
 	{

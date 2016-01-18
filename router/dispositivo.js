@@ -152,7 +152,9 @@ exports.buscarEventos = function(req, res) {
                                     'where ' +
                                         'd.id_dispositivo = ?', [id],
                                         function(err, resultado){
-                                            
+                                            res.writeHead(200, {
+                                              'Cache-Control': 'no-cache'
+                                            });
                                             if(resultado.length > 0){
                                                 res.json({id_empresa: seguridad.encodeBase64(resultado[0].id_empresa), eventos: []});
                                                 res.end();
@@ -170,7 +172,9 @@ exports.buscarEventos = function(req, res) {
                                     result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
                                     result[i].flujo = JSON.stringify(utilidades.agregarImagenFlujo(JSON.parse(result[i].flujo)));
                                 } 
-                                
+                                res.writeHead(200, {
+                                  'Cache-Control': 'no-cache'
+                                });
                                 res.json({id_empresa:0, eventos: result}); 
                                 res.end();
                                 
@@ -554,7 +558,7 @@ exports.asociarEventoDispositivo = function(req, res) {
 
     try {
         var device = seguridad.decodeBase64(req.params.val);
-       
+ 
         var callback = function(data) {
             var sql = '', mensaje = '', resultado = '';
 
@@ -592,15 +596,18 @@ exports.asociarEventoDispositivo = function(req, res) {
             if ((/^\d+$/g).test(seguridad.decodeBase64(req.body.param))) {
                 if ((/^\d+$/g).test(device))
                     callback([device, seguridad.decodeBase64(req.body.param)]);
-                else
+                else{
+
                     Q.all([utilidades.buscarIdDispositivo(device), seguridad.decodeBase64(req.body.param)]).then(
                         callback,
                         function(err) {
                             utilidades.printError(err, res);
                         }
                     );
+                }
             }
             else {
+
                 if ((/^\d+$/g).test(device))
                     Q.all([device, utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
                         callback,
@@ -608,13 +615,14 @@ exports.asociarEventoDispositivo = function(req, res) {
                             utilidades.printError(err, res);
                         }
                     );
-                else
+                else{
                     Q.all([utilidades.buscarIdDispositivo(device), utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
                         callback,
                         function(err) {
                             utilidades.printError(err, res);
                         }
                     );
+                }
             }
         }
         else {
