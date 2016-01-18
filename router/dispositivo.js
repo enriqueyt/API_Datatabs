@@ -152,6 +152,7 @@ exports.buscarEventos = function(req, res) {
                                         
                                         console.log(resultado)
                                         if(resultado.length == 0){
+                                            res.writeHead(200, {'Cache-Control':'no-cache'});
                                             res.json({id_empresa: seguridad.encodeBase64(resultado[0].id_empresa), eventos: []});
                                             res.end();
                                         }
@@ -163,6 +164,7 @@ exports.buscarEventos = function(req, res) {
                                                 result[i].flujo = JSON.stringify(utilidades.agregarImagenFlujo(JSON.parse(result[i].flujo)));
                                             }
                                             
+                                            res.writeHead(200, {'Cache-Control':'no-cache'});
                                             res.json({id_empresa:seguridad.encodeBase64(resultado[0].id_empresa), eventos: result}); 
                                             res.end();
                                             
