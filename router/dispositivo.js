@@ -173,7 +173,7 @@ exports.buscarEventos = function(req, res) {
                                 res.end();
                                 
                             }         
-                            
+
                         }
                     }
                 );
@@ -194,6 +194,7 @@ exports.buscarEventos = function(req, res) {
         utilidades.printError(err, res);
     }
 };
+  
     
 /**
  *  HttpPost
