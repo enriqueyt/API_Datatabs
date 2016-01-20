@@ -129,7 +129,7 @@ exports.buscarEventos = function(req, res) {
                         'ON Evento.id_imagen = Imagen.id_imagen ' +
                     'WHERE ' +
                         'EventoDisp.id_dispositivo = ? AND ' +
-                        'Evento.activo = 1;';
+                        'Evento.activo = 1 AND NOW() -1 < NOW();';
                 
                 connection.db.query(
                     sql,
@@ -139,31 +139,41 @@ exports.buscarEventos = function(req, res) {
 console.log(id)
                         if (err)
                             utilidades.printError(err, res);
-                        else {                          
-                            connection.db.query(
-                                'select ' +
-                                    's.id_empresa ' +
-                                'from ' +
-                                    'tb_dispositivo as d ' +
-                                    'join tb_sucursal as s on d.id_sucursal = s.id_sucursal ' +
-                                'where ' +
-                                    'd.id_dispositivo = ?', [id],
-                                    function(err, resultado){
-
-                                        if(resultado.length == 0){
-                                            
-                                            res.json({id_empresa: seguridad.encodeBase64(resultado[0].id_empresa), eventos: []});
+                        else {
+ 
+                           if(result.length == 0 ) {
+        
+                                connection.db.query(
+                                    'select ' +
+                                        's.id_empresa ' +
+                                    'from ' +
+                                        'tb_dispositivo as d ' +
+                                        'join tb_sucursal as s on d.id_sucursal = s.id_sucursal ' +
+                                    'where ' +
+                                        'd.id_dispositivo = ?', [id],
+                                        function(err, resultado){
+                                            if(resultado.length > 0){
+                                                res.json({id_empresa: seguridad.encodeBase64(resultado[0].id_empresa), eventos: []});
+                                                res.end();
+                                            }
+                                            res.json([]);
                                             res.end();
                                         }
-                                        else{
-                                            
-                                            for (i = 0; i < result.length; i++) {
-                                                result[i].id_evento  = seguridad.encodeBase64(result[i].id_evento);
-                                                result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
-                                                result[i].flujo = JSON.stringify(utilidades.agregarImagenFlujo(JSON.parse(result[i].flujo)));
-                                            }
+                                )
+                            }
+                            else{
+            
+                                for (i = 0; i < result.length; i++) {
+                                    result[i].id_evento  = seguridad.encodeBase64(result[i].id_evento);
+                                    result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
+                                    result[i].flujo = JSON.stringify(utilidades.agregarImagenFlujo(JSON.parse(result[i].flujo)));
+                                } 
 
-console.log(req.params.T)
+                                res.json({id_empresa:0, eventos: result}); 
+                                res.end();
+                                
+                            }         
+
                                             res.json({id_empresa:seguridad.encodeBase64(resultado[0].id_empresa), eventos: result}); 
                                             res.end();
                                             
@@ -550,7 +560,7 @@ exports.asociarEventoDispositivo = function(req, res) {
 
     try {
         var device = seguridad.decodeBase64(req.params.val);
-       
+ 
         var callback = function(data) {
             var sql = '', mensaje = '', resultado = '';
 
@@ -588,15 +598,18 @@ exports.asociarEventoDispositivo = function(req, res) {
             if ((/^\d+$/g).test(seguridad.decodeBase64(req.body.param))) {
                 if ((/^\d+$/g).test(device))
                     callback([device, seguridad.decodeBase64(req.body.param)]);
-                else
+                else{
+
                     Q.all([utilidades.buscarIdDispositivo(device), seguridad.decodeBase64(req.body.param)]).then(
                         callback,
                         function(err) {
                             utilidades.printError(err, res);
                         }
                     );
+                }
             }
             else {
+
                 if ((/^\d+$/g).test(device))
                     Q.all([device, utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
                         callback,
@@ -604,13 +617,14 @@ exports.asociarEventoDispositivo = function(req, res) {
                             utilidades.printError(err, res);
                         }
                     );
-                else
+                else{
                     Q.all([utilidades.buscarIdDispositivo(device), utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
                         callback,
                         function(err) {
                             utilidades.printError(err, res);
                         }
                     );
+                }
             }
         }
         else {
