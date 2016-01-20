@@ -129,7 +129,7 @@ exports.buscarEventos = function(req, res) {
                         'ON Evento.id_imagen = Imagen.id_imagen ' +
                     'WHERE ' +
                         'EventoDisp.id_dispositivo = ? AND ' +
-                        'Evento.activo = 1;';
+                        'Evento.activo = 1 AND NOW() -1 < NOW();';
                 
                 connection.db.query(
                     sql,
@@ -152,9 +152,6 @@ exports.buscarEventos = function(req, res) {
                                     'where ' +
                                         'd.id_dispositivo = ?', [id],
                                         function(err, resultado){
-                                            res.writeHead(200, {
-                                              'Cache-Control': 'no-cache'
-                                            });
                                             if(resultado.length > 0){
                                                 res.json({id_empresa: seguridad.encodeBase64(resultado[0].id_empresa), eventos: []});
                                                 res.end();
@@ -165,16 +162,13 @@ exports.buscarEventos = function(req, res) {
                                 )
                             }
                             else{
-
             
                                 for (i = 0; i < result.length; i++) {
                                     result[i].id_evento  = seguridad.encodeBase64(result[i].id_evento);
                                     result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
                                     result[i].flujo = JSON.stringify(utilidades.agregarImagenFlujo(JSON.parse(result[i].flujo)));
                                 } 
-                                res.writeHead(200, {
-                                  'Cache-Control': 'no-cache'
-                                });
+
                                 res.json({id_empresa:0, eventos: result}); 
                                 res.end();
                                 
