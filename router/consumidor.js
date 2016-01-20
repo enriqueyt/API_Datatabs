@@ -281,7 +281,7 @@ exports.validarConsumidor = function(req, res) {
                     'SET @resultado = ""; ' +
                     'CALL datatabs_main.sp_validarConsumidor(?, ?, ?, ?, @resultado); ' +
                     'SELECT @resultado;';
-                
+console.log(contact);console.log(req.body.evento);console.log(req.body.nodo);               
                 connection.db.query(
                     sql,
 

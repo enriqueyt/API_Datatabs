@@ -136,7 +136,7 @@ exports.buscarEventos = function(req, res) {
                     [id],
                     function(err, result) {
                         'use stict';
-
+console.log(id)
                         if (err)
                             utilidades.printError(err, res);
                         else {                          
@@ -171,6 +171,13 @@ exports.buscarEventos = function(req, res) {
                                     }
                             )
 
+                                            res.json({id_empresa:seguridad.encodeBase64(resultado[0].id_empresa), eventos: result}); 
+                                            res.end();
+                                            
+                                        }                                            
+                                        
+                                    }
+                            )
                         }
                     }
                 );
