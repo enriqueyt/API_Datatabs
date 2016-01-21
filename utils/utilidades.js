@@ -227,7 +227,7 @@ exports.agregarImagenFlujo = function(flujos){
 
                     if(flujo[i].backgroundUrl.length > 0){
                         var res = request('GET', flujo[i].backgroundUrl);
-                        console.log(JSON.stringify(res.body))
+                        console.log(new Buffer(res.getBody()).toString('base64'))
                         flujo[i].backgroundImg = ("data:" + res.headers["content-type"] + ";base64," + new Buffer(res.getBody()).toString('base64'));
                     }
 
