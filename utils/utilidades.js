@@ -227,7 +227,8 @@ exports.agregarImagenFlujo = function(flujos){
 
                     if(flujo[i].backgroundUrl.length > 0){
                         var res = request('GET', flujo[i].backgroundUrl);
-                        flujo[i].backgroundImg = ("data:" + res.headers["content-type"] + ";base64," + new Buffer(res.body).toString('base64'));
+                        console.log(JSON.stringify(res))
+                        flujo[i].backgroundImg = ("data:" + res.headers["content-type"] + ";base64," + new Buffer(res.getBody()).toString('base64'));
                     }
 
                     if(flujo[i].children.length > 0){
@@ -250,6 +251,5 @@ exports.agregarImagenFlujo = function(flujos){
     }
 
     return f;
-
 };
 
