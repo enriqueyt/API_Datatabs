@@ -225,11 +225,10 @@ exports.agregarImagenFlujo = function(flujos){
 
                 for (var i = 0; i < flujo.length; i++) {
 
-                    if(flujo[i].backgroundUrl.length > 0){
+                    /*if(flujo[i].backgroundUrl.length > 0){
                         var res = request('GET', flujo[i].backgroundUrl);
-                        console.log(new Buffer(res.getBody()).toString('base64'))
                         flujo[i].backgroundImg = ("data:" + res.headers["content-type"] + ";base64," + new Buffer(res.getBody()).toString('base64'));
-                    }
+                    }*/
 
                     if(flujo[i].children.length > 0){
                         flujo = recorrerFlujo(flujo[i]);
