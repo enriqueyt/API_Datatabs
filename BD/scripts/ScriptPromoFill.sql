@@ -1645,18 +1645,21 @@ INSERT INTO tb_tiponodo (codigo) VALUES ('MSG');
 INSERT INTO tb_tiponodo (codigo) VALUES ('FORM');
 INSERT INTO tb_tiponodo (codigo) VALUES ('SCRN');
 INSERT INTO tb_tiponodo (codigo) VALUES ('INV');
+INSERT INTO tb_tiponodo (codigo) VALUES ('IMG');
 
 UPDATE tb_tiponodo
 SET activo = '0'
 WHERE id_tipoNodo = 1;
 
 -- VERSION ESPAÑOL
-INSERT INTO tb_tiponodo_t (tipoNodo, descripcion, id_tipoNodo, id_idioma) VALUES ('Evento'    , 'Nodo de evento'    , 1, 1); INSERT INTO tb_tiponodo_t (tipoNodo, descripcion, id_tipoNodo, id_idioma) VALUES ('Chequeo'   , 'Nodo de chequeo'   , 2, 1);
+INSERT INTO tb_tiponodo_t (tipoNodo, descripcion, id_tipoNodo, id_idioma) VALUES ('Evento'    , 'Nodo de evento'    , 1, 1); 
+INSERT INTO tb_tiponodo_t (tipoNodo, descripcion, id_tipoNodo, id_idioma) VALUES ('Check In de clientes'   , 'Nodo de chequeo'   , 2, 1);
 INSERT INTO tb_tiponodo_t (tipoNodo, descripcion, id_tipoNodo, id_idioma) VALUES ('Pregunta'  , 'Nodo de pregunta'  , 3, 1);
-INSERT INTO tb_tiponodo_t (tipoNodo, descripcion, id_tipoNodo, id_idioma) VALUES ('Mensaje'   , 'Nodo de mensaje'   , 4, 1);
-INSERT INTO tb_tiponodo_t (tipoNodo, descripcion, id_tipoNodo, id_idioma) VALUES ('Formulario', 'Nodo de formulario', 5, 1);
-INSERT INTO tb_tiponodo_t (tipoNodo, descripcion, id_tipoNodo, id_idioma) VALUES ('Pantalla'  , 'Nodo de pantalla'  , 6, 1);
+INSERT INTO tb_tiponodo_t (tipoNodo, descripcion, id_tipoNodo, id_idioma) VALUES ('Mensaje de texto'   , 'Nodo de mensaje'   , 4, 1);
+INSERT INTO tb_tiponodo_t (tipoNodo, descripcion, id_tipoNodo, id_idioma) VALUES ('Formulario en dispositivo', 'Nodo de formulario', 5, 1);
+INSERT INTO tb_tiponodo_t (tipoNodo, descripcion, id_tipoNodo, id_idioma) VALUES ('Mensaje en pantalla'  , 'Nodo de pantalla'  , 6, 1);
 INSERT INTO tb_tiponodo_t (tipoNodo, descripcion, id_tipoNodo, id_idioma) VALUES ('Invitación', 'Nodo de invitación', 7, 1);
+INSERT INTO tb_tiponodo_t (tipoNodo, descripcion, id_tipoNodo, id_idioma) VALUES ('Imagen de inicio'	  , 'Nodo de Imagen'	, 8, 1);
 -- ENGLISH VERSION
 INSERT INTO tb_tiponodo_t (tipoNodo, descripcion, id_tipoNodo, id_idioma) VALUES ('Event'     , 'Event node'        , 1, 2);
 INSERT INTO tb_tiponodo_t (tipoNodo, descripcion, id_tipoNodo, id_idioma) VALUES ('Check In'  , 'Check in node'     , 2, 2);
@@ -1664,7 +1667,8 @@ INSERT INTO tb_tiponodo_t (tipoNodo, descripcion, id_tipoNodo, id_idioma) VALUES
 INSERT INTO tb_tiponodo_t (tipoNodo, descripcion, id_tipoNodo, id_idioma) VALUES ('Message'   , 'Message node'      , 4, 2);
 INSERT INTO tb_tiponodo_t (tipoNodo, descripcion, id_tipoNodo, id_idioma) VALUES ('Form'      , 'Form node'         , 5, 2);
 INSERT INTO tb_tiponodo_t (tipoNodo, descripcion, id_tipoNodo, id_idioma) VALUES ('Screen'    , 'Screen node'       , 6, 2);
-INSERT INTO tb_tiponodo_t (tipoNodo, descripcion, id_tipoNodo, id_idioma) VALUES ('Invitation', 'Invitation node'   , 7, 1);
+INSERT INTO tb_tiponodo_t (tipoNodo, descripcion, id_tipoNodo, id_idioma) VALUES ('Invitation', 'Invitation node'   , 7, 2);
+INSERT INTO tb_tiponodo_t (tipoNodo, descripcion, id_tipoNodo, id_idioma) VALUES ('Images'	  , 'Images nodo'		, 8, 2);
 
 UPDATE tb_tiponodo_t
 SET activo = '0'

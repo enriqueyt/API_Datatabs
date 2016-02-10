@@ -819,7 +819,7 @@ ADD CONSTRAINT `tb_tiponodo__tb_imagen` FOREIGN KEY (`id_imagen`) REFERENCES `tb
 
 CREATE TABLE IF NOT EXISTS `tb_tiponodo_t` (
 	`id_tipoNodo_t`         TINYINT(1)                           NOT NULL AUTO_INCREMENT,
-	`tipoNodo`              VARCHAR(20)  COLLATE utf8_spanish_ci NOT NULL,
+	`tipoNodo`              VARCHAR(50)  COLLATE utf8_spanish_ci NOT NULL,
 	`descripcion`           VARCHAR(200) COLLATE utf8_spanish_ci DEFAULT NULL,
 	`id_tipoNodo`           TINYINT(1)                           NOT NULL,
 	`id_idioma`             TINYINT(1)                           NOT NULL,

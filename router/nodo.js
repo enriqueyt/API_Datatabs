@@ -111,8 +111,6 @@ exports.crearRespuesta = function(req, res){
                             mensaje   = result[3][0]['@resultado'];
                             resultado = result[1][0]['res'];
                             
-                            //if(!(/ERROR/g).test(mensaje)) vn(req, res);
-
                             res.contentType('application/json');
                             res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
                             res.end();
@@ -261,9 +259,6 @@ var vn = function(req, res){
             seguridad.decodeBase64(req.body.idVisitaEvento)
         ];
 
-        console.log('parametros')
-        console.log(params)
-          
         if(connection){
 
             sql =

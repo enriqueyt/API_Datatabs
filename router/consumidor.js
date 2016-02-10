@@ -284,7 +284,6 @@ exports.validarConsumidor = function(req, res) {
                 
                 connection.db.query(
                     sql,
-
                     [
                         contact,
                         seguridad.decodeBase64(req.body.evento),
@@ -339,6 +338,14 @@ exports.validarConsumidor = function(req, res) {
     }
 };
 
-//exports.eliminarConsumidor = function(req, res) {
+exports.crearConsumo = function(req, res) {
 
-//};
+    try {
+        console.log(JSON.stringify(req.body));
+        res.json({exito:true});
+        res.end();
+    }
+    catch (err) {
+        utilidades.printError(err, res);
+    }
+};
