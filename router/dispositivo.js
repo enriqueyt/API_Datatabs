@@ -129,7 +129,7 @@ exports.buscarEventos = function(req, res) {
                         'ON Evento.id_imagen = Imagen.id_imagen ' +
                     'WHERE ' +
                         'EventoDisp.id_dispositivo = ? AND ' +
-                        'Evento.activo = 1;';
+                        'Evento.activo = 1 AND NOW() -1 < NOW();';
                 
                 connection.db.query(
                     sql,
@@ -170,6 +170,7 @@ exports.buscarEventos = function(req, res) {
                                         
                                     }
                             )
+
                         }
                     }
                 );
@@ -549,7 +550,7 @@ exports.asociarEventoDispositivo = function(req, res) {
 
     try {
         var device = seguridad.decodeBase64(req.params.val);
-       
+ 
         var callback = function(data) {
             var sql = '', mensaje = '', resultado = '';
 
@@ -587,15 +588,18 @@ exports.asociarEventoDispositivo = function(req, res) {
             if ((/^\d+$/g).test(seguridad.decodeBase64(req.body.param))) {
                 if ((/^\d+$/g).test(device))
                     callback([device, seguridad.decodeBase64(req.body.param)]);
-                else
+                else{
+
                     Q.all([utilidades.buscarIdDispositivo(device), seguridad.decodeBase64(req.body.param)]).then(
                         callback,
                         function(err) {
                             utilidades.printError(err, res);
                         }
                     );
+                }
             }
             else {
+
                 if ((/^\d+$/g).test(device))
                     Q.all([device, utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
                         callback,
@@ -603,13 +607,14 @@ exports.asociarEventoDispositivo = function(req, res) {
                             utilidades.printError(err, res);
                         }
                     );
-                else
+                else{
                     Q.all([utilidades.buscarIdDispositivo(device), utilidades.buscarIdUsuario(seguridad.decodeBase64(req.body.param))]).then(
                         callback,
                         function(err) {
                             utilidades.printError(err, res);
                         }
                     );
+                }
             }
         }
         else {

@@ -281,7 +281,7 @@ exports.validarConsumidor = function(req, res) {
                     'SET @resultado = ""; ' +
                     'CALL datatabs_main.sp_validarConsumidor(?, ?, ?, ?, @resultado); ' +
                     'SELECT @resultado;';
-                
+            
                 connection.db.query(
                     sql,
                     [
@@ -308,9 +308,7 @@ exports.validarConsumidor = function(req, res) {
                                     uri: 'http://104.131.102.105:6968/actualizar_lista_clientes',
                                     method: 'GET',
                                 }, function(error, response, body) {
-                                    console.log(error);
-                                    console.log(response);
-                                    console.log(body);         
+                                    console.log(error);      
                                 });
 
                                 res.contentType('application/json');
@@ -322,7 +320,7 @@ exports.validarConsumidor = function(req, res) {
                 );
             }
         };
-        console.log(device)
+
         if ((/^\d+$/g).test(device))
             callback(device);
         else
@@ -349,3 +347,4 @@ exports.crearConsumo = function(req, res) {
         utilidades.printError(err, res);
     }
 };
+

@@ -14,9 +14,8 @@ var env               = 'production',
     distribuidor      = require('../router/distribuidor'),
     empresa           = require('../router/empresa'),
     sucursal          = require('../router/sucursal'),
-    consumidor        = require('../router/consumidor');
+    consumidor        = require('../router/consumidor'),
     nodo              = require('../router/nodo');
-
     
 var app = express();
 
@@ -94,9 +93,9 @@ app.put   ('/usuariod/:val'     , usuariod.modificarUsuarioD );
 app.get   ('/dispositivo/:val?'           , dispositivo.buscarDispositivo         );
 app.get   ('/dispositivo/dispositivo/:val', dispositivo.existeDispositivo         );
 app.get   ('/dispositivo/evento/:val?'    , dispositivo.buscarEventos             );
-app.get   ('/dispositivo/dispositivo/evento/:val', dispositivo.buscarDispositivosPorEventos );
+app.get   ('/dispositivo/dispositivo/evento/:val', dispositivo.buscarDispositivosPorEventos);
 /* [HttpPost] */                                                                
-app.post  ('/dispositivo'                 , dispositivo.crearDispositivo          );
+app.post  ('/dispositivo'                 , dispositivo.crearDispositivo           );
 /* [HttpPut] */                           
 app.put   ('/dispositivo/:val'            , dispositivo.modificarDispositivo      );
 app.put   ('/dispositivo/sucursal/:val'   , dispositivo.asociarDispositivoSucursal);
@@ -192,7 +191,7 @@ app.put   ('/consumidor/validar/:val', consumidor.validarConsumidor  );
 //app.delete('/consumidor/:id'  , consumidor.eliminarConsumidor );
 
 /*************************************************************************************************/
-/******************************************* NODO ******************************************/
+/******************************************* NODO ************************************************/
 /*************************************************************************************************/
 /* [HttpPost] */ 
 app.post('/nodo/respuesta/:val?', nodo.crearRespuesta);
