@@ -152,10 +152,10 @@ exports.modificarConsumidor = function(req, res) {
 
     try {
         var client = seguridad.decodeBase64(req.params.val);
-        
+        console.log(JSON.stringify(req.body) )
         var callback = function(data) {
             var sql = '', mensaje = '', resultado = '';
-            
+          
             if (connection) {
                 sql =
                     'SET @resultado = ""; ' +
@@ -179,6 +179,7 @@ exports.modificarConsumidor = function(req, res) {
                         typeof req.body.ciudad          !== 'undefined' || req.body.ciudad          != null ? req.body.ciudad          : null
                     ],
                     function(err, result) {
+                        console.log(result)
                         if (err)
                             utilidades.printError(err, res);
                         else {
@@ -207,7 +208,7 @@ exports.modificarConsumidor = function(req, res) {
         }
         else{
 
-            Q.all([utilidades.buscarIdClientePorCelular(client)]).then(
+            Q.all([utilidades.buscarIdClientePorCelular(client), null]).then(
                 callback,
                 function(err) {
                     utilidades.printError(err, res);
