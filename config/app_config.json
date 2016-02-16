@@ -1,13 +1,12 @@
 {
 	"dev" :
 	{
-		"port"    : 80,
+		"port"    : 6969,
 		"encrypt" : true	
 	},
 	"production" :
 	{
 		"port"    : 6969,
-		"encrypt" : true,
-		"salt"    : "algo"
+		"encrypt" : true
 	}
 }

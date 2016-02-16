@@ -147,15 +147,15 @@ exports.crearConsumidor = function(req, res) {
  *          "msg" : "Error description"
  *      }
  */
+
 exports.modificarConsumidor = function(req, res) {
 
     try {
         var client = seguridad.decodeBase64(req.params.val);
-         console.log(client)
+        
         var callback = function(data) {
             var sql = '', mensaje = '', resultado = '';
-            console.log(req.body);
-             console.log(data)
+            
             if (connection) {
                 sql =
                     'SET @resultado = ""; ' +
@@ -184,10 +184,7 @@ exports.modificarConsumidor = function(req, res) {
                         else {
                             mensaje   = result[3][0]['@resultado'];
                             resultado = result[1][0]['res'];
-                            console.log(resultado)
-                            console.log(mensaje)
-                            if(typeof req.body.modo != 'undefined') nodo.visitaNodo(req, res);
-
+                                                
                             res.contentType('application/json');
                             res.write(JSON.stringify({ msg : (/ERROR/g).test(mensaje) ? mensaje : "OK - " + seguridad.encodeBase64(resultado) }));
                             res.end();
@@ -196,9 +193,8 @@ exports.modificarConsumidor = function(req, res) {
                 );
             }
         };
-
+        
         if (typeof req.body.param !== 'undefined' || req.body.param != null) {
-
             if ((/^\d+$/g).test(seguridad.decodeBase64(req.body.param)))
                 callback([client, seguridad.decodeBase64(req.body.param)]);
             else
@@ -211,28 +207,20 @@ exports.modificarConsumidor = function(req, res) {
         }
         else{
 
-            if (typeof req.body.tlfCelular != 'undefined'){
-                if((/^\d{9}|\d{10}$/g).test((req.body.tlfCelular))){
-                    console.log((/^\d{9}|\d{10}$/g).test((req.body.tlfCelular)));
-                    Q.all([utilidades.buscarIdClientePorCelular((req.body.tlfCelular))]).then(
-                        callback,
-                        function(err) {
-                            utilidades.printError(err, res);
-                        }
-                    );
-
+            Q.all([utilidades.buscarIdClientePorCelular(client)]).then(
+                callback,
+                function(err) {
+                    utilidades.printError(err, res);
                 }
-            }
-            else
-                callback([client, null]);
-            
+            );
         }
-        
+            
     }
     catch (err) {
         utilidades.printError(err, res);
     }
 };
+
 
 /**
  *  HttpPut
