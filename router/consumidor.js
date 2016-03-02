@@ -152,7 +152,7 @@ exports.modificarConsumidor = function(req, res) {
 
     try {
         var client = seguridad.decodeBase64(req.params.val);
-        console.log(JSON.stringify(req.body) )
+        
         var callback = function(data) {
             var sql = '', mensaje = '', resultado = '';
           
@@ -325,12 +325,80 @@ exports.validarConsumidor = function(req, res) {
     }
 };
 
+
+
 exports.crearConsumo = function(req, res) {
 
     try {
-        console.log(JSON.stringify(req.body));
-        res.json({exito:true});
-        res.end();
+
+        var sql = '', mensaje = '', resultado = '',
+            data = [
+                req.body.celular,
+                req.body.identificacion,
+                req.body.nombre,
+                req.body.id_transaccion,
+                req.body.fecha_transaccion,
+                req.body.id_registradora,
+                req.body.registradora,
+                req.body.id_sucursal,
+                req.body.sucursal
+            ],
+            items = req.body.compra
+            item =[];
+
+        if(connection){
+
+            sql = 'set @resultado = ""; ' +
+                  'call datatabs_main.sp_generar_consumo(?, ?, ?, ?, ?, ?, ?, ?, ? @resultado); ' +
+                  'select @resultado;';
+        
+            connection.db.query(
+                sql,
+                data,
+                function(err, resultado) {
+                    
+                    var id_visitaevento_compra = 0, mensaje = '';
+
+                    if (err)
+                        utilidades.printError(err, res);
+                    else {
+                        
+                        mensaje = JSON.parse(resultado[3][0]['@resultado']);
+                        id_visitaevento_compra = resultado[1][0];
+                        
+                        if(mensaje.tipo == 'error')
+                            utilidades.printError(mensaje.mensaje, res);
+                        else {
+
+                            if(items != null || typeof items != 'undefined'){
+
+                                sql = 'set @resultado = ""; ' +
+                                      'call datatabs_main.sp_consumo(?, ?, ?, ?, ?, @resultado); ' +
+                                      'select @resultado;';
+
+                                for (var i = 0; i < items.length; i++) {
+
+                                    item = [
+                                        id_visitaevento_compra,
+                                        items[i].id_item,
+                                        items[i].id_description_item,
+                                        items[i].monto,
+                                        items[i].cantidad
+                                    ];
+
+                                    connection.db.query(sql, item, function(err, res){});
+
+                                };
+
+                            };
+                            
+                            res.json({exito:id_visitaevento_compra>0});
+                            res.end();
+                        };
+                    };
+                };
+            );
+        };
     }
     catch (err) {
         utilidades.printError(err, res);
