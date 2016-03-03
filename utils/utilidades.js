@@ -252,3 +252,34 @@ exports.agregarImagenFlujo = function(flujos){
     return f;
 };
 
+
+
+exports.almacenarConsumo = function(consumo, i){
+    'use strict';
+
+    var deferred = Q.defer();
+    var sql = '';
+
+    if(connection){
+        sql = 
+            'set @resultado = ""; ' +
+            'call datatabs_main.sp_consumo(?, ?, ?, ?, ?, @resultado); ' +
+            'select @resultado;';
+        connection.db.query(sql, consumo,
+            function(err, result){
+                
+                if(err){
+                    deferred.reject(err);
+                }
+                else{
+                    if(result.length == 0)
+                        deferred.reject('Error');
+                    else
+                        deferred.resolve({res:result[1][0].res, i:i});
+                }
+            }
+        );
+    }
+
+    return deferred.promise;
+};
