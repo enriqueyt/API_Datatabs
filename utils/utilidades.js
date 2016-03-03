@@ -265,6 +265,7 @@ exports.almacenarConsumo = function(consumo, i){
             'set @resultado = ""; ' +
             'call datatabs_main.sp_consumo(?, ?, ?, ?, ?, @resultado); ' +
             'select @resultado;';
+            
         connection.db.query(sql, consumo,
             function(err, result){
                 

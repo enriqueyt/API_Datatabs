@@ -331,6 +331,7 @@ exports.crearConsumo = function(req, res) {
 
     try {
         
+        console.log(JSON.stringify(req.body))
         var sql = '', mensaje = '', resultado = '',
             data = [
                 req.body.Celular,
