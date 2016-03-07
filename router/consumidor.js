@@ -355,52 +355,51 @@ exports.crearConsumo = function(req, res) {
         
             connection.db.query(sql, data, function(err, resultado) {
                     
-                    var id_visitaevento_compra = 0, mensaje = '';
+                var id_visitaevento_compra = 0, mensaje = '';
+                
+                if (err)
+                    utilidades.printError(err, res);
+                else {
                     
-                    if (err)
-                        utilidades.printError(err, res);
+                    mensaje = JSON.parse(resultado[3][0]['@resultado']);
+                    id_visitaevento_compra = resultado[1][0];
+                    
+                    if(mensaje.tipo == 'error')
+                        utilidades.printError(mensaje.mensaje, res);
                     else {
                         
-                        mensaje = JSON.parse(resultado[3][0]['@resultado']);
-                        id_visitaevento_compra = resultado[1][0];
-                        
-                        if(mensaje.tipo == 'error')
-                            utilidades.printError(mensaje.mensaje, res);
-                        else {
-                            
-                            if(items != null || typeof items != 'undefined'){
+                        if(items != null || typeof items != 'undefined'){
 
+                            for (var i = 0; i < items.length; i++) {
+
+                                item = [
+                                    id_visitaevento_compra.res,
+                                    parseInt(items[i].Id_item),
+                                    items[i].Description_item,
+                                    parseFloat(items[i].Monto),
+                                    parseInt(items[i].Cantidad)
+                                ];  
                                 
+                                utilidades.almacenarConsumo(item, i).then(function(resul, err){                                    
+                                    if(err) utilidades.printError(err, res);
 
-                                for (var i = 0; i < items.length; i++) {
+                                    if(items.length-1==resul.i){
+                                        res.json({exito:id_visitaevento_compra.res>0});
+                                        res.end();
+                                    }
 
-                                    item = [
-                                        id_visitaevento_compra.res,
-                                        parseInt(items[i].Id_item),
-                                        items[i].Description_item,
-                                        parseFloat(items[i].Monto),
-                                        parseInt(items[i].Cantidad)
-                                    ];  
-                                    
-                                    utilidades.almacenarConsumo(item, i).then(function(resul, err){                                    
-                                        if(err) utilidades.printError(err, res);
-
-                                        if(items.length-1==resul.i){
-                                            res.json({exito:id_visitaevento_compra.res>0});
-                                            res.end();
-                                        }
-
-                                    });
+                                });
 
 
-
-                                };
 
                             };
-                            
+
                         };
+                        
                     };
-                });
+                };
+                
+            });
         };
     }
     catch (err) {
