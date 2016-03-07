@@ -354,7 +354,9 @@ exports.crearConsumo = function(req, res) {
                   'select @resultado;';
         
             connection.db.query(sql, data, function(err, resultado) {
-                    
+                                console.log(err);
+                    console.log(resultado[3][0]['@resultado']);
+
                 var id_visitaevento_compra = 0, mensaje = '';
                 
                 if (err)
@@ -363,7 +365,8 @@ exports.crearConsumo = function(req, res) {
                     
                     mensaje = JSON.parse(resultado[3][0]['@resultado']);
                     id_visitaevento_compra = resultado[1][0];
-                    
+
+        
                     if(mensaje.tipo == 'error')
                         utilidades.printError(mensaje.mensaje, res);
                     else {
@@ -390,15 +393,13 @@ exports.crearConsumo = function(req, res) {
 
                                 });
 
-
-
                             };
 
                         };
                         
                     };
                 };
-                
+
             });
         };
     }
