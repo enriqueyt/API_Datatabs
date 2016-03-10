@@ -384,13 +384,15 @@ exports.crearConsumo = function(req, res) {
                                 utilidades.almacenarConsumo(item, i).then(function(resul, err){    
 
                                     console.log('resul')
-                                    console.log(resul)
+                                    console.log(typeof resul)
                                     console.log('err')
                                     console.log(err)       
 
                                     if(typeof err != 'undefined') utilidades.printError(err, res);
 
                                     if(items.length-1==resul.i){
+                                        console.log('typeof resul')
+                                        console.log(typeof resul)
                                         res.json({exito:JSON.parse(resul).res>0});
                                         res.end();
                                     }
