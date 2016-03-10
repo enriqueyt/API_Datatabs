@@ -391,7 +391,7 @@ exports.crearConsumo = function(req, res) {
                                     if(typeof err == 'undefined') utilidades.printError(err, res);
 
                                     if(items.length-1==resul.i){
-                                        res.json({exito:resul.res>0});
+                                        res.json({exito:JSON.parse(resul).res>0});
                                         res.end();
                                     }
 
