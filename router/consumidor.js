@@ -382,13 +382,10 @@ exports.crearConsumo = function(req, res) {
                                 ];  
                                 
                                 utilidades.almacenarConsumo(item, i).then(function(resul, err){                                    
-                                    //if(err) utilidades.printError(err, res);
-                                    console.log('resul')
-                                    console.log(resul)
-                                    console.log('err')
-                                    console.log(err)
+                                    if(typeof err == 'undefined') utilidades.printError(err, res);
+
                                     if(items.length-1==resul.i){
-                                        res.json({exito:id_visitaevento_compra.res>0});
+                                        res.json({exito:resul.res>0});
                                         res.end();
                                     }
 
