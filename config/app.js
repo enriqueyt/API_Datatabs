@@ -184,6 +184,7 @@ app.get   ('/consumidor/:val?'       , consumidor.buscarConsumidor   );
 /* [HttpPost] */                     
 app.post  ('/consumidor'             , consumidor.crearConsumidor    );
 app.post  ('/consumidor/consumo'     , consumidor.crearConsumo       );
+app.put  ('/consumidor/consumo'     , consumidor.modificarConsumo    );
 /* [HttpPut] */                      
 app.put   ('/consumidor/:val'        , consumidor.modificarConsumidor);
 app.put   ('/consumidor/validar/:val', consumidor.validarConsumidor  );

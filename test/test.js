@@ -17,7 +17,7 @@ describe('server', function(){
 
 describe('/', function(done){
 	
-	it('/Votar', function(done){
+	it('/Guardar consumo', function(done){
 		
 		var obj = {
 			Celular:'04242863017',

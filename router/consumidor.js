@@ -354,8 +354,6 @@ exports.crearConsumo = function(req, res) {
                   'select @resultado;';
         
             connection.db.query(sql, data, function(err, resultado) {
-                                console.log(err);
-                    console.log(resultado[3][0]['@resultado']);
 
                 var id_visitaevento_compra = 0, mensaje = '';
                 
@@ -384,8 +382,11 @@ exports.crearConsumo = function(req, res) {
                                 ];  
                                 
                                 utilidades.almacenarConsumo(item, i).then(function(resul, err){                                    
-                                    if(err) utilidades.printError(err, res);
-
+                                    //if(err) utilidades.printError(err, res);
+                                    console.log('resul')
+                                    console.log(resul)
+                                    console.log('err')
+                                    console.log(err)
                                     if(items.length-1==resul.i){
                                         res.json({exito:id_visitaevento_compra.res>0});
                                         res.end();
@@ -408,3 +409,13 @@ exports.crearConsumo = function(req, res) {
     }
 };
 
+
+exports.modificarConsumo = function(req, res) {
+
+    try {
+
+    }
+    catch (err) {
+        utilidades.printError(err, res);
+    }
+};
