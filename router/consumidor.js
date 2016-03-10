@@ -393,7 +393,9 @@ exports.crearConsumo = function(req, res) {
                                     if(items.length-1==resul.i){
                                         console.log('typeof resul')
                                         console.log(typeof resul)
-                                        res.json({exito:JSON.parse(resul).res>0});
+                                        console.log(resul.res)
+                                        console.log(typeof resul.res)
+                                        res.json({exito:resul.res>0});
                                         res.end();
                                     }
 
