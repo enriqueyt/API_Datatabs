@@ -381,7 +381,13 @@ exports.crearConsumo = function(req, res) {
                                     parseInt(items[i].Cantidad)
                                 ];  
                                 
-                                utilidades.almacenarConsumo(item, i).then(function(resul, err){                                    
+                                utilidades.almacenarConsumo(item, i).then(function(resul, err){    
+
+                                    console.log('resul')
+                                    console.log(resul)
+                                    console.log('err')
+                                    console.log(err)       
+
                                     if(typeof err == 'undefined') utilidades.printError(err, res);
 
                                     if(items.length-1==resul.i){
