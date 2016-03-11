@@ -369,7 +369,7 @@ exports.crearConsumo = function(req, res) {
                         utilidades.printError(mensaje.mensaje, res);
                     else {
                         
-                        if(items != null || typeof items != 'undefined'){
+                        if(items != null || typeof items != 'undefined' || typeof items != 'null'){
 
                             for (var i = 0; i < items.length; i++) {
 
