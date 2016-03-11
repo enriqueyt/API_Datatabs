@@ -396,6 +396,9 @@ exports.crearConsumo = function(req, res) {
 
                             };
 
+                        }else{
+                            res.json({exito:false});
+                            res.end();
                         };
                         
                     };
