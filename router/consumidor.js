@@ -369,6 +369,7 @@ exports.crearConsumo = function(req, res) {
                         utilidades.printError(mensaje.mensaje, res);
                     else {
                         console.log(items)
+                        console.log(items == null)
                         console.log(typeof items)
                         if(items != null || typeof items != 'undefined' || typeof items != 'null'){
 
