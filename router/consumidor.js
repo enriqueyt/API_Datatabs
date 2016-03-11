@@ -368,9 +368,7 @@ exports.crearConsumo = function(req, res) {
                     if(mensaje.tipo == 'error')
                         utilidades.printError(mensaje.mensaje, res);
                     else {
-                        console.log(items)
-                        console.log(!items == null)
-                        console.log(typeof items)
+   
                         if(!items == null){
 
                             for (var i = 0; i < items.length; i++) {
@@ -397,7 +395,7 @@ exports.crearConsumo = function(req, res) {
                             };
 
                         }else{
-                            res.json({exito:false});
+                            res.json({exito:id_visitaevento_compra.res>0});
                             res.end();
                         };
                         
