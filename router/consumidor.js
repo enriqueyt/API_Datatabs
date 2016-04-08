@@ -362,19 +362,20 @@ exports.crearConsumo = function(req, res) {
                 sql = 'set @resultado = ""; ' +
                       'call datatabs_main.sp_generarconsumo(?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
                       'select @resultado;';
-                console.log('guardar consumo')
+                
                 connection.db.query(sql, data, function(err, resultado) {
 
                     var id_visitaevento_compra = 0, mensaje = '';
-                    
+                    console.log(err)
                     if (err){
                         utilidades.printError(err, res);
                     }
                     else {
-                        
+                      
                         mensaje = JSON.parse(resultado[3][0]['@resultado']);
                         id_visitaevento_compra = resultado[1][0];
-
+                          console.log('bien')
+                            console.log(mensaje)
                         if(mensaje.tipo == 'error'){
                             utilidades.printError(mensaje.mensaje, res);
                         }
