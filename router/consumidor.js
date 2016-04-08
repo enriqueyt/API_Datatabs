@@ -412,7 +412,8 @@ exports.crearConsumo = function(req, res) {
                                 console.log('resultado')
                                 console.log(id_visitaevento_compra)
                                 console.log(exito:id_visitaevento_compra.res>0)
-                                res.json(JSON.stringify({exito:id_visitaevento_compra.res>0}));
+                                res.json({exito:id_visitaevento_compra.res>0});
+                                res.end();
                             };
                             
                         };
@@ -544,7 +545,6 @@ exports.crearConsumo = function(req, res) {
         function(err) {
             console.log('no existe el dispositivo')
             guardarConsumo(data);
-            utilidades.printError(err, res);
         });
 
        
