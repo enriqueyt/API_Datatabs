@@ -466,7 +466,7 @@ exports.crearConsumo = function(req, res) {
                                                 tlfCelular:(data[0]==''?null:data[0]), 
                                                 tipoConsumidor:1
                                             }
-
+                                            console.log(dt)
                                             crear_consumidor(dt).then(function(result){
                                                 console.log('crear_consumidor')
                                                 console.log(result)
@@ -598,7 +598,8 @@ function crear_consumidor (data) {
                     else {
                         mensaje   = result[3][0]['@resultado'];
                         resultado = result[1][0]['res'];
-
+                        console.log(mensaje)
+                        console.log(resultado)
                         if ((/ERROR/g).test(mensaje))
                             deferred.reject(mensaje);
                         else {   
