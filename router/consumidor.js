@@ -456,7 +456,7 @@ exports.crearConsumo = function(req, res) {
                                             });
                                         }
                                                        console.log('result')
-                                                    console.log(result)
+                                                    console.log(data)
                                         guardarConsumo(data);
                                     }, function(err){
                         
