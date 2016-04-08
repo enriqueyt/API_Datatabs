@@ -354,7 +354,7 @@ exports.crearConsumo = function(req, res) {
             ],
             items = req.body.Compra
             item = [];
-
+console.log(req.body)
         var guardarConsumo = function(data){
             if(connection){
                 
