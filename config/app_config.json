@@ -2,11 +2,13 @@
 	"dev" :
 	{
 		"port"    : 6969,
-		"encrypt" : true	
+		"encrypt" : true,
+		"url"	  : "http://localhost" 	
 	},
 	"production" :
 	{
 		"port"    : 6969,
-		"encrypt" : true
+		"encrypt" : true,
+		"url"	  : "http://105.131.102.105"
 	}
 }

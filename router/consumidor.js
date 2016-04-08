@@ -1,9 +1,11 @@
 var connection = require('../config/db'),
     Q          = require('q'),
     utilidades = require('../utils/utilidades'),
-	seguridad  = require('../utils/seguridad'),
+    seguridad  = require('../utils/seguridad'),
     nodo       = require('../router/nodo'),
-    request    = require('request'); 
+    request    = require('request'),
+    syncrequest = require('sync-request');
+    app_config = require('../config/app_config')['dev']; 
     
 exports.buscarConsumidor = function(req, res) {
 
@@ -59,13 +61,13 @@ exports.crearConsumidor = function(req, res) {
             if (connection) {
                 sql =
                     'SET @resultado = ""; ' +
-                    'CALL datatabs_main.sp_crearConsumidor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
+                    'CALL datatabs_main.sp_crearConsumidor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
                     'SELECT @resultado;';
                 
                 connection.db.query(
                     sql,
                     [
-                         id,
+                        id,
                         typeof req.body.nombre          !== 'undefined' || req.body.nombre          != null ? req.body.nombre          : null,
                         typeof req.body.apellido        !== 'undefined' || req.body.apellido        != null ? req.body.apellido        : null,
                         req.body.tlfCelular,                                                                                         
@@ -76,6 +78,7 @@ exports.crearConsumidor = function(req, res) {
                         req.body.tipoConsumidor,
                         typeof req.body.sexo            !== 'undefined' || req.body.sexo            != null ? req.body.sexo            : null,
                         typeof req.body.ciudad          !== 'undefined' || req.body.ciudad          != null ? req.body.ciudad          : null,
+                        typeof req.body.identificacion  !== 'undefined' || req.body.identificacion  != null ? req.body.identificacion  : null,
                     ],
                     function(err, result) {
                         if (err)
@@ -147,7 +150,6 @@ exports.crearConsumidor = function(req, res) {
  *          "msg" : "Error description"
  *      }
  */
-
 exports.modificarConsumidor = function(req, res) {
 
     try {
@@ -222,7 +224,6 @@ exports.modificarConsumidor = function(req, res) {
     }
 };
 
-
 /**
  *  HttpPut
  *
@@ -259,9 +260,18 @@ exports.modificarConsumidor = function(req, res) {
 exports.validarConsumidor = function(req, res) {
 
     try {
+
+        var isEmptyObject = function (obj){
+            for(key in obj) return false;
+            return true;
+        };
+
+        console.log(req.query)
+
         var contact = seguridad.decodeBase64(req.params.val);
         var device  = seguridad.decodeBase64(req.body.dispositivo);
         
+
         var callback = function(id) {
             var sql = '', mensaje = '', resultado = '';
 
@@ -280,21 +290,19 @@ exports.validarConsumidor = function(req, res) {
                         id
                     ],
                     function(err, result) {
-                         console.log(err)
-                        console.log(resultado)
+
                         if (err)
                             utilidades.printError(err, res);
                         else {
                             mensaje   = result[3][0]['@resultado'];
                             resultado = result[1][0];
-                            console.log(mensaje)
 
                             if ((/ERROR/g).test(mensaje))
                                 utilidades.printError(mensaje, res);
                             else {   
 
                                 request({
-                                    uri: 'http://104.131.102.105:6968/actualizar_lista_clientes',
+                                    uri: app_config.url+':6968/actualizar_lista_clientes',
                                     method: 'GET',
                                 }, function(error, response, body) {
                                     console.log(error);      
@@ -325,18 +333,19 @@ exports.validarConsumidor = function(req, res) {
     }
 };
 
-
-
 exports.crearConsumo = function(req, res) {
 
     try {
-        
-        console.log(JSON.stringify(req.body))
-        var sql = '', mensaje = '', resultado = '',
+        console.log(req.body)
+        var sql = '', 
+            mensaje = '', 
+            resultado = '', 
+            flujo = '',
             data = [
                 req.body.Celular,
                 (req.body.Identificacion==''?null:req.body.Identificacion),
                 req.body.Nombre,
+                req.body.Apellido,
                 req.body.Id_transaccion,
                 req.body.Fecha_transaccion,
                 req.body.Id_registradora,
@@ -347,70 +356,196 @@ exports.crearConsumo = function(req, res) {
             items = req.body.Compra
             item = [];
 
-        if(connection){
+        var guardarConsumo = function(data){
+            if(connection){
+                
+                sql = 'set @resultado = ""; ' +
+                      'call datatabs_main.sp_generar_consumo(?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
+                      'select @resultado;';
+            
+                connection.db.query(sql, data, function(err, resultado) {
 
-            sql = 'set @resultado = ""; ' +
-                  'call datatabs_main.sp_generar_consumo(?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
-                  'select @resultado;';
-        
-            connection.db.query(sql, data, function(err, resultado) {
-
-                var id_visitaevento_compra = 0, mensaje = '';
-             console.log(err)   
-                if (err)
-                    utilidades.printError(err, res);
-                else {
+                    var id_visitaevento_compra = 0, mensaje = '';
                     
-                    mensaje = JSON.parse(resultado[3][0]['@resultado']);
-                    id_visitaevento_compra = resultado[1][0];
-console.log(mensaje)
-console.log(id_visitaevento_compra)
-        
-                    if(mensaje.tipo == 'error')
-                        utilidades.printError(mensaje.mensaje, res);
+                    if (err)
+                        utilidades.printError(err, res);
                     else {
-   
-                        if(!items == null){
+                        
+                        mensaje = JSON.parse(resultado[3][0]['@resultado']);
+                        id_visitaevento_compra = resultado[1][0];
 
-                            for (var i = 0; i < items.length; i++) {
+                        if(mensaje.tipo == 'error')
+                            utilidades.printError(mensaje.mensaje, res);
+                        else {
+                            console.log('items')
+                            console.log(items)
+                            if(!(items == null)){
 
-                                item = [
-                                    id_visitaevento_compra.res,
-                                    parseInt(items[i].Id_item),
-                                    items[i].Description_item,
-                                    parseFloat(items[i].Monto),
-                                    parseInt(items[i].Cantidad)
-                                ];  
-                                
-                                utilidades.almacenarConsumo(item, i).then(function(resul, err){          
+                                for (var i = 0; i < items.length; i++) {
 
-                                    if(typeof err != 'undefined') utilidades.printError(err, res);
+                                    item = [
+                                        id_visitaevento_compra.res,
+                                        parseInt(items[i].Id_item),
+                                        items[i].Description_item,
+                                        parseFloat(items[i].Monto),
+                                        parseInt(items[i].Cantidad)
+                                    ];  
+                                    
+                                    utilidades.almacenarConsumo(item, i).then(function(resul, err){          
 
-                                    if(items.length-1==resul.i){
-                                        res.json({exito:resul.res>0});
-                                        res.end();
+                                        if(typeof err != 'undefined') utilidades.printError(err, res);
+
+                                        if(items.length-1==resul.i){
+                                            res.json({exito:resul.res>0});
+                                            res.end();
+                                        }
+
+                                    });
+
+                                };
+
+                            }else{
+                                res.json({exito:id_visitaevento_compra.res>0});
+                                res.end();
+                            };
+                            
+                        };
+                    };
+                });
+            }; 
+        };
+        console.log(data)
+        utilidades.buscarIdDispositivo(req.body.Registradora).then(function(id){
+
+            utilidades.buscarEventos(id).then(function(result){
+    
+                var flag = false, id_evento = 0, a;
+
+                var recorrerFlujo = function(_flujo, id_evento, data){
+                    'use strict';
+                    var flujo;   
+                    var _numero = data[1],
+                        dipositivo = data[7];
+
+                    if(_flujo.children.length > 0){
+
+                        flujo = _flujo.children;
+
+                        for (var i = 0; i < flujo.length; i++) {
+                        
+                            switch(flujo[i].name){
+                                case 'CHK':
+
+                                    var dat = {
+                                        numero:seguridad.encodeBase64(_numero),
+                                        dispositivo:id,
+                                        evento:id_evento,
+                                        nodo:seguridad.encodeBase64(flujo[i].idNodo)
+                                    }
+                                    
+                                    validar_consumidor(dat).then(function(result){
+ 
+                                        if(_numero==data[1] && data[0].length>0){
+                                            connection.db.query('update tb_consumidor c set c.celular = '+data[0]+' where c.identificacion='+data[1], function(err, rows, fields) {
+                                                if (!err)
+                                                    console.log('ok ', rows);
+                                                else
+                                                    console.log('Error.');
+                                            });
+                                        }
+                                        guardarConsumo(data);
+                                    }, function(err){
+                        
+                                        if(err.res == -1){
+                                            var dt = {
+                                                nombre:data[2],
+                                                apellido:data[3],
+                                                identificacion:data[1],
+                                                tlfCelular:(data[0]==''?null:data[0]), 
+                                                tipoConsumidor:1
+                                            }
+
+                                            crear_consumidor(dt).then(function(result){
+                                                console.log('crear_consumidor')
+                                                console.log(result)
+                                                
+                                                validar_consumidor(dat).then(function(result){
+                                                    if(_numero==data[1] && data[0].length>0){
+                                                        connection.db.query('update tb_consumidor c set c.celular = '+data[0]+' where c.identificacion='+data[1], function(err, rows, fields) {
+                                                          if (!err)
+                                                            console.log('ok ', rows);
+                                                          else
+                                                            console.log('Error.');
+                                                        });
+                                                    }
+                                                    guardarConsumo(data);
+                                                }, function(err){
+                                                    console.log(err)
+                                                });
+
+                                            },function(err){
+                                                console.log('err crear_consumidor')
+                                                console.log(err)
+                                            });
+
+                                        }
+                                    });
+
+                                    break;
+                                case 'MSG':
+
+                                    var dat = {
+                                        consumidor:_numero,
+                                        modo:0,
+                                        mensaje:flujo[i].mensaje,
+                                        dispositivo:dipositivo
                                     }
 
-                                });
+                                    utilidades.enviarSMS(dat).then(function(result){
+                                       console.log(result)
+                                    }, function(err){
+                                        console.log(err)
+                                    });
 
-                            };
+                                    break;
+                            }
 
-                        }else{
-                            res.json({exito:id_visitaevento_compra.res>0});
-                            res.end();
+                            if(flujo[i].children.length > 0){
+                                flujo = recorrerFlujo(flujo[i], id_evento, data);
+                            }
+          
                         };
-                        
-                    };
-                };
 
+                        return flujo;
+                    }
+                };     
+
+                for(var i = 0; i < result.eventos.length; i++){
+                    flujo = JSON.parse(result.eventos[i].flujo);
+                    id_evento = result.eventos[i].id_evento;
+                    flag = true;
+                };
+                           
+                if(flag){a=recorrerFlujo(flujo, id_evento, data);}
+
+                res.json({exito:true});
+                res.end();
+
+            }, function(err){
+               guardarConsumo(data);
             });
-        };
+        },
+        function(err) {
+            guardarConsumo(data);
+            utilidades.printError(err, res);
+        });
+
+       
     }
     catch (err) {
         utilidades.printError(err, res);
     }
 };
-
 
 exports.modificarConsumo = function(req, res) {
 
@@ -421,3 +556,132 @@ exports.modificarConsumo = function(req, res) {
         utilidades.printError(err, res);
     }
 };
+
+function crear_consumidor (data) {
+
+    try {
+        
+        var deferred = Q.defer(), 
+            user = typeof data.param !== 'undefined' || data.param != null ? seguridad.decodeBase64(data.param) : null,
+            sql = '', 
+            mensaje = '', 
+            resultado = '';
+    
+        if (connection) {
+            sql =
+                'SET @resultado = ""; ' +
+                'CALL datatabs_main.sp_crearConsumidor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
+                'SELECT @resultado;';
+            console.log(data)
+            connection.db.query(
+                sql,
+                [
+                    user,
+                    typeof data.nombre          !== 'undefined' || data.nombre          != null ? data.nombre          : null,
+                    typeof data.apellido        !== 'undefined' || data.apellido        != null ? data.apellido        : null,
+                    data.tlfCelular,                                                                                         
+                    typeof data.correo          !== 'undefined' || data.correo          != null ? data.correo          : null,
+                    typeof data.twitter         !== 'undefined' || data.twitter         != null ? data.twitter         : null,
+                    typeof data.facebook        !== 'undefined' || data.facebook        != null ? data.facebook        : null,
+                    typeof data.fechaNacimiento !== 'undefined' || data.fechaNacimiento != null ? data.fechaNacimiento : null,
+                    data.tipoConsumidor,
+                    typeof data.sexo            !== 'undefined' || data.sexo            != null ? data.sexo            : null,
+                    typeof data.ciudad          !== 'undefined' || data.ciudad          != null ? data.ciudad          : null,
+                    data.identificacion
+                ],
+                function(err, result) {
+
+                    if (err)
+                        deferred.reject(err);
+                    else {
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0]['res'];
+
+                        if ((/ERROR/g).test(mensaje))
+                            deferred.reject(mensaje);
+                        else {   
+                            deferred.resolve(JSON.stringify(resultado));
+                        }
+                        
+                    }
+                }
+            );
+        }
+
+        return deferred.promise;
+
+    }
+    catch (err) {
+        utilidades.printError(err);
+    }
+};
+
+function validar_consumidor (data) {
+
+    try {
+        var deferred = Q.defer(),
+            contact = seguridad.decodeBase64(data.numero),
+            device  = data.dispositivo,
+            sql = '', 
+            mensaje = '', 
+            resultado = '';
+        
+        if (connection) {
+            sql =
+                'SET @resultado = ""; ' +
+                'CALL datatabs_main.sp_validarConsumidor(?, ?, ?, ?, @resultado); ' +
+                'SELECT @resultado;';
+            
+            connection.db.query(
+                sql,
+                [
+                    contact,
+                    seguridad.decodeBase64(data.evento),
+                    seguridad.decodeBase64(data.nodo),
+                    device
+                ],
+                function(err, result) {
+
+                    if (err){
+                        deferred.reject(err);
+                    }
+                    else {
+
+                        mensaje   = result[3][0]['@resultado'];
+                        resultado = result[1][0];
+                        
+                        if ((/ERROR/g).test(mensaje))
+                            deferred.reject(resultado);
+                        else {   
+                            deferred.resolve(JSON.stringify(resultado));
+                        }
+
+                        request({
+                            uri: app_config.url+':6968/actualizar_lista_clientes',
+                            method: 'GET',
+                        }, function(error, response, body) {
+                            console.log(error);      
+                        });
+                        console.log(app_config.url)
+                        request({
+                            uri: app_config.url+':6968/actualizar_finanza',
+                            method: 'GET',
+                        }, function(error, response, body) {
+                            console.log(error);      
+                        });
+
+                        
+                    }
+                }
+            );
+        }
+        
+        return deferred.promise;
+    }
+    catch (err) {
+        utilidades.printError(err, res);
+    }
+};
+
+
+

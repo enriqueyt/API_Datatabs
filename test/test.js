@@ -20,26 +20,32 @@ describe('/', function(done){
 	it('/Guardar consumo', function(done){
 		
 		var obj = {
-			Celular:'04242863017',
-            Identificacion:16901839,
-            Nombre:'Enrique Yepez',
-            Id_transaccion:2,
-            Fecha_transaccion: Date.now(),
+			Celular:'04142863017',
+            Identificacion:1,
+            Nombre:'',
+            Id_transaccion:1,
+            Fecha_transaccion: '2016-03-22T00:00:00',
             Id_registradora:2,
-            Registradora:'Caja',
+            Registradora:'e4fd700cfc3e3fe6_1',
             Id_sucursal:1,
             Sucursal:'Sandu chef sambil',
             Compra: [
             	{
-            		Id_item:474,
-                    Description_item:'Tea Lipton verde 1',
-                    Monto:342.25,
+            		Id_item:175458,
+                    Description_item:'item A',
+                    Monto:1456.25,
                     Cantidad:2
             	},
             	{
-            		Id_item:475,
-                    Description_item:'Tea Lipton azul 1',
-                    Monto:445.20,
+            		Id_item:175457,
+                    Description_item:'item B',
+                    Monto:2343.20,
+                    Cantidad:1
+            	},
+            	{
+            		Id_item:175459,
+                    Description_item:'item c',
+                    Monto:1123.20,
                     Cantidad:1
             	}
             ]
