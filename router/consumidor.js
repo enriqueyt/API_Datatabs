@@ -355,8 +355,6 @@ exports.crearConsumo = function(req, res) {
             items = req.body.Compra
             item = [];
 
-            console.log( (req.body.Identificacion).match(/\d+/g) )
-            console.log(  )
 
         var guardarConsumo = function(data){
             if(connection){
@@ -368,13 +366,13 @@ exports.crearConsumo = function(req, res) {
                 connection.db.query(sql, data, function(err, resultado) {
 
                     var id_visitaevento_compra = 0, mensaje = '';
-                    
+                    console.log(err)
                     if (err){
                         utilidades.printError(err, res);
                     }
                     else {
                        console.log('result mensaje')
-                                                    console.log(mensaje)
+                                                    console.log(data)
                         mensaje = JSON.parse(resultado[3][0]['@resultado']);
                         id_visitaevento_compra = resultado[1][0];
 
