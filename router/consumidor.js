@@ -335,7 +335,7 @@ exports.crearConsumo = function(req, res) {
         var sql = '', mensaje = '', resultado = '',
             data = [
                 req.body.Celular,
-                req.body.Identificacion,
+                (req.body.Identificacion==''?null:req.body.Identificacion),
                 req.body.Nombre,
                 req.body.Id_transaccion,
                 req.body.Fecha_transaccion,
@@ -356,14 +356,15 @@ exports.crearConsumo = function(req, res) {
             connection.db.query(sql, data, function(err, resultado) {
 
                 var id_visitaevento_compra = 0, mensaje = '';
-                
+             console.log(err)   
                 if (err)
                     utilidades.printError(err, res);
                 else {
                     
                     mensaje = JSON.parse(resultado[3][0]['@resultado']);
                     id_visitaevento_compra = resultado[1][0];
-
+console.log(mensaje)
+console.log(id_visitaevento_compra)
         
                     if(mensaje.tipo == 'error')
                         utilidades.printError(mensaje.mensaje, res);
