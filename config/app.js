@@ -188,6 +188,7 @@ app.put  ('/consumidor/consumo'     , consumidor.modificarConsumo    );
 /* [HttpPut] */                      
 app.put   ('/consumidor/:val'        , consumidor.modificarConsumidor);
 app.put   ('/consumidor/validar/:val', consumidor.validarConsumidor  );
+app.get   ('/consumidor/validar'     , consumidor.validarConsumidor  );
 /* [HttpDelete] */
 //app.delete('/consumidor/:id'  , consumidor.eliminarConsumidor );
 

@@ -1,6 +1,8 @@
 var connection = require('../config/db'),
     Q          = require('q'),
-   request = require('sync-request');
+    seguridad  = require('../utils/seguridad'),
+    request = require('request'),
+    app_config = require('../config/app_config')['dev'];
 
 exports.printError = function(err, res) {
     res.contentType('application/json');
@@ -100,8 +102,9 @@ exports.buscarIdUsuarioD = function(sesion, callback) {
 exports.buscarIdDispositivo = function(identificador) {
     var deferred = Q.defer();
     var sql = '';
-		
+	
     if (connection) {
+
 		sql =
 			'SELECT ' +
 				'IFNULL(D.id_dispositivo, -1) AS dispostivo ' +
@@ -109,15 +112,16 @@ exports.buscarIdDispositivo = function(identificador) {
 				'datatabs_main.tb_dispositivo AS D ' +
 			'WHERE ' +
 				'D.identificacion = ?;';
-
+            
         connection.db.query(
             sql,
             [identificador],
             function(err, result) {
-
+               
                 if (err)
                     deferred.reject(err);
                 else {
+
                     if (result.length == 0)
                         deferred.reject('ERROR - Dispositivo no existe');
                     else
@@ -252,8 +256,6 @@ exports.agregarImagenFlujo = function(flujos){
     return f;
 };
 
-
-
 exports.almacenarConsumo = function(consumo, i){
     'use strict';
 
@@ -283,4 +285,113 @@ exports.almacenarConsumo = function(consumo, i){
     }
 
     return deferred.promise;
+};
+
+exports.buscarEventos = function(id) {
+
+    try {
+        var deferred = Q.defer();
+            
+            var sql = '', id_empresa = 0;
+
+            if (connection) {
+                sql =
+                    'SELECT ' +
+                        'Evento.id_evento, ' +
+                        'Evento.evento, ' +
+                        'Evento.descripcion, ' +
+                        'Evento.fechaInicio, ' +
+                        'Evento.fechaFin, ' +
+                        'Evento.flujo, ' +
+                        'Imagen.imagen, ' +
+                        'Empresa.id_empresa, ' +
+                        'Empresa.nombre AS empresa ' +
+                    'FROM ' +
+                        'tb_evento AS Evento ' +
+                        'LEFT JOIN ' +
+                        'tb_evento_dispositivo AS EventoDisp ' +
+                        'ON Evento.id_evento = EventoDisp.id_evento ' +
+                        'LEFT JOIN ' +
+                        'tb_empresa AS Empresa ' +
+                        'ON Evento.id_empresa = Empresa.id_empresa ' +
+                        'LEFT OUTER JOIN ' +
+                        'tb_imagen AS Imagen ' +
+                        'ON Evento.id_imagen = Imagen.id_imagen ' +
+                    'WHERE ' +
+                        'EventoDisp.id_dispositivo = ? AND ' +
+                        'Evento.activo = 1 AND NOW() -1 < NOW();';
+                
+                connection.db.query(
+                    sql,
+                    [id],
+                    function(err, result) {
+                        'use stict';
+
+                        if (err)
+                            deferred.reject(err);
+                        else {                          
+                            connection.db.query(
+                                'select ' +
+                                    's.id_empresa ' +
+                                'from ' +
+                                    'tb_dispositivo as d ' +
+                                    'join tb_sucursal as s on d.id_sucursal = s.id_sucursal ' +
+                                'where ' +
+                                    'd.id_dispositivo = ?', [id],
+                                    function(err, resultado){
+                                         if (err) deferred.reject(err);
+
+                                        if(resultado.length == 0){
+                                            deferred.resolve({id_empresa: seguridad.encodeBase64(resultado[0].id_empresa), eventos: []});                                            
+                                        }
+                                        else{
+                                            
+                                            for (i = 0; i < result.length; i++) {
+                                                result[i].id_evento  = seguridad.encodeBase64(result[i].id_evento);
+                                                result[i].id_empresa = seguridad.encodeBase64(result[i].id_empresa);
+                                                result[i].imgNodo = '';
+                                            }
+
+                                            deferred.resolve({id_empresa:seguridad.encodeBase64(resultado[0].id_empresa), eventos: result}); 
+                                            
+                                        }                                            
+                                        
+                                    }
+                            )
+
+                        }
+                    }
+                );
+            };
+
+        return deferred.promise;
+    }
+    catch (err) {
+        utilidades.printError(err, res);
+    }
+};
+
+exports.enviarSMS = function(data) {
+
+    try {
+        var deferred = Q.defer(),
+            resultado = '';
+
+        request.post({
+            url:app_config.url+':6968/mensaje', 
+            form: data
+        }, function(err,response,body){ 
+            if (!err && response.statusCode == 200) {
+                deferred.resolve(body);
+            } 
+            else{
+                deferred.reject(err);
+            }
+        });
+        
+        return deferred.promise;
+    }
+    catch (err) {
+        utilidades.printError(err, res);
+    }
 };
