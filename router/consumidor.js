@@ -341,8 +341,6 @@ exports.crearConsumo = function(req, res) {
             mensaje = '', 
             resultado = '', 
             flujo = '',
-            console.log((req.body.Identificacion).match(/\d+/g))
-            console.log( ((req.body.Identificacion).match(/\d+/g))[0] )
             data = [
                 req.body.Celular,
                 (req.body.Identificacion==''?0: (req.body.Identificacion).match(/\d+/g) ),
@@ -356,6 +354,9 @@ exports.crearConsumo = function(req, res) {
             ],
             items = req.body.Compra
             item = [];
+
+            console.log( (req.body.Identificacion).match(/\d+/g) )
+            console.log( ((req.body.Identificacion).match(/\d+/g))[0] )
 
         var guardarConsumo = function(data){
             if(connection){
