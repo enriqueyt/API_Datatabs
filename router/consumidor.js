@@ -5,7 +5,7 @@ var connection = require('../config/db'),
     nodo       = require('../router/nodo'),
     request    = require('request'),
     syncrequest = require('sync-request');
-    app_config = require('../config/app_config')['dev']; 
+    app_config = require('../config/app_config')['production']; 
     
 exports.buscarConsumidor = function(req, res) {
 
@@ -354,7 +354,7 @@ exports.crearConsumo = function(req, res) {
             ],
             items = req.body.Compra
             item = [];
-console.log(req.body)
+
         var guardarConsumo = function(data){
             if(connection){
                 
@@ -664,7 +664,7 @@ function validar_consumidor (data) {
                         }, function(error, response, body) {
                             console.log(error);      
                         });
-                        console.log(app_config.url)
+
                         request({
                             uri: app_config.url+':6968/actualizar_finanza',
                             method: 'GET',
