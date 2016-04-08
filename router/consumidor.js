@@ -411,7 +411,7 @@ exports.crearConsumo = function(req, res) {
                             }else{
                                 console.log('resultado')
                                 console.log(id_visitaevento_compra)
-                                console.log(exito:id_visitaevento_compra.res>0)
+                                console.log(id_visitaevento_compra.res>0)
                                 res.json({exito:id_visitaevento_compra.res>0});
                                 res.end();
                             };
