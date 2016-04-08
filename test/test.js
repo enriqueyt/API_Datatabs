@@ -20,13 +20,13 @@ describe('/', function(done){
 	it('/Guardar consumo', function(done){
 		
 		var obj = {
-			Celular:'04142863017',
-            Identificacion:1,
+			Celular:'',
+            Identificacion:'16901839',
             Nombre:'',
-            Id_transaccion:1,
+            Id_transaccion:'1234',
             Fecha_transaccion: '2016-03-22T00:00:00',
-            Id_registradora:2,
-            Registradora:'e4fd700cfc3e3fe6_1',
+            Id_registradora:'',
+            Registradora:'e4fd700cfc3e3fe6',
             Id_sucursal:1,
             Sucursal:'Sandu chef sambil',
             Compra: [
@@ -52,7 +52,7 @@ describe('/', function(done){
 		}
 		
 		request({
-			uri:'http://localhost:6969/consumidor/consumo',
+			uri:'http://105.131.102.104:6969/consumidor/consumo',
 			method:'POST',
 			form: obj
 		}, function(error, res, body){
