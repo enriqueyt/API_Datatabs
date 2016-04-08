@@ -345,7 +345,6 @@ exports.crearConsumo = function(req, res) {
                 req.body.Celular,
                 (req.body.Identificacion==''?null:req.body.Identificacion),
                 req.body.Nombre,
-                req.body.Apellido,
                 req.body.Id_transaccion,
                 req.body.Fecha_transaccion,
                 req.body.Id_registradora,
