@@ -343,7 +343,7 @@ exports.crearConsumo = function(req, res) {
             flujo = '',
             data = [
                 req.body.Celular,
-                (req.body.Identificacion==''?null:req.body.Identificacion),
+                (req.body.Identificacion==''?null:(/\d+/g).exec(req.body.Identificacion)),
                 req.body.Nombre,
                 req.body.Id_transaccion,
                 req.body.Fecha_transaccion,
