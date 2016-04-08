@@ -341,9 +341,11 @@ exports.crearConsumo = function(req, res) {
             mensaje = '', 
             resultado = '', 
             flujo = '',
+            console.log((req.body.Identificacion).match(/\d+/g))
+            console.log( ((req.body.Identificacion).match(/\d+/g))[0] )
             data = [
                 req.body.Celular,
-                (req.body.Identificacion==''?0:(req.body.Identificacion).match(/\d+/g)),
+                (req.body.Identificacion==''?0: (req.body.Identificacion).match(/\d+/g) ),
                 req.body.Nombre,
                 req.body.Id_transaccion,
                 req.body.Fecha_transaccion,
