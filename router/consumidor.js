@@ -419,7 +419,7 @@ exports.crearConsumo = function(req, res) {
             }; 
         };
 
-        utilidades.buscarIdDispositivo(req.body.Registradora).then(function(id){
+        utilidades.buscarIdDispositivo(req.body.Registradora+req.body.Id_registradora).then(function(id){
 
             utilidades.buscarEventos(id).then(function(result){
     
@@ -501,7 +501,7 @@ exports.crearConsumo = function(req, res) {
                                     var dat = {
                                         consumidor:_numero,
                                         modo:0,
-                                        mensaje:flujo[i].mensaje,
+                                        mensaje: (flujo[i].dirigido==2?flujo[i].numeroTelefono:flujo[i].mensaje),
                                         dispositivo:dipositivo
                                     }
 
