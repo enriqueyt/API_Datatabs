@@ -343,7 +343,7 @@ exports.crearConsumo = function(req, res) {
             flujo = '',
             data = [
                 req.body.Celular,
-                (req.body.Identificacion==''?null:(/\d+/g).exec(req.body.Identificacion)),
+                (req.body.Identificacion==''?null:  (req.body.Identificacion).match(/\d+/g)),
                 req.body.Nombre,
                 req.body.Id_transaccion,
                 req.body.Fecha_transaccion,
@@ -365,7 +365,7 @@ exports.crearConsumo = function(req, res) {
                 connection.db.query(sql, data, function(err, resultado) {
 
                     var id_visitaevento_compra = 0, mensaje = '';
-                    console.log(err)
+                    
                     if (err){
                         utilidades.printError(err, res);
                     }
@@ -373,14 +373,12 @@ exports.crearConsumo = function(req, res) {
                       
                         mensaje = JSON.parse(resultado[3][0]['@resultado']);
                         id_visitaevento_compra = resultado[1][0];
-                          console.log('bien')
-                            console.log(mensaje)
+
                         if(mensaje.tipo == 'error'){
                             utilidades.printError(mensaje.mensaje, res);
                         }
                         else {
-                            console.log('items')
-                            console.log(items)
+                            
                             if(!(items == null)){
 
                                 for (var i = 0; i < items.length; i++) {
@@ -409,9 +407,6 @@ exports.crearConsumo = function(req, res) {
                                 };
 
                             }else{
-                                console.log('resultado')
-                                console.log(id_visitaevento_compra)
-                                console.log(id_visitaevento_compra.res>0)
                                 res.json({exito:id_visitaevento_compra.res>0});
                                 res.end();
                             };
