@@ -362,20 +362,22 @@ exports.crearConsumo = function(req, res) {
                 sql = 'set @resultado = ""; ' +
                       'call datatabs_main.sp_generarconsumo(?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
                       'select @resultado;';
-            
+                console.log('guardar consumo')
                 connection.db.query(sql, data, function(err, resultado) {
 
                     var id_visitaevento_compra = 0, mensaje = '';
                     
-                    if (err)
+                    if (err){
                         utilidades.printError(err, res);
+                    }
                     else {
                         
                         mensaje = JSON.parse(resultado[3][0]['@resultado']);
                         id_visitaevento_compra = resultado[1][0];
 
-                        if(mensaje.tipo == 'error')
+                        if(mensaje.tipo == 'error'){
                             utilidades.printError(mensaje.mensaje, res);
+                        }
                         else {
                             console.log('items')
                             console.log(items)
@@ -393,7 +395,9 @@ exports.crearConsumo = function(req, res) {
                                     
                                     utilidades.almacenarConsumo(item, i).then(function(resul, err){          
 
-                                        if(typeof err != 'undefined') utilidades.printError(err, res);
+                                        if(typeof err != 'undefined'){
+                                            utilidades.printError(err, res);
+                                        } 
 
                                         if(items.length-1==resul.i){
                                             res.json({exito:resul.res>0});
@@ -414,7 +418,7 @@ exports.crearConsumo = function(req, res) {
                 });
             }; 
         };
-        console.log(data)
+
         utilidades.buscarIdDispositivo(req.body.Registradora).then(function(id){
 
             utilidades.buscarEventos(id).then(function(result){
@@ -536,6 +540,7 @@ exports.crearConsumo = function(req, res) {
             });
         },
         function(err) {
+            console.log('no existe el dispositivo')
             guardarConsumo(data);
             utilidades.printError(err, res);
         });
