@@ -499,9 +499,9 @@ exports.crearConsumo = function(req, res) {
                                 case 'MSG':
 
                                     var dat = {
-                                        consumidor:_numero,
+                                        consumidor:(flujo[i].dirigido==2?flujo[i].numeroTelefono:_numero),
                                         modo:0,
-                                        mensaje: (flujo[i].dirigido==2?flujo[i].numeroTelefono:flujo[i].mensaje),
+                                        mensaje: flujo[i].mensaje,
                                         dispositivo:dipositivo
                                     }
 
