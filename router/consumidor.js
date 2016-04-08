@@ -455,6 +455,8 @@ exports.crearConsumo = function(req, res) {
                                                     console.log('Error.');
                                             });
                                         }
+                                                       console.log('result')
+                                                    console.log(result)
                                         guardarConsumo(data);
                                     }, function(err){
                         
@@ -480,8 +482,7 @@ exports.crearConsumo = function(req, res) {
                                                             console.log('Error.');
                                                         });
                                                     }
-                                                    console.log('result')
-                                                    console.log(result)
+
                                                     guardarConsumo(data);
                                                 }, function(err){
                                                     console.log(err)
