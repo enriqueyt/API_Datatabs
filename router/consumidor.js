@@ -373,7 +373,8 @@ exports.crearConsumo = function(req, res) {
                         utilidades.printError(err, res);
                     }
                     else {
-                      
+                       console.log('result mensaje')
+                                                    console.log(mensaje)
                         mensaje = JSON.parse(resultado[3][0]['@resultado']);
                         id_visitaevento_compra = resultado[1][0];
 
@@ -458,8 +459,7 @@ exports.crearConsumo = function(req, res) {
                                                     console.log('Error.');
                                             });
                                         }
-                                                       console.log('result')
-                                                    console.log(data)
+                                                      
                                         guardarConsumo(data);
                                     }, function(err){
                         
