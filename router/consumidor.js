@@ -342,7 +342,7 @@ exports.crearConsumo = function(req, res) {
             resultado = '', 
             flujo = '',
             data = [
-                String(req.body.Celular),
+                req.body.Celular,
                 (req.body.Identificacion==''?null:req.body.Identificacion),
                 req.body.Nombre,
                 req.body.Apellido,
@@ -360,7 +360,7 @@ exports.crearConsumo = function(req, res) {
             if(connection){
                 
                 sql = 'set @resultado = ""; ' +
-                      'call datatabs_main.sp_generar_consumo(?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
+                      'call datatabs_main.sp_generarconsumo(?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
                       'select @resultado;';
             
                 connection.db.query(sql, data, function(err, resultado) {
