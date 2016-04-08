@@ -628,7 +628,8 @@ function validar_consumidor (data) {
             sql = '', 
             mensaje = '', 
             resultado = '';
-        
+        console.log('data')    
+        console.log(data)
         if (connection) {
             sql =
                 'SET @resultado = ""; ' +
@@ -658,7 +659,9 @@ function validar_consumidor (data) {
                         else {   
                             deferred.resolve(JSON.stringify(resultado));
                         }
-
+                        console.log(mensaje)
+                        console.log(resultado)
+                        console.log(resultado)
                         request({
                             uri: app_config.url+':6968/actualizar_lista_clientes',
                             method: 'GET',
