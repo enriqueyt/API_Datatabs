@@ -452,7 +452,7 @@ exports.crearConsumo = function(req, res) {
                                     console.log('validar consumidor')
                                     validar_consumidor(dat).then(function(result){
  
-                                        if(_numero==data[1] && data[0].length>0 && _numero != '04140000000'){
+                                        if(_numero==data[1] && data[0].length>0 && _numero != '04140000000' && _numero != '4140000000'){
                                             connection.db.query('update tb_consumidor c set c.celular = '+data[0]+' where c.identificacion='+data[1], function(err, rows, fields) {
                                                 if (!err)
                                                     console.log('ok ', rows);
