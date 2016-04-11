@@ -2,7 +2,7 @@ var connection = require('../config/db'),
     Q          = require('q'),
     seguridad  = require('../utils/seguridad'),
     request = require('request'),
-    app_config = require('../config/app_config')['dev'];
+    app_config = require('../config/app_config')['production'];
 
 exports.printError = function(err, res) {
     res.contentType('application/json');
