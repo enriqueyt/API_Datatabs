@@ -69,8 +69,6 @@ app.put   ('/usuario/contrasena/:val', usuario.modificarContrasena);
 /* [HttpDelete] */
 //app.delete('/usuario/:id'            , usuario.eliminarUsuario    );
 
-app.get   ('/usuario/pruebaEYT/:usuario/:pass', usuario.pruebaEYT);
-
 
 /*************************************************************************************************/
 /******************************************* USUARIOD ********************************************/

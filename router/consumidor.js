@@ -366,13 +366,14 @@ exports.crearConsumo = function(req, res) {
                 connection.db.query(sql, data, function(err, resultado) {
 
                     var id_visitaevento_compra = 0, mensaje = '';
+                    console.log('err respuesta')
                     console.log(err)
                     if (err){
                         utilidades.printError(err, res);
                     }
                     else {
                        console.log('result mensaje')
-                                                    console.log(data)
+                        console.log(data)
                         mensaje = JSON.parse(resultado[3][0]['@resultado']);
                         id_visitaevento_compra = resultado[1][0];
 
@@ -446,10 +447,10 @@ exports.crearConsumo = function(req, res) {
                                         evento:id_evento,
                                         nodo:seguridad.encodeBase64(flujo[i].idNodo)
                                     }
-                                    
+                                    console.log('validar consumidor')
                                     validar_consumidor(dat).then(function(result){
  
-                                        if(_numero==data[1] && data[0].length>0){
+                                        if(_numero==data[1] && data[0].length>0 && _numero != '04140000000'){
                                             connection.db.query('update tb_consumidor c set c.celular = '+data[0]+' where c.identificacion='+data[1], function(err, rows, fields) {
                                                 if (!err)
                                                     console.log('ok ', rows);
