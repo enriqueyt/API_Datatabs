@@ -421,7 +421,8 @@ exports.crearConsumo = function(req, res) {
         };
 
         utilidades.buscarIdDispositivo(req.body.Registradora+req.body.Id_registradora).then(function(id){
-
+            console.log('existe el dispositivo')
+            console.log(id)
             utilidades.buscarEventos(id).then(function(result){
     
                 var flag = false, id_evento = 0, a;
