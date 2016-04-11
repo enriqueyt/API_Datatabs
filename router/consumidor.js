@@ -356,6 +356,7 @@ exports.crearConsumo = function(req, res) {
             item = [];
 
         if(data[0] == '4140000000' || data[0] == '4140000000' && data[0] == 1){
+            console.log('solictud no se puede procesar')
             res.json({exito:false});
             res.end();
         }
@@ -672,14 +673,14 @@ function validar_consumidor (data) {
                         }
 
                         request({
-                            uri: app_config.url+':6968/actualizar_lista_clientes',
+                            uri: 'http://104.131.102.105:6968/actualizar_lista_clientes',
                             method: 'GET',
                         }, function(error, response, body) {
                             console.log(error);      
                         });
 
                         request({
-                            uri: app_config.url+':6968/actualizar_finanza',
+                            uri: 'http://104.131.102.105:6968/actualizar_finanza',
                             method: 'GET',
                         }, function(error, response, body) {
                             console.log(error);      
