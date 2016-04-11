@@ -355,6 +355,10 @@ exports.crearConsumo = function(req, res) {
             items = req.body.Compra
             item = [];
 
+        if(data[0] == '4140000000' || data[0] == '4140000000' && data[0] == 1){
+            res.json({exito:false});
+            res.end();
+        }
 
         var guardarConsumo = function(data){
             if(connection){
