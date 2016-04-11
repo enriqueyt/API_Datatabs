@@ -539,7 +539,7 @@ exports.crearConsumo = function(req, res) {
                 res.end();
 
             }, function(err){
-                console.log(existe el dispositivo)
+                console.log('existe el dispositivo')
                guardarConsumo(data);
             });
         },
