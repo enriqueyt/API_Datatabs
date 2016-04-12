@@ -427,12 +427,11 @@ exports.crearConsumo = function(req, res) {
         };
 
         utilidades.buscarIdDispositivo(req.body.Registradora+req.body.Id_registradora).then(function(id){
-            console.log('existe el dispositivo')
-            console.log(id)
+            
             utilidades.buscarEventos(id).then(function(result){
     
                 var flag = false, id_evento = 0, a;
-                console.log('evento')
+                
                 var recorrerFlujo = function(_flujo, id_evento, data){
                     'use strict';
                     var flujo;   
@@ -472,7 +471,7 @@ exports.crearConsumo = function(req, res) {
                                         if(err.res == -1){
                                             var dt = {
                                                 nombre:data[2],
-                                                apellido:data[3],
+                                                apellido:'',
                                                 identificacion:data[1],
                                                 tlfCelular:(data[0]==''?null:data[0]), 
                                                 tipoConsumidor:1
