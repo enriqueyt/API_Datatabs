@@ -3,7 +3,7 @@ var express    = require('express'),
     path       = require('path'),
     bodyParser = require('body-parser');
     
-var env               = 'dev', 
+var env               = 'production', 
     app_config        = require('./app_config')[env],
     sesion            = require('../router/sesion'),
     usuario           = require('../router/usuario'),

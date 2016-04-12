@@ -1,6 +1,6 @@
 var mysql = require('mysql');
 
-var env       = 'dev',
+var env       = 'production',
     db_config = require('./db_config')[env],
     host      = db_config.host     ? db_config.host     : null,
     user      = db_config.user     ? db_config.user     : null,

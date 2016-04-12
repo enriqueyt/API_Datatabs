@@ -360,8 +360,7 @@ exports.crearConsumo = function(req, res) {
 
         var guardarConsumo = function(data){
             if(connection){
-                console.log('data')
-                console.log(data)
+                
                 sql = 'set @resultado = ""; ' +
                       'call datatabs_main.sp_generarconsumo(?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
                       'select @resultado;';
