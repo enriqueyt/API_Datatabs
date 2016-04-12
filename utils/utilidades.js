@@ -117,9 +117,7 @@ exports.buscarIdDispositivo = function(identificador) {
             sql,
             [identificador],
             function(err, result) {
-                console.log('error as')
-                console.log(err)
-                console.log(result)
+
                 if (err)
                     deferred.reject(err);
                 else {
