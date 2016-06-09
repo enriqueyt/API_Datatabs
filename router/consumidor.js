@@ -392,13 +392,13 @@ exports.crearConsumo = function(req, res) {
                                         items[i].Description_item,
                                         parseFloat(items[i].Monto),
                                         parseInt(items[i].Cantidad)
-                                    ];  
+                                    ];
                                     
-                                    utilidades.almacenarConsumo(item, i).then(function(resul, err){          
+                                    utilidades.almacenarConsumo(item, i).then(function(resul, err){
 
                                         if(typeof err != 'undefined'){
                                             utilidades.printError(err, res);
-                                        } 
+                                        }
 
                                         if(items.length-1==resul.i){
                                             res.json({exito:resul.res>0});
@@ -417,7 +417,7 @@ exports.crearConsumo = function(req, res) {
                         };
                     };
                 });
-            }; 
+            };
         };
 
         utilidades.buscarIdDispositivo(req.body.Registradora+req.body.Id_registradora).then(function(id){
@@ -426,7 +426,7 @@ exports.crearConsumo = function(req, res) {
     
                 var flag = false, id_evento = 0, a;
 
-                var recorrerFlujo = function(_flujo, id_evento, data){
+                var recorrerFlujo = function(_flujo, id_evento, data) {
                     'use strict';
                     var flujo;   
                     var _numero = data[1],
@@ -518,6 +518,7 @@ exports.crearConsumo = function(req, res) {
                             }
 
                             if(flujo[i].children.length > 0){
+                                console.log()
                                 flujo = recorrerFlujo(flujo[i], id_evento, data);
                             }
           
@@ -533,7 +534,9 @@ exports.crearConsumo = function(req, res) {
                     flag = true;
                 };
                            
-                if(flag){a=recorrerFlujo(flujo, id_evento, data);}
+                if(flag){
+                    a=recorrerFlujo(flujo, id_evento, data);
+                }
 
                 res.json({exito:true});
                 res.end();
