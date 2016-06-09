@@ -337,13 +337,14 @@ exports.crearConsumo = function(req, res) {
 
     try {
         console.log(req.body)
+    
         var sql = '', 
             mensaje = '', 
             resultado = '', 
-            flujo = '',
+            flujo = '',             
             data = [
                 req.body.Celular,
-                (req.body.Identificacion==''?0: ((req.body.Identificacion).match(/\d+/g))[0] ),
+                (req.body.Identificacion==''||((req.body.Identificacion).match(/\d+/g))==null?0:((req.body.Identificacion).match(/\d+/g))[0] ),
                 req.body.Nombre,
                 req.body.Id_transaccion,
                 req.body.Fecha_transaccion,
@@ -354,6 +355,7 @@ exports.crearConsumo = function(req, res) {
             ],
             items = req.body.Compra
             item = [];
+
 
 
         var guardarConsumo = function(data){
@@ -420,137 +422,142 @@ exports.crearConsumo = function(req, res) {
             };
         };
 
-        utilidades.buscarIdDispositivo(req.body.Registradora+req.body.Id_registradora).then(function(id){
+        if((data[0] == '4140000000' || data[0] == '4140000000') && data[0] == 1 || ((req.body.Identificacion).match(/\d+/g))==null){
+            console.log('solictud no se puede procesar')
+            res.json({exito:false});
+            res.end();
+        }
+        else{
 
-            utilidades.buscarEventos(id).then(function(result){
-    
-                var flag = false, id_evento = 0, a;
 
-                var recorrerFlujo = function(_flujo, id_evento, data) {
-                    'use strict';
-                    var flujo;   
-                    var _numero = data[1],
-                        dipositivo = data[7];
+            utilidades.buscarIdDispositivo(req.body.Registradora+req.body.Id_registradora).then(function(id){
+                
+                utilidades.buscarEventos(id).then(function(result){
+        
+                    var flag = false, id_evento = 0, a;
+                    
+                    var recorrerFlujo = function(_flujo, id_evento, data){
+                        'use strict';
+                        var flujo;   
+                        var _numero = data[1],
+                            dipositivo = data[7];
 
-                    if(_flujo.children.length > 0){
+                        if(_flujo.children.length > 0){
 
-                        flujo = _flujo.children;
+                            flujo = _flujo.children;
 
-                        for (var i = 0; i < flujo.length; i++) {
-                        
-                            switch(flujo[i].name){
-                                case 'CHK':
+                            for (var i = 0; i < flujo.length; i++) {
+                            
+                                switch(flujo[i].name){
+                                    case 'CHK':
 
-                                    var dat = {
-                                        numero:seguridad.encodeBase64(_numero),
-                                        dispositivo:id,
-                                        evento:id_evento,
-                                        nodo:seguridad.encodeBase64(flujo[i].idNodo)
-                                    }
-                                    console.log('validar consumidor')
-                                    validar_consumidor(dat).then(function(result){
- 
-                                        if(_numero==data[1] && data[0].length>0 && _numero != '04140000000'){
-                                            connection.db.query('update tb_consumidor c set c.celular = '+data[0]+' where c.identificacion='+data[1], function(err, rows, fields) {
-                                                if (!err)
-                                                    console.log('ok ', rows);
-                                                else
-                                                    console.log('Error.');
-                                            });
+                                        var dat = {
+                                            numero:seguridad.encodeBase64(_numero),
+                                            dispositivo:id,
+                                            evento:id_evento,
+                                            nodo:seguridad.encodeBase64(flujo[i].idNodo)
                                         }
-                                                      
-                                        guardarConsumo(data);
-                                    }, function(err){
-                        
-                                        if(err.res == -1){
-                                            var dt = {
-                                                nombre:data[2],
-                                                apellido:data[3],
-                                                identificacion:data[1],
-                                                tlfCelular:(data[0]==''?null:data[0]), 
-                                                tipoConsumidor:1
-                                            }
-                                            console.log(dt)
-                                            crear_consumidor(dt).then(function(result){
-                                                console.log('crear_consumidor')
-                                                console.log(result)
-                                                
-                                                validar_consumidor(dat).then(function(result){
-                                                    if(_numero==data[1] && data[0].length>0){
-                                                        connection.db.query('update tb_consumidor c set c.celular = '+data[0]+' where c.identificacion='+data[1], function(err, rows, fields) {
-                                                          if (!err)
-                                                            console.log('ok ', rows);
-                                                          else
-                                                            console.log('Error.');
-                                                        });
-                                                    }
 
-                                                    guardarConsumo(data);
-                                                }, function(err){
+                                        validar_consumidor(dat).then(function(result){
+     
+                                            if(_numero==data[1] && data[0].length>0 && _numero != '04140000000' && _numero != '4140000000'){
+                                                connection.db.query('update tb_consumidor c set c.celular = '+data[0]+' where c.identificacion='+data[1], function(err, rows, fields) {
+                                                    if (!err)
+                                                        console.log('ok ', rows);
+                                                    else
+                                                        console.log('Error.');
+                                                });
+                                            }
+                                                          
+                                            guardarConsumo(data);
+                                        }, function(err){
+                            
+                                            if(err.res == -1){
+                                                var dt = {
+                                                    nombre:data[2],
+                                                    apellido:'',
+                                                    identificacion:data[1],
+                                                    tlfCelular:(data[0]==''?null:data[0]), 
+                                                    tipoConsumidor:1
+                                                }
+                                                
+                                                crear_consumidor(dt).then(function(result){
+                                                    
+                                                    validar_consumidor(dat).then(function(result){
+                                                        if(_numero==data[1] && data[0].length>0){
+                                                            connection.db.query('update tb_consumidor c set c.celular = '+data[0]+' where c.identificacion='+data[1], function(err, rows, fields) {
+                                                              if (!err)
+                                                                console.log('ok ', rows);
+                                                              else
+                                                                console.log('Error.');
+                                                            });
+                                                        }
+
+                                                        guardarConsumo(data);
+                                                    }, function(err){
+                                                        console.log(err)
+                                                    });
+
+                                                },function(err){
+                                                    console.log('err crear_consumidor')
                                                     console.log(err)
                                                 });
 
-                                            },function(err){
-                                                console.log('err crear_consumidor')
-                                                console.log(err)
-                                            });
+                                            }
+                                        });
 
+                                        break;
+                                    case 'MSG':
+
+                                        var dat = {
+                                            consumidor:(flujo[i].dirigido==2?flujo[i].numeroTelefono:_numero),
+                                            modo:0,
+                                            mensaje: flujo[i].mensaje,
+                                            dispositivo:dipositivo
                                         }
-                                    });
 
-                                    break;
-                                case 'MSG':
+                                        utilidades.enviarSMS(dat).then(function(result){
+                                           console.log(result)
+                                        }, function(err){
+                                            console.log(err)
+                                        });
 
-                                    var dat = {
-                                        consumidor:(flujo[i].dirigido==2?flujo[i].numeroTelefono:_numero),
-                                        modo:0,
-                                        mensaje: flujo[i].mensaje,
-                                        dispositivo:dipositivo
-                                    }
+                                        break;
+                                }
 
-                                    utilidades.enviarSMS(dat).then(function(result){
-                                       console.log(result)
-                                    }, function(err){
-                                        console.log(err)
-                                    });
 
-                                    break;
-                            }
+                                if(flujo[i].children.length > 0){
+                                    flujo = recorrerFlujo(flujo[i], id_evento, data);
+                                }
+              
+                            };
 
-                            if(flujo[i].children.length > 0){
-                                console.log()
-                                flujo = recorrerFlujo(flujo[i], id_evento, data);
-                            }
-          
-                        };
+                            return flujo;
+                        }
+                    };     
 
-                        return flujo;
+                    for(var i = 0; i < result.eventos.length; i++){
+                        flujo = JSON.parse(result.eventos[i].flujo);
+                        id_evento = result.eventos[i].id_evento;
+                        flag = true;
+                    };
+                               
+                    if(flag){
+                        a = recorrerFlujo(flujo, id_evento, data);
                     }
-                };     
 
-                for(var i = 0; i < result.eventos.length; i++){
-                    flujo = JSON.parse(result.eventos[i].flujo);
-                    id_evento = result.eventos[i].id_evento;
-                    flag = true;
-                };
-                           
-                if(flag){
-                    a=recorrerFlujo(flujo, id_evento, data);
-                }
+                    res.json({exito:true});
+                    res.end();
 
-                res.json({exito:true});
-                res.end();
-
-            }, function(err){
-               guardarConsumo(data);
+                }, function(err){
+                   guardarConsumo(data);
+                });
+            },
+            function(err) {
+                guardarConsumo(data);
             });
-        },
-        function(err) {
-            console.log('no existe el dispositivo')
-            guardarConsumo(data);
-        });
 
-       
+        }
     }
     catch (err) {
         utilidades.printError(err, res);
@@ -582,7 +589,7 @@ function crear_consumidor (data) {
                 'SET @resultado = ""; ' +
                 'CALL datatabs_main.sp_crearConsumidor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
                 'SELECT @resultado;';
-            console.log(data)
+            
             connection.db.query(
                 sql,
                 [
@@ -606,8 +613,7 @@ function crear_consumidor (data) {
                     else {
                         mensaje   = result[3][0]['@resultado'];
                         resultado = result[1][0]['res'];
-                        console.log(mensaje)
-                        console.log(resultado)
+                        
                         if ((/ERROR/g).test(mensaje))
                             deferred.reject(mensaje);
                         else {   
@@ -668,14 +674,14 @@ function validar_consumidor (data) {
                         }
 
                         request({
-                            uri: app_config.url+':6968/actualizar_lista_clientes',
+                            uri: 'http://104.131.102.105:6968/actualizar_lista_clientes',
                             method: 'GET',
                         }, function(error, response, body) {
                             console.log(error);      
                         });
 
                         request({
-                            uri: app_config.url+':6968/actualizar_finanza',
+                            uri: 'http://104.131.102.105:6968/actualizar_finanza',
                             method: 'GET',
                         }, function(error, response, body) {
                             console.log(error);      
