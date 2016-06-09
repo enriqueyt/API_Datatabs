@@ -376,7 +376,8 @@ exports.enviarSMS = function(data) {
     try {
         var deferred = Q.defer(),
             resultado = '';
-
+        console.log('Envio de SMS')
+        console.log(app_config.url)
         request.post({
             url:app_config.url+':6968/mensaje', 
             form: data
