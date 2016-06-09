@@ -439,6 +439,7 @@ exports.crearConsumo = function(req, res) {
                     var recorrerFlujo = function(_flujo, id_evento, data){
                         'use strict';
                         var flujo;   
+                        console.log(data)
                         var _numero = data[1],
                             dipositivo = data[7];
 
