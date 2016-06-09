@@ -379,7 +379,7 @@ exports.enviarSMS = function(data) {
         console.log('Envio de SMS')
         console.log(app_config.url)
         request.post({
-            url:app_config.url+':6968/mensaje', 
+            url:'http://104.131.102.105:6968/mensaje', 
             form: data
         }, function(err,response,body){ 
             if (!err && response.statusCode == 200) {
