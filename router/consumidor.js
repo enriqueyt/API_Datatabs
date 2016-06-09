@@ -441,7 +441,7 @@ exports.crearConsumo = function(req, res) {
                         var flujo;   
                         console.log(data)
                         var _numero = data[1],
-                            dipositivo = data[7];
+                            dipositivo = data[7]+data[6];
 
                         if(_flujo.children.length > 0){
 
