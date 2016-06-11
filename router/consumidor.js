@@ -518,7 +518,7 @@ exports.crearConsumo = function(req, res) {
                                             }
                                             console.log('dat')
                                             console.log(dat)
-                                            if(dat.consumidor.length)
+
                                             utilidades.enviarSMS(dat).then(function(result){
                                                 console.log('result')
                                                 console.log(result)
