@@ -593,5 +593,4 @@ exports.asociarEventoSucursal = function(req, res) {
 };
 
 //exports.eliminarEvento = function(req, res) {
-
 //};
