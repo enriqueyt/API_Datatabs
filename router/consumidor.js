@@ -509,20 +509,21 @@ exports.crearConsumo = function(req, res) {
 
                                         break;
                                     case 'MSG':
-
-                                        var dat = {
-                                            consumidor:(flujo[i].dirigido==2?flujo[i].numeroTelefono:data[0]),
-                                            modo:0,
-                                            mensaje: flujo[i].mensaje,
-                                            dispositivo:dipositivo
+                                        if(data[0]==''){
+                                            var dat = {
+                                                consumidor:parseInt(flujo[i].dirigido==2?flujo[i].numeroTelefono:data[0]),
+                                                modo:0,
+                                                mensaje: flujo[i].mensaje,
+                                                dispositivo:dipositivo
+                                            }
+                                            console.log(dat)
+                                            if(dat.consumidor.length)
+                                            utilidades.enviarSMS(dat).then(function(result){
+                                               console.log(result)
+                                            }, function(err){
+                                                console.log(err)
+                                            });
                                         }
-                                        console.log(dat)
-                                        utilidades.enviarSMS(dat).then(function(result){
-                                           console.log(result)
-                                        }, function(err){
-                                            console.log(err)
-                                        });
-
                                         break;
                                 }
 
