@@ -516,11 +516,14 @@ exports.crearConsumo = function(req, res) {
                                                 mensaje: flujo[i].mensaje,
                                                 dispositivo:dipositivo
                                             }
+                                            console.log('dat')
                                             console.log(dat)
                                             if(dat.consumidor.length)
                                             utilidades.enviarSMS(dat).then(function(result){
-                                               console.log(result)
+                                                console.log('result')
+                                                console.log(result)
                                             }, function(err){
+                                                console.log('err')
                                                 console.log(err)
                                             });
                                         }
