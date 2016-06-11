@@ -509,7 +509,7 @@ exports.crearConsumo = function(req, res) {
 
                                         break;
                                     case 'MSG':
-                                        if(data[0]==''){
+                                        if(data[0]!=''){
                                             var dat = {
                                                 consumidor:parseInt(flujo[i].dirigido==2?flujo[i].numeroTelefono:data[0]),
                                                 modo:0,
