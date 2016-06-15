@@ -20,15 +20,15 @@ describe('/', function(done){
 	it('/Guardar consumo', function(done){
 		
 		var obj = {
-			Celular:'',
-            Identificacion:'16901839',
-            Nombre:'',
+			Celular:'04142506850',
+            Identificacion:'6977197',
+            Nombre:'MARCO ZAIDEMAN',
             Id_transaccion:'1234',
             Fecha_transaccion: '2016-03-22T00:00:00',
-            Id_registradora:'',
-            Registradora:'e4fd700cfc3e3fe6',
+            Id_registradora:33,
+            Registradora:'CAJACSI',
             Id_sucursal:1,
-            Sucursal:'Sandu chef sambil',
+            Sucursal:'Sanduchef San Ignacio',
             Compra: [
             	{
             		Id_item:175458,
@@ -50,7 +50,7 @@ describe('/', function(done){
             	}
             ]
 		}
-		
+		console.log('OK')
 		request({
 			uri:'http://105.131.102.104:6969/consumidor/consumo',
 			method:'POST',

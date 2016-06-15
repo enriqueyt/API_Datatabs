@@ -368,8 +368,7 @@ exports.crearConsumo = function(req, res) {
                 connection.db.query(sql, data, function(err, resultado) {
 
                     var id_visitaevento_compra = 0, mensaje = '';
-                    console.log('err respuesta')
-                    console.log(err)
+
                     if (err){
                         utilidades.printError(err, res);
                     }
@@ -438,7 +437,8 @@ exports.crearConsumo = function(req, res) {
                     
                     var recorrerFlujo = function(_flujo, id_evento, data){
                         'use strict';
-                        var flujo;   
+                        var flujo;  
+                         console.log('data') 
                         console.log(data)
                         var _numero = data[1],
                             dipositivo = data[6]+data[5];
