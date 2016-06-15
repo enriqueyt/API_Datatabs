@@ -20,7 +20,7 @@ describe('/', function(done){
 	it('/Guardar consumo', function(done){
 		
 		var obj = {
-			Celular:'04142506850',
+			Celular:'4142506850',
             Identificacion:'6977197',
             Nombre:'MARCO ZAIDEMAN',
             Id_transaccion:'1234',

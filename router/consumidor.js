@@ -511,7 +511,7 @@ exports.crearConsumo = function(req, res) {
                                     case 'MSG':
                                         if(data[0]!=''){
                                             var dat = {
-                                                consumidor:parseInt(flujo[i].dirigido==2?flujo[i].numeroTelefono:data[0]),
+                                                consumidor:parseInt(flujo[i].dirigido==2?flujo[i].numeroTelefono:data[1]),
                                                 modo:0,
                                                 mensaje: flujo[i].mensaje,
                                                 dispositivo:dipositivo
