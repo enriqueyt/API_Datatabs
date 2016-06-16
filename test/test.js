@@ -52,7 +52,7 @@ describe('/', function(done){
 		}
 		console.log('OK')
 		request({
-			uri:'http://105.131.102.104:6969/consumidor/consumo',
+			uri:'http://104.131.102.105:6969/consumidor/consumo',
 			method:'POST',
 			form: obj
 		}, function(error, res, body){

@@ -510,14 +510,14 @@ exports.crearConsumo = function(req, res) {
                                         break;
                                     case 'MSG':
                                         if(data[0]!=''){
+                                            console.log('data{0]')
+                                            console.log(data[0])
                                             var dat = {
-                                                consumidor:parseInt(flujo[i].dirigido==2?flujo[i].numeroTelefono:data[1]),
+                                                consumidor:parseInt(flujo[i].dirigido==2?flujo[i].numeroTelefono:data[0]),
                                                 modo:0,
                                                 mensaje: flujo[i].mensaje,
                                                 dispositivo:dipositivo
                                             }
-                                            console.log('dat')
-                                            console.log(dat)
 
                                             utilidades.enviarSMS(dat).then(function(result){
                                                 console.log('result')
