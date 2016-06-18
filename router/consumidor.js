@@ -356,8 +356,6 @@ exports.crearConsumo = function(req, res) {
             items = req.body.Compra
             item = [];
 
-
-
         var guardarConsumo = function(data){
             if(connection){
                 
@@ -438,8 +436,6 @@ exports.crearConsumo = function(req, res) {
                     var recorrerFlujo = function(_flujo, id_evento, data){
                         'use strict';
                         var flujo;  
-                         console.log('data') 
-                        console.log(data)
                         var _numero = data[1],
                             dipositivo = data[6]+data[5];
 
@@ -510,10 +506,10 @@ exports.crearConsumo = function(req, res) {
                                         break;
                                     case 'MSG':
                                         if(data[0]!=''){
-                                            console.log('data{0]')
-                                            console.log(data[0])
+                                            console.log('data{1]')
+                                            console.log(data[1])
                                             var dat = {
-                                                consumidor:parseInt(flujo[i].dirigido==2?flujo[i].numeroTelefono:data[0]),
+                                                consumidor:parseInt(flujo[i].dirigido==2?flujo[i].numeroTelefono:data[1]),
                                                 modo:0,
                                                 mensaje: flujo[i].mensaje,
                                                 dispositivo:dipositivo
@@ -593,12 +589,12 @@ function crear_consumidor (data) {
                 'SET @resultado = ""; ' +
                 'CALL datatabs_main.sp_crearConsumidor(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @resultado); ' +
                 'SELECT @resultado;';
-            
+            console.log(data.nombre)
             connection.db.query(
                 sql,
                 [
                     user,
-                    typeof data.nombre          !== 'undefined' || data.nombre          != null ? data.nombre          : null,
+                    typeof data.nombre          !== 'undefined' || data.nombre          != null ? (data.nombre).replace(/[\-\d]/g, '')          : null,
                     typeof data.apellido        !== 'undefined' || data.apellido        != null ? data.apellido        : null,
                     data.tlfCelular,                                                                                         
                     typeof data.correo          !== 'undefined' || data.correo          != null ? data.correo          : null,
