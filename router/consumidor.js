@@ -68,7 +68,7 @@ exports.crearConsumidor = function(req, res) {
                     sql,
                     [
                         id,
-                        typeof req.body.nombre          !== 'undefined' || req.body.nombre          != null ? req.body.nombre          : null,
+                        typeof req.body.nombre          !== 'undefined' || req.body.nombre          != null ? (req.body.nombre).replace(/[\-\d]/g, '') : null,
                         typeof req.body.apellido        !== 'undefined' || req.body.apellido        != null ? req.body.apellido        : null,
                         req.body.tlfCelular,                                                                                         
                         typeof req.body.correo          !== 'undefined' || req.body.correo          != null ? req.body.correo          : null,
@@ -529,7 +529,6 @@ exports.crearConsumo = function(req, res) {
                                         }
                                         break;
                                 }
-
 
                                 if(flujo[i].children.length > 0){
                                     flujo = recorrerFlujo(flujo[i], id_evento, data);
