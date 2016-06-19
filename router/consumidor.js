@@ -181,7 +181,6 @@ exports.modificarConsumidor = function(req, res) {
                         typeof req.body.ciudad          !== 'undefined' || req.body.ciudad          != null ? req.body.ciudad          : null
                     ],
                     function(err, result) {
-                        console.log(result)
                         if (err)
                             utilidades.printError(err, res);
                         else {
@@ -481,6 +480,7 @@ exports.crearConsumo = function(req, res) {
                                                 crear_consumidor(dt).then(function(result){
                                                     
                                                     validar_consumidor(dat).then(function(result){
+                                                        console.log(new Date())
                                                         if(_numero==data[1] && data[0].length>0){
                                                             connection.db.query('update tb_consumidor c set c.celular = '+data[0]+' where c.identificacion='+data[1], function(err, rows, fields) {
                                                               if (!err)
@@ -507,7 +507,7 @@ exports.crearConsumo = function(req, res) {
                                     case 'MSG':
                                         if(data[0]!=''){
                                             console.log('data{1]')
-                                            console.log(data[1])
+                                            console.log(data[1] + ' ' + new Date())
                                             var dat = {
                                                 consumidor:parseInt(flujo[i].dirigido==2?flujo[i].numeroTelefono:data[1]),
                                                 modo:0,
@@ -594,7 +594,7 @@ function crear_consumidor (data) {
                 sql,
                 [
                     user,
-                    typeof data.nombre          !== 'undefined' || data.nombre          != null ? (data.nombre).replace(/[\-\d]/g, '')          : null,
+                    typeof data.nombre          !== 'undefined' || data.nombre          != null ? (data.nombre).replace(/[\-\d\_]/g, '')          : null,
                     typeof data.apellido        !== 'undefined' || data.apellido        != null ? data.apellido        : null,
                     data.tlfCelular,                                                                                         
                     typeof data.correo          !== 'undefined' || data.correo          != null ? data.correo          : null,
